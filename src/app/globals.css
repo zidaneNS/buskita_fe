@@ -10,6 +10,11 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-gradient-start: #1D2743;
+  --color-gradient-end: #59376F;
+  --color-midnight-purple: #7F22BC;
+  --color-ungu-muda: #EBD4FA;
+  --color-dark-purple: #3A2F58;
 }
 
 @media (prefers-color-scheme: dark) {
