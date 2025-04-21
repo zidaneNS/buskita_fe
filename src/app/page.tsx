@@ -12,7 +12,7 @@ export default function Page() {
           <h2 className="text-2xl">Selamat Datang di</h2>
           <h1 className="text-8xl font-bold"><span className="underline">BusK</span>ita</h1>
           <p className="text-justify">BusKita adalah sebuah website yang dirancang untuk memudahkan mahasiswa dan tenaga kependidikan (tendik) Universitas Airlangga dalam melakukan pemesanan bus secara online. Dengan BusKita, pengguna dapat dengan mudah memilih jadwal perjalanan, memesan tiket, dan mengelola perjalanan mereka dengan lebih efisien.</p>
-          <button className="py-2 px-4 rounded-md bg-midnight-purple w-fit cursor-pointer hover:bg-gradient-end duration-300">Cara Booking</button>
+          <a href="#booking" className="py-2 px-4 rounded-md bg-midnight-purple w-fit cursor-pointer hover:bg-gradient-end duration-300">Cara Booking</a>
         </div>
         
         <div className="bg-white rounded-2xl w-2/5 flex flex-col py-10 px-10 gap-y-4 text-black">

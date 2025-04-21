@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/ui/Navbar";
 import Footer from "@/ui/Footer";
 
-
-const poppins = Poppins({
+const inter = Inter({
   subsets: ['latin'],
   weight: ['100', '200', '300', '400', '500', '600', '700']
-})
+});
 
 export const metadata: Metadata = {
   title: "BusKita",
@@ -21,9 +20,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scrollbar-thin scrollbar-track-gradient-end/70 scrollbar-thumb-midnight-purple">
       <body
-        className={`${poppins.className} antialiased min-h-screen w-full text-white`}
+        className={`${inter.className} antialiased min-h-screen w-full text-white`}
       >
         <div className="w-full h-full bg-gradient-to-b from-gradient-start to-gradient-end flex flex-col">
           <Navbar />

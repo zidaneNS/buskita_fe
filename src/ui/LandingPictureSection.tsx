@@ -37,7 +37,7 @@ export default function LandingPictureSection() {
         }
     ]
     return (
-        <section className="flex w-full flex-col items-center gap-y-18 bg-gradient-start py-10">
+        <section id="booking" className="flex w-full flex-col items-center gap-y-18 bg-gradient-start py-10">
             <h1 className="text-5xl font-bold">Cara Booking</h1>
             <div className="w-full flex gap-x-20 mb-10 justify-center px-32">
                 {pictures.map((picture, i) => (

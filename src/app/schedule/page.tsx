@@ -38,7 +38,7 @@ export default function Page() {
 
             <section className="flex flex-col gap-y-6 w-full h-[80vh]">
                 <h1 className="text-3xl font-bold">Results</h1>
-                <div className="h-full overflow-y-auto pr-6 py-4">
+                <div className="h-full overflow-y-auto pr-6 py-4 scrollbar-thin scrollbar-track-gradient-end/70 scrollbar-thumb-midnight-purple">
                     <ScheduleHomeSection />
                 </div>
             </section>
