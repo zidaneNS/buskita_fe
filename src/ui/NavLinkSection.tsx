@@ -21,7 +21,7 @@ export default function NavLinkSection() {
         },
         {
             text: 'My Schedule',
-            href: '#'
+            href: '/myschedule'
         }
     ]
     return (

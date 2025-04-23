@@ -3,10 +3,11 @@ import QRCode from "react-qr-code";
 
 export default function Page() {
     return (
-        <main className="w-full min-h-screen flex flex-col justify-center items-center gap-y-12">
+        <main className="w-full min-h-screen flex gap-x-8 justify-center items-center">
             <QRCode
                 size={256}
                 value="test"
+                className="bg-white p-12"
             />
             <QrScanner />
         </main>

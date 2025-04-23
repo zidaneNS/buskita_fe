@@ -8,6 +8,7 @@ import { useState } from "react";
 
 export default function ScheduleDetailPage({ id }: { id: string | number }) {
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
+    const [selected, setSelected] = useState<number>(0);
 
     return !isSuccess ?
         (
@@ -22,14 +23,14 @@ export default function ScheduleDetailPage({ id }: { id: string | number }) {
                             <h1 className="text-xl font-semibold">Pick your seat</h1>
                             <p>Bus : {id}</p>
                         </div>
-                        <SeatSection />
+                        <SeatSection selected={selected} setSelected={setSelected} />
                         <div className="w-full px-4 flex justify-around">
                             <div className="w-fit flex flex-col gap-y-2 items-center">
                                 <span className="size-10 bg-white rounded-md"></span>
                                 <p className="text-xs">Available</p>
                             </div>
                             <div className="w-fit flex flex-col gap-y-2 items-center">
-                                <span className="size-10 bg-lime-600 rounded-md"></span>
+                                <span className="size-10 bg-lime-400 rounded-md"></span>
                                 <p className="text-xs">Selected</p>
                             </div>
                             <div className="w-fit flex flex-col gap-y-2 items-center">
@@ -55,7 +56,7 @@ export default function ScheduleDetailPage({ id }: { id: string | number }) {
                                 </div>
                             </div>
                             <p>Name : Muhammad Zidane Nur Sya'bani</p>
-                            <p>Seat : 15</p>
+                            <p>Seat : {selected}</p>
                             <p>Date : 10 December 2025</p>
                         </div>
                         <button onClick={() => setIsSuccess(true)} className="bg-midnight-purple rounded-xl py-2 px-8 font-semibold text-xl cursor-pointer hover:bg-white/20 duration-300">Book</button>

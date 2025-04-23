@@ -1,9 +1,11 @@
-import InputDate from "@/components/InputDate";
-import RouteDropdown from "@/components/RouteDropdown";
+import DropDown from "@/components/DropDown";
+import { dummyDates, dummyRoutes } from "@/lib/dummyData";
 import ScheduleHomeSection from "@/ui/ScheduleHomeSection";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 export default function Page() {
+    const routes = dummyRoutes;
+    const dates = dummyDates;
     return (
         <main className="flex flex-col gap-y-6 px-32 pt-32 pb-10 w-full min-h-screen">
             <section className="flex flex-col gap-y-6 w-full">
@@ -18,11 +20,11 @@ export default function Page() {
                             <div className="w-1/3 gap-x-10 flex justify-between">
                                 <div className="w-full flex flex-col gap-y-2">
                                     <p className="text-sm font-semibold text-black">From - To</p>
-                                    <RouteDropdown />
+                                    <DropDown items={routes} />
                                 </div>
                                 <div className="w-full flex flex-col gap-y-2">
                                     <p className="text-sm font-semibold text-black">Departure Date</p>
-                                    <InputDate />
+                                    <DropDown items={dates} />
                                 </div>
                             </div>
                             <div className="flex w-1/4 p-2 rounded-lg bg-gradient-end mt-auto">

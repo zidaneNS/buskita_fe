@@ -1,10 +1,13 @@
-import InputDate from "@/components/InputDate";
-import RouteDropdown from "@/components/RouteDropdown";
+import DropDown from "@/components/DropDown";
 import ScheduleCardLanding from "@/components/ScheduleCardLanding";
+import { dummyDates, dummyRoutes } from "@/lib/dummyData";
 import LandingPictureSection from "@/ui/LandingPictureSection";
 import Link from "next/link";
 
 export default function Page() {
+  const routes = dummyRoutes;
+  const dates = dummyDates;
+  
   return (
     <main className="z-0 flex flex-col pt-20 min-h-screen">
       <section className="w-full flex justify-between items-center mb-10 px-32 min-h-screen">
@@ -23,8 +26,8 @@ export default function Page() {
           <div className="flex flex-col gap-y-3 w-4/5">
             <h1 className="font-semibold">Pilih Rute</h1>
             <div className="flex gap-x-3 text-white">
-              <RouteDropdown />
-              <InputDate />
+              <DropDown items={routes} />
+              <DropDown items={dates} />
             </div>
           </div>
           <div className="flex flex-col gap-y-3 w-full">

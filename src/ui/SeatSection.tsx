@@ -1,4 +1,9 @@
-export default function SeatSection() {
+'use client';
+
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+
+export default function SeatSection({ selected, setSelected }: { selected: number, setSelected: Dispatch<SetStateAction<number>> }) {
+    
     return (
         <div className="w-full grid grid-cols-6 gap-2">
             {[...Array.from({length: 30})].map((_, i) => {
@@ -10,7 +15,7 @@ export default function SeatSection() {
                     index % 4 === 0 ? 6 :
                     index : index;
                 return (
-                    <div key={i} className={`p-2 bg-white text-black text-sm text-center rounded-md col-start-${colStart}`}>
+                    <div key={i} onClick={() => setSelected(index)} className={`p-2 hover:bg-lime-400 duration-300 cursor-pointer text-black text-sm text-center rounded-md col-start-${colStart} ${selected === index ? "bg-lime-400" : "bg-white"}`}>
                         {index}
                     </div>
                 )
