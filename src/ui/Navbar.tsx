@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import NavLinkSection from "./NavLinkSection";
 
-export default function Navbar() {
+export default function Navbar({ isCo }: { isCo: boolean }) {
     const [isTop, setIsTop] = useState(true);
     useEffect(() => {
         const handleScroll = () => {
@@ -29,7 +29,7 @@ export default function Navbar() {
                     height={30}
                 />
             </Link>
-            <NavLinkSection />
+            <NavLinkSection isCo={isCo} />
             <Link href="#" className="py-2 px-4 rounded-lg bg-white text-gradient-start text-sm font-semibold hover:text-white hover:bg-midnight-purple duration-300">Sign In</Link>
         </nav>
     )

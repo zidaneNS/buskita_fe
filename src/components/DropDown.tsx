@@ -18,9 +18,9 @@ export default function DropDown({ items }: { items: (string | number)[]}) {
                 <button className="w-fit text-xs font-semibold">{selectedItem}</button>
                 <ChevronRightIcon className={`size-4 duration-300 ${isOpen ? "rotate-90" : "" }`} />
             </div>
-            <div className={`absolute top-full mt-2 bg-gradient-end w-full rounded-md flex flex-col gap-y-3 p-2 origin-top duration-300 ${isOpen ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0"}`}>
+            <div className={`absolute top-full mt-2 bg-gradient-end w-full rounded-md flex flex-col gap-y-2 py-4 px-2 origin-top duration-300 ${isOpen ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0"}`}>
                 {items.map((item,i) => (
-                    <div key={i} onClick={() => handleClickItem(item)} className="px-4 py-2 bg-dark-purple w-full rounded-md text-xs hover:bg-white/20 cursor-pointer duration-300">
+                    <div key={i} onClick={() => handleClickItem(item)} className="px-4 py-2 w-full rounded-md text-xs hover:bg-white/20 cursor-pointer duration-300">
                         {item}
                     </div>
                 ))}
