@@ -1,10 +1,14 @@
 import DropDown from "@/components/DropDown";
 import ScheduleCardLanding from "@/components/ScheduleCardLanding";
-import { dummyDates, dummyRoutes } from "@/lib/dummyData";
+import { test } from "@/lib/action";
+import { verifySession } from "@/lib/dal";
+import { dummyDates, dummyPassenger, dummyRoutes } from "@/lib/dummyData";
+import { createSession } from "@/lib/session";
+import { User } from "@/lib/type";
 import LandingPictureSection from "@/ui/LandingPictureSection";
 import Link from "next/link";
 
-export default function Page() {
+export default async function Page() {
   const routes = dummyRoutes;
   const dates = dummyDates;
   

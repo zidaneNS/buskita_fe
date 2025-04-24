@@ -5,8 +5,9 @@ import Link from "next/link";
 import SeatSection from "./SeatSection";
 import Image from "next/image";
 import { useState } from "react";
+import { verifyCo } from "@/lib/action";
 
-export default function ScheduleDetailPage({ id }: { id: string | number }) {
+export default function ScheduleDetailPage({ id, isCo }: { id: string | number, isCo: boolean }) {
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
     const [selected, setSelected] = useState<number>(0);
 
@@ -40,26 +41,30 @@ export default function ScheduleDetailPage({ id }: { id: string | number }) {
                         </div>
                     </div>
                     <div className="w-full flex flex-col h-fit items-center gap-y-6">
-                        <div className="flex flex-col w-full gap-y-4 pt-8 pb-12 px-10 bg-gradient-end rounded-lg shadow-xl">
-                            <h1 className="font-semibold text-lg px-4">Booking Summary</h1>
-                            <span className="w-full border-b border-white"></span>
-                            <div className="flex gap-x-2 w-fit items-center">
-                                <Image
-                                    src="/assets/route-booking.png"
-                                    alt="route"
-                                    width={40}
-                                    height={44}
-                                />
-                                <div className="flex flex-col text-lg">
-                                    <p>Route</p>
-                                    <p className="font-bold">GSK - SBY</p>
+                        {!isCo && (
+                            <>
+                                <div className="flex flex-col w-full gap-y-4 pt-8 pb-12 px-10 bg-gradient-end rounded-lg shadow-xl">
+                                    <h1 className="font-semibold text-lg px-4">Booking Summary</h1>
+                                    <span className="w-full border-b border-white"></span>
+                                    <div className="flex gap-x-2 w-fit items-center">
+                                        <Image
+                                            src="/assets/route-booking.png"
+                                            alt="route"
+                                            width={40}
+                                            height={44}
+                                        />
+                                        <div className="flex flex-col text-lg">
+                                            <p>Route</p>
+                                            <p className="font-bold">GSK - SBY</p>
+                                        </div>
+                                    </div>
+                                    <p>Name : Muhammad Zidane Nur Sya'bani</p>
+                                    <p>Seat : {selected}</p>
+                                    <p>Date : 10 December 2025</p>
                                 </div>
-                            </div>
-                            <p>Name : Muhammad Zidane Nur Sya'bani</p>
-                            <p>Seat : {selected}</p>
-                            <p>Date : 10 December 2025</p>
-                        </div>
-                        <button onClick={() => setIsSuccess(true)} className="bg-midnight-purple rounded-xl py-2 px-8 font-semibold text-xl cursor-pointer hover:bg-white/20 duration-300">Book</button>
+                                <button onClick={() => setIsSuccess(true)} className="bg-midnight-purple rounded-xl py-2 px-8 font-semibold text-xl cursor-pointer hover:bg-white/20 duration-300">Book</button>
+                            </>
+                        )}
                     </div>
                 </section>
             </main>
