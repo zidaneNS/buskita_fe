@@ -1,10 +1,6 @@
 import DropDown from "@/components/DropDown";
 import ScheduleCardLanding from "@/components/ScheduleCardLanding";
-import { test } from "@/lib/action";
-import { verifySession } from "@/lib/dal";
-import { dummyDates, dummyPassenger, dummyRoutes } from "@/lib/dummyData";
-import { createSession } from "@/lib/session";
-import { User } from "@/lib/type";
+import { dummyDates, dummyRoutes } from "@/lib/dummyData";
 import LandingPictureSection from "@/ui/LandingPictureSection";
 import Link from "next/link";
 
