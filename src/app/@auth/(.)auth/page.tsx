@@ -1,7 +1,7 @@
 'use client';
 
-import LoginForm from "@/components/LoginForm";
-import RegisterForm from "@/components/RegisterForm";
+import LoginForm from "@/ui/LoginForm";
+import RegisterForm from "@/ui/RegisterForm";
 import { useEffect, useState } from "react";
 
 export default function Page() {

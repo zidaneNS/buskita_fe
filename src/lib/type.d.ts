@@ -14,6 +14,29 @@ export type User = {
 }
 
 export type SessionPayload = {
-    id: string | number,
+    token: string,
     expiresAt: Date
 }
+
+export type SignUpFormState = | {
+    errors?: {
+        nim_nip?: string[],
+        name?: string[],
+        email?: string[],
+        phone_number?: string[],
+        address?: string[],
+        password?: string[],
+        password_confirmation?: string[]
+    },
+    message?: string,
+    success?: boolean
+} | undefined
+
+export type SignInFormState = | {
+    errors?: {
+        nim_nip?: string[],
+        password?: string[]
+    },
+    message?: string,
+    success?: boolean
+} | undefined
