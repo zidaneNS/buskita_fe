@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/ui/Navbar";
 import Footer from "@/ui/Footer";
 import { verifyCo } from "@/lib/action";
+import React from "react";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -17,8 +18,10 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
+  auth
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode,
+  auth: React.ReactNode
 }>) {
   const isCo = await verifyCo();
   return (
@@ -29,6 +32,7 @@ export default async function RootLayout({
         <div className="w-full h-full bg-gradient-to-b from-gradient-start to-gradient-end flex flex-col">
           <Navbar isCo={isCo} />
           {children}
+          {auth}
         </div>
         <Footer />
       </body>

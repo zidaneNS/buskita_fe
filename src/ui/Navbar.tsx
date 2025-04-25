@@ -4,11 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import NavLinkSection from "./NavLinkSection";
-import AuthModal from "./AuthModal";
+import { useRouter } from "next/navigation";
 
 export default function Navbar({ isCo }: { isCo: boolean }) {
     const [isTop, setIsTop] = useState<boolean>(true);
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const router = useRouter();
+
     useEffect(() => {
         const handleScroll = () => {
             setIsTop(window.scrollY === 0);
@@ -33,9 +35,8 @@ export default function Navbar({ isCo }: { isCo: boolean }) {
                     />
                 </Link>
                 <NavLinkSection isCo={isCo} />
-                <button onClick={() => setIsOpen(true)} className="py-2 px-4 rounded-lg bg-white text-gradient-start text-sm font-semibold hover:text-white hover:bg-midnight-purple duration-300 cursor-pointer">Sign In</button>
+                <button onClick={() => router.push('/auth')} className="py-2 px-4 rounded-lg bg-white text-gradient-start text-sm font-semibold hover:text-white hover:bg-midnight-purple duration-300 cursor-pointer">Sign In</button>
             </nav>
-            <AuthModal isOpen={isOpen} setIsOpen={setIsOpen} />
         </>
     )
 }

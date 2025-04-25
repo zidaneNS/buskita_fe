@@ -4,7 +4,7 @@ export default function FormInput({ id, attribute, type, placeholder }: { id: st
     return (
         <div className="flex flex-col gap-y-2 text-sm">
             <label htmlFor={id} >{attribute} :</label>
-            <input id={id} type={type} required placeholder={placeholder} autoFocus autoComplete="off" className="px-4 py-2 rounded-md border border-dark-purple" />
+            <input id={id} type={type} name={id} required placeholder={placeholder} autoFocus autoComplete="off" className="px-4 py-2 rounded-md border border-dark-purple" />
         </div>
     )
 }
