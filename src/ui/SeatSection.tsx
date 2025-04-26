@@ -1,6 +1,6 @@
 'use client';
 
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 export default function SeatSection({ selected, setSelected }: { selected: number, setSelected: Dispatch<SetStateAction<number>> }) {
     

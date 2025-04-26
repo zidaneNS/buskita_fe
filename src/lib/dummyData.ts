@@ -12,5 +12,5 @@ export const dummyUser: User = {
     phone_number: "8382817432",
     address: "St Ohio",
     credit_score: 15,
-    role: "co"
+    role_name: "co"
 }

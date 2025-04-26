@@ -13,9 +13,9 @@ export default function LoginForm({ setIsLogin }: { setIsLogin: Dispatch<SetStat
 
     useEffect(() => {
         if (state?.success) {
-            state.success && router.back()
+            if (state.success) router.back();
         }
-    }, [state]);
+    }, [state, router]);
 
     return (
         <form action={action} className={`bg-white px-6 py-4 rounded-xl flex flex-col gap-y-3 text-black relative`}>

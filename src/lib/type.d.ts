@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 export type Role = "passenger" | "co" | "co_leader";
 // export type Route = "SBY - GSK" | "GSK - SBY";
 

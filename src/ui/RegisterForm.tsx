@@ -12,9 +12,9 @@ export default function RegisterForm({ setIsLogin }: { setIsLogin: Dispatch<SetS
     const [state, action, pending] = useActionState(signup, undefined);
     useEffect(() => {
         if (state?.success) {
-            state.success && setIsLogin(true);
+            if (state.success) setIsLogin(true);
         }
-    }, [state]);
+    }, [state, setIsLogin]);
 
     return (
         <div className="flex flex-col gap-y-3">

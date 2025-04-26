@@ -121,7 +121,9 @@ export const logout = async () => {
             }
         });
 
-        response.status !== 200 && console.log('logout failed : ', response);
+        if (response.status !== 200) {
+            console.log('logout failed : ', response);
+        }
     } catch (err) {
         console.log(err)
     } finally {

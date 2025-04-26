@@ -5,7 +5,6 @@ import Link from "next/link";
 import SeatSection from "./SeatSection";
 import Image from "next/image";
 import { useState } from "react";
-import { verifyCo } from "@/lib/action";
 
 export default function ScheduleDetailPage({ id }: { id: string | number }) {
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -56,7 +55,7 @@ export default function ScheduleDetailPage({ id }: { id: string | number }) {
                                     <p className="font-bold">GSK - SBY</p>
                                 </div>
                             </div>
-                            <p>Name : Muhammad Zidane Nur Sya'bani</p>
+                            <p>Name : Muhammad Zidane Nur Syabani</p>
                             <p>Seat : {selected}</p>
                             <p>Date : 10 December 2025</p>
                         </div>
