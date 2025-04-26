@@ -27,6 +27,14 @@ export type Seat = {
     verified: boolean
 }
 
+export type Bus = {
+    id: string | number,
+    identity: string,
+    available_row: number,
+    available_col: number,
+    available_backseat: number
+}
+
 export type SessionPayload = {
     token: string,
     expiresAt: Date

@@ -1,5 +1,5 @@
 import { verifySession } from "./dal";
-import { Schedule, Seat } from "./type";
+import { Bus, Schedule, Seat } from "./type";
 
 const baseUrl = process.env.BASE_URL;
 
@@ -53,6 +53,60 @@ export const getSeatsBySchedule = async (id: string | number) => {
         }
     } catch (err) {
         console.log('failed fetch seats', err);
+        return null;
+    }
+}
+
+export const getBusBySchedule = async (id: string | number) => {
+    const session = await verifySession();
+    const { token } = session!;
+
+    try {
+        const response = await fetch(`${baseUrl}/bus/schedule/${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 200) {
+            const bus = await response.json();
+            return bus as Bus;
+        } else {
+            console.log('failed fetch bus by schedule', response.status);
+            return null
+        }
+    } catch (err) {
+        console.log('failed fetch bus by schedule', err);
+        return null;
+    }
+}
+
+export const getScheduleById = async (id: string | number) => {
+    const session = await verifySession();
+    const { token } = session!;
+
+    try {
+        const response = await fetch(`${baseUrl}/schedules/${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 200) {
+            const schedule = await response.json();
+            return schedule as Schedule;
+        } else {
+            console.log('failed fetch schedule by id', response.status);
+            return null
+        }
+    } catch (err) {
+        console.log('failed fetch schedule by id', err);
         return null;
     }
 }

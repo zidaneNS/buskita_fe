@@ -5,8 +5,9 @@ import Link from "next/link";
 import SeatSection from "./SeatSection";
 import Image from "next/image";
 import { useState } from "react";
+import { Bus, Schedule } from "@/lib/type";
 
-export default function ScheduleDetailPage({ id }: { id: string | number }) {
+export default function ScheduleDetailPage({ schedule, bus }: { schedule: Schedule, bus: Bus }) {
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
     const [selected, setSelected] = useState<number>(0);
 
@@ -21,7 +22,7 @@ export default function ScheduleDetailPage({ id }: { id: string | number }) {
                     <div className="w-1/2 flex flex-col py-10 px-12 gap-y-16 bg-gradient-end rounded-lg shadow-2xl">
                         <div className="flex flex-col gap-y-2">
                             <h1 className="text-xl font-semibold">Pick your seat</h1>
-                            <p>Bus : {id}</p>
+                            <p>Bus : {bus.identity}</p>
                         </div>
                         <SeatSection selected={selected} setSelected={setSelected} />
                         <div className="w-full px-4 flex justify-around">
@@ -52,7 +53,7 @@ export default function ScheduleDetailPage({ id }: { id: string | number }) {
                                 />
                                 <div className="flex flex-col text-lg">
                                     <p>Route</p>
-                                    <p className="font-bold">GSK - SBY</p>
+                                    <p className="font-bold">{schedule.route_name}</p>
                                 </div>
                             </div>
                             <p>Name : Muhammad Zidane Nur Syabani</p>
