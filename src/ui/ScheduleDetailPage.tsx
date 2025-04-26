@@ -5,11 +5,14 @@ import Link from "next/link";
 import SeatSection from "./SeatSection";
 import Image from "next/image";
 import { useState } from "react";
-import { Bus, Schedule } from "@/lib/type";
+import { Bus, Schedule, Seat, User } from "@/lib/type";
+import { format } from "date-fns";
 
-export default function ScheduleDetailPage({ schedule, bus }: { schedule: Schedule, bus: Bus }) {
+export default function ScheduleDetailPage({ schedule, bus, user, seats }: { schedule: Schedule, bus: Bus, user: User, seats: Seat[] }) {
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
     const [selected, setSelected] = useState<number>(0);
+
+    const date = format(new Date(schedule.time), "dd MMMM yyyy");
 
     return !isSuccess ?
         (
@@ -24,7 +27,7 @@ export default function ScheduleDetailPage({ schedule, bus }: { schedule: Schedu
                             <h1 className="text-xl font-semibold">Pick your seat</h1>
                             <p>Bus : {bus.identity}</p>
                         </div>
-                        <SeatSection selected={selected} setSelected={setSelected} />
+                        <SeatSection selected={selected} setSelected={setSelected} seats={seats} bus={bus} />
                         <div className="w-full px-4 flex justify-around">
                             <div className="w-fit flex flex-col gap-y-2 items-center">
                                 <span className="size-10 bg-white rounded-md"></span>
@@ -56,9 +59,9 @@ export default function ScheduleDetailPage({ schedule, bus }: { schedule: Schedu
                                     <p className="font-bold">{schedule.route_name}</p>
                                 </div>
                             </div>
-                            <p>Name : Muhammad Zidane Nur Syabani</p>
+                            <p>Name : {user.name}</p>
                             <p>Seat : {selected}</p>
-                            <p>Date : 10 December 2025</p>
+                            <p>Date : {date}</p>
                         </div>
                         <button onClick={() => setIsSuccess(true)} className="bg-midnight-purple rounded-xl py-2 px-8 font-semibold text-xl cursor-pointer hover:bg-white/20 duration-300">Book</button>
                     </div>

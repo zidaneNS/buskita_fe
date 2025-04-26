@@ -19,7 +19,6 @@ export const getSchedules = async () => {
 
         if (response.status === 200) {
             const schedules = await response.json();
-            console.log(schedules);
             return schedules as Schedule[];
         } else {
             console.log('failed fetching schedules', response);
@@ -50,6 +49,7 @@ export const getSeatsBySchedule = async (id: string | number) => {
             return seats as Seat[];
         } else {
             console.log('failed fetch seats', response);
+            return null;
         }
     } catch (err) {
         console.log('failed fetch seats', err);
@@ -107,6 +107,33 @@ export const getScheduleById = async (id: string | number) => {
         }
     } catch (err) {
         console.log('failed fetch schedule by id', err);
+        return null;
+    }
+}
+
+export const getUserSchedule = async () => {
+    const session = await verifySession();
+    const { token } = session!;
+
+    try {
+        const response = await fetch(`${baseUrl}/user/schedules`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 200) {
+            const schedules = await response.json();
+            return schedules as Schedule[];
+        } else {
+            console.log('fail fetch user schedule', response.status);
+            return null;
+        }
+    } catch (err) {
+        console.log('fail fetch user schedule', err);
         return null;
     }
 }

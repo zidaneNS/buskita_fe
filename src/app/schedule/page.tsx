@@ -1,5 +1,5 @@
 import DropDown from "@/components/DropDown";
-import { getSchedules } from "@/lib/action";
+import { getSchedules, getUserSchedule } from "@/lib/action";
 import { dummyDates, dummyRoutes } from "@/lib/dummyData";
 import ScheduleHomeSection from "@/ui/ScheduleHomeSection";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
@@ -10,6 +10,7 @@ export default function Page() {
     const dates = dummyDates;
 
     const schedules = getSchedules();
+    const userSchedules = getUserSchedule();
     return (
         <main className="flex flex-col gap-y-6 px-32 pt-32 pb-10 w-full min-h-screen">
             <section className="flex flex-col gap-y-6 w-full">
@@ -46,7 +47,7 @@ export default function Page() {
                 <h1 className="text-3xl font-bold">Results</h1>
                 <div className="h-full overflow-y-auto pr-6 py-4 scrollbar-thin scrollbar-track-gradient-end/70 scrollbar-thumb-midnight-purple">
                     <Suspense fallback={<div>Loading...</div>}>
-                        <ScheduleHomeSection schedules={schedules} />
+                        <ScheduleHomeSection userSchedules={userSchedules} schedules={schedules} />
                     </Suspense>
                 </div>
             </section>
