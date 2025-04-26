@@ -1,8 +1,9 @@
 'use server';
 
 import { SignInFormSchema, SignUpFormSchema } from "./definition";
-import { createSession } from "./session";
+import { createSession, deleteSession } from "./session";
 import { SignInFormState, SignUpFormState } from "./type";
+import { verifySession } from "./dal";
 
 const baseUrl = process.env.BASE_URL;
 
@@ -104,5 +105,26 @@ export const signin = async (state: SignInFormState, formData: FormData) => {
         }
     } catch (err) {
         console.log(err);
+    }
+}
+
+export const logout = async () => {
+    const session = await verifySession();
+    const { token } = session!;
+    try {
+        const response = await fetch(`${baseUrl}/logout`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        response.status !== 200 && console.log('logout failed : ', response);
+    } catch (err) {
+        console.log(err)
+    } finally {
+        await deleteSession();
     }
 }

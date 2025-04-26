@@ -5,11 +5,17 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import NavLinkSection from "./NavLinkSection";
 import { useRouter } from "next/navigation";
+import { User } from "@/lib/type";
+import { logout } from "@/lib/auth";
 
-export default function Navbar({ isCo }: { isCo: boolean }) {
+export default function Navbar({ isCo, user }: { isCo: boolean, user: User | undefined | null }) {
     const [isTop, setIsTop] = useState<boolean>(true);
-    const [isOpen, setIsOpen] = useState<boolean>(false);
     const router = useRouter();
+
+    const handleLogout = async () => {
+        await logout();
+        router.push('/');
+    }
 
     useEffect(() => {
         const handleScroll = () => {
@@ -35,7 +41,11 @@ export default function Navbar({ isCo }: { isCo: boolean }) {
                     />
                 </Link>
                 <NavLinkSection isCo={isCo} />
-                <button onClick={() => router.push('/auth')} className="py-2 px-4 rounded-lg bg-white text-gradient-start text-sm font-semibold hover:text-white hover:bg-midnight-purple duration-300 cursor-pointer">Sign In</button>
+                {user ? (
+                    <button onClick={handleLogout} className="py-2 px-4 rounded-lg bg-white text-gradient-start text-sm font-semibold hover:text-white hover:bg-midnight-purple duration-300 cursor-pointer">Logout</button>
+                ) : (
+                    <button onClick={() => router.push('/auth')} className="py-2 px-4 rounded-lg bg-white text-gradient-start text-sm font-semibold hover:text-white hover:bg-midnight-purple duration-300 cursor-pointer">Sign In</button>
+                )}
             </nav>
         </>
     )

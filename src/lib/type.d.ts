@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export type Role = "passenger" | "co" | "co_leader";
+// export type Route = "SBY - GSK" | "GSK - SBY";
 
 export type User = {
     id: string | number,
@@ -10,7 +11,22 @@ export type User = {
     phone_number: string,
     address: string,
     credit_score: number,
-    role: Role
+    role_name: Role
+}
+
+export type Schedule = {
+    id: string | number,
+    time: Date,
+    bus_identity: string,
+    route_name: string,
+    closed: boolean
+}
+
+export type Seat = {
+    id: string | number,
+    seat_number: number,
+    user_id: string | number | null,
+    verified: boolean
 }
 
 export type SessionPayload = {

@@ -3,8 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/ui/Navbar";
 import Footer from "@/ui/Footer";
-import { verifyCo } from "@/lib/action";
 import React from "react";
+import { getUser } from "@/lib/dal";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -23,14 +23,16 @@ export default async function RootLayout({
   children: React.ReactNode,
   auth: React.ReactNode
 }>) {
-  const isCo = await verifyCo();
+  const user = await getUser();
+
+  const isCo = user?.role_name === 'co_leader' || user?.role_name === 'co';
   return (
     <html lang="en" className="scrollbar-thin scrollbar-track-gradient-end/70 scrollbar-thumb-midnight-purple">
       <body
         className={`${inter.className} antialiased min-h-screen w-full text-white`}
       >
         <div className="w-full h-full bg-gradient-to-b from-gradient-start to-gradient-end flex flex-col">
-          <Navbar isCo={isCo} />
+          <Navbar user={user} isCo={isCo} />
           {children}
           {auth}
         </div>
