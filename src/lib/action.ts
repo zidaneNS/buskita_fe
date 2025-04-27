@@ -137,3 +137,34 @@ export const getUserSchedule = async () => {
         return null;
     }
 }
+
+export const attachSeat = async (seat_id : string | number) => {
+    const session = await verifySession();
+    const { token } = session!;
+
+    try {
+        const response = await fetch(`${baseUrl}/seats`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                seat_id
+            })
+        });
+
+        if (response.status === 200) {
+            const result = await response.json();
+            console.log(result);
+            return true;
+        } else {
+            console.log('fail book seat', response.status);
+            return false;
+        }
+    } catch (err) {
+        console.log('fail book seat', err);
+        return false;
+    }
+}

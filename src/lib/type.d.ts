@@ -22,7 +22,7 @@ export type Schedule = {
 
 export type Seat = {
     id: string | number,
-    seat_number: number,
+    seat_number: string | number,
     user_id: string | number | null,
     verified: boolean
 }
@@ -60,5 +60,10 @@ export type SignInFormState = | {
         password?: string[]
     },
     message?: string,
+    success?: boolean
+} | undefined
+
+export type BookSeatState = | {
+    errors?: string,
     success?: boolean
 } | undefined

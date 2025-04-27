@@ -1,10 +1,16 @@
 import DropDown from "@/components/DropDown";
-import MyScheduleCard from "@/components/MyScheduleCard";
+import { getUserSchedule } from "@/lib/action";
+import { getUser } from "@/lib/dal";
 import { dummyDates, dummyRoutes } from "@/lib/dummyData"
+import MyScheduleSection from "@/ui/MyScheduleSection";
+import { Suspense } from "react";
 
-export default function Page() {
+export default async function Page() {
     const routes = dummyRoutes;
     const dates = dummyDates;
+
+    const rawSchedules = getUserSchedule();
+    const user = await getUser();
     return (
         <main className="flex flex-col gap-y-4 px-32 pt-32 pb-10 w-full min-h-screen">
             <h1 className="w-full text-3xl font-semibold py-6 border-b border-white">My Schedule</h1>
@@ -15,11 +21,9 @@ export default function Page() {
                     <DropDown items={dates} />
                 </div>
                 <div className="h-[90vh] w-full overflow-y-auto pr-4 scrollbar-thin scrollbar-track-gradient-end/70 scrollbar-thumb-midnight-purple pt-4">
-                    <div className="min-h-full gap-y-4 grid grid-cols-1 w-full">
-                        {Array.from({ length: 12 }).map((_,i) => (
-                            <MyScheduleCard key={i} id={i} />
-                        ))}
-                    </div>
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <MyScheduleSection rawSchedules={rawSchedules} user={user!} />
+                    </Suspense>
                 </div>
             </section>
         </main>

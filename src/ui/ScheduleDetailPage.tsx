@@ -4,15 +4,27 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import SeatSection from "./SeatSection";
 import Image from "next/image";
-import { useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { Bus, Schedule, Seat, User } from "@/lib/type";
 import { format } from "date-fns";
+import { bookSeat } from "@/lib/formAction";
+import ErrorInputForm from "@/components/ErrorInputForm";
 
 export default function ScheduleDetailPage({ schedule, bus, user, seats }: { schedule: Schedule, bus: Bus, user: User, seats: Seat[] }) {
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
     const [selected, setSelected] = useState<number>(0);
+    const [seatId, setSeatId] = useState<string | number | null>(null);
+
+    const bookSeatWithId = bookSeat.bind(null, undefined, seatId);
+    const [state, action, pending] = useActionState(bookSeatWithId, undefined);
 
     const date = format(new Date(schedule.time), "dd MMMM yyyy");
+
+    useEffect(() => {
+        if (state?.success) {
+            if (state.success) setIsSuccess(true);
+        }
+    }, [state]);
 
     return !isSuccess ?
         (
@@ -27,7 +39,13 @@ export default function ScheduleDetailPage({ schedule, bus, user, seats }: { sch
                             <h1 className="text-xl font-semibold">Pick your seat</h1>
                             <p>Bus : {bus.identity}</p>
                         </div>
-                        <SeatSection selected={selected} setSelected={setSelected} seats={seats} bus={bus} />
+                        <SeatSection 
+                            selected={selected} 
+                            setSelected={setSelected} 
+                            seats={seats} 
+                            bus={bus}
+                            setSeatId={setSeatId} 
+                        />
                         <div className="w-full px-4 flex justify-around">
                             <div className="w-fit flex flex-col gap-y-2 items-center">
                                 <span className="size-10 bg-white rounded-md"></span>
@@ -43,7 +61,7 @@ export default function ScheduleDetailPage({ schedule, bus, user, seats }: { sch
                             </div>
                         </div>
                     </div>
-                    <div className="w-full flex flex-col h-fit items-center gap-y-6">
+                    <form action={action} className="w-full flex flex-col h-fit items-center gap-y-6">
                         <div className="flex flex-col w-full gap-y-4 pt-8 pb-12 px-10 bg-gradient-end rounded-lg shadow-xl">
                             <h1 className="font-semibold text-lg px-4">Booking Summary</h1>
                             <span className="w-full border-b border-white"></span>
@@ -63,14 +81,26 @@ export default function ScheduleDetailPage({ schedule, bus, user, seats }: { sch
                             <p>Seat : {selected}</p>
                             <p>Date : {date}</p>
                         </div>
-                        <button onClick={() => setIsSuccess(true)} className="bg-midnight-purple rounded-xl py-2 px-8 font-semibold text-xl cursor-pointer hover:bg-white/20 duration-300">Book</button>
-                    </div>
+                        {pending ? (
+                            <div>Loading...</div>
+                        ) : (
+                            <>
+                                {state?.errors && (<ErrorInputForm errMsg={state.errors} />)}
+                                <button 
+                                    className="bg-midnight-purple rounded-xl py-2 px-8 font-semibold text-xl cursor-pointer hover:bg-white/20 duration-300"
+                                    type="submit"
+                                >
+                                    Book
+                                </button>
+                            </>
+                        )}
+                    </form>
                 </section>
             </main>
         ) : (
             <main className="h-screen w-full flex items-center justify-center flex-col gap-y-4">
                 <h1 className="text-3xl font-semibold">Your Booking is Succeed</h1>
-                <p className="text-sm">Click this button to back on homepage</p>
+                <p className="text-sm">Check your schedule <Link href="/myschedule" className="hover:underline cursor-pointer text-blue-500">here</Link> or Click this button to back on homepage</p>
                 <Link href="/schedule" className="py-2 px-6 bg-midnight-purple rounded-xl hover:bg-white/40 duration-300 cursor-pointer">Back</Link>
             </main>
         )

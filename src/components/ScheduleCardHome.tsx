@@ -27,6 +27,8 @@ export default function ScheduleCardHome({ schedule }: { schedule: Schedule }) {
                     />
                     <p className="text-xl font-semibold">{schedule.route_name}</p> 
                 </div>
+                
+                <p className={`text-xs italic p-1 rounded-md ${schedule.closed ? "text-red-800 bg-red-200" : "text-green-800 bg-green-200"}`}>{schedule.closed ? "Closed" : "Open"}</p>
                 <p className="text-sm font-semibold">{time} - {timeEnd}</p>
             </div>
             <div className="flex justify-between mt-auto">

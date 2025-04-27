@@ -6,10 +6,12 @@ export default function ScheduleHomeSection({ schedules, userSchedules }: { sche
     const allSchedules = use(schedules) || [];
     const allUserSchedules = use(userSchedules) || [];
 
-    const filteredSchedules = allSchedules.filter(schedule => !allUserSchedules.includes(schedule));
+    const filteredSchedules = allSchedules.filter(schedule => 
+        !allUserSchedules.some(userSchedule => userSchedule.id === schedule.id)
+    );
 
     return (
-        <div className="w-full min-h-full grid grid-rows-3 grid-cols-3 gap-y-6 gap-x-8">
+        <div className="w-full max-h-full grid grid-cols-3 gap-y-6 gap-x-8">
             { filteredSchedules ? 
                 filteredSchedules.map((schedule, i) => (
                     <ScheduleCardHome key={i} schedule={schedule} />
