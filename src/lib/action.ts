@@ -156,15 +156,39 @@ export const attachSeat = async (seat_id : string | number) => {
         });
 
         if (response.status === 200) {
-            const result = await response.json();
-            console.log(result);
+            await response.json();
             return true;
         } else {
             console.log('fail book seat', response.status);
-            return false;
         }
     } catch (err) {
         console.log('fail book seat', err);
-        return false;
+    }
+}
+
+export const updateSeat = async (seat_id : string | number, new_seat_id : string | number) => {
+    const session = await verifySession();
+    const { token } = session!;
+
+    try {
+        const response = await fetch(`${baseUrl}/seats/${seat_id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                new_seat_id: new_seat_id
+            })
+        });
+
+        if (response.status === 200) {
+            await response.json();
+        } else {
+            console.log('fail update seat', response.status);
+        }
+    } catch (err) {
+        console.log ('fail update seat', err);
     }
 }

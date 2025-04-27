@@ -1,6 +1,6 @@
 'use client';
 
-import { Bus, Seat } from "@/lib/type";
+import { Bus, Seat, User } from "@/lib/type";
 import { Dispatch, SetStateAction } from "react";
 
 export default function SeatSection({ 
@@ -8,23 +8,29 @@ export default function SeatSection({
         setSelected, 
         seats, 
         bus,
-        setSeatId
+        setSeatId,
+        user,
+        isEditing
     } : { 
         selected: number, 
         setSelected: Dispatch<SetStateAction<number>>, 
         seats: Seat[], 
         bus: Bus,
-        setSeatId: Dispatch<SetStateAction<string | number | null>>
+        setSeatId: Dispatch<SetStateAction<string | number | null>>,
+        user: User,
+        isEditing: boolean
     }) {
 
     const row = bus.available_row;
     const col = bus.available_col;
     const backseat = bus.available_backseat;
 
-    const sortedSeats = seats.sort((a, b) => parseInt(a.seat_number as string) - parseInt(b.seat_number as string))
+    const sortedSeats = seats.sort((a, b) => parseInt(a.seat_number as string) - parseInt(b.seat_number as string));
+
+    const seatsUserId = seats.filter(seat => seat.user_id !== null).map(seat => seat.user_id);
 
     const handleClick = (seat: Seat) => {
-        if (!seat.user_id) {
+        if (!seat.user_id && !seatsUserId.includes(user.id) || isEditing) {
             setSelected(seat.seat_number as number);
             setSeatId(seat.id);
         }

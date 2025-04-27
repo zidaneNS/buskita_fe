@@ -3,32 +3,70 @@
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import SeatSection from "./SeatSection";
-import Image from "next/image";
 import { useActionState, useEffect, useState } from "react";
 import { Bus, Schedule, Seat, User } from "@/lib/type";
 import { format } from "date-fns";
-import { bookSeat } from "@/lib/formAction";
+import { bookSeat, changeSeat } from "@/lib/formAction";
 import ErrorInputForm from "@/components/ErrorInputForm";
+import UpdateSeatForm from "./UpdateSeatForm";
+import Modal from "@/components/Modal";
+import SeatDetail from "./SeatDetail";
+import { MdClose } from "react-icons/md";
+import QRCode from "react-qr-code";
 
 export default function ScheduleDetailPage({ schedule, bus, user, seats }: { schedule: Schedule, bus: Bus, user: User, seats: Seat[] }) {
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
     const [selected, setSelected] = useState<number>(0);
     const [seatId, setSeatId] = useState<string | number | null>(null);
-
+    const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [isOpenQr, setIsOpenQr] = useState<boolean>(false);
+    
     const bookSeatWithId = bookSeat.bind(null, undefined, seatId);
     const [state, action, pending] = useActionState(bookSeatWithId, undefined);
 
+    
     const date = format(new Date(schedule.time), "dd MMMM yyyy");
+    
+    const seatsUserId = seats.filter(seat => seat.user_id !== null).map(seat => seat.user_id);
+    const userSeat = seats.filter(seat => seat.user_id === user.id)[0] || null;
+    const alreadyBooked = seatsUserId.includes(user.id);
+
+    const preparedChangeSeat = changeSeat.bind(null, undefined, userSeat?.id, seatId);
+    const [updateState, updateAction, updatePending] = useActionState(preparedChangeSeat, undefined);
+
+    const handleEditButton = () => {
+        setIsEditing(prev => !prev);
+        setSelected(0);
+        setSeatId(null);
+    }
 
     useEffect(() => {
         if (state?.success) {
             if (state.success) setIsSuccess(true);
         }
-    }, [state]);
+
+        if (updateState?.success) {
+            if (updateState.success) setIsEditing(false);
+        }
+    }, [state, updateState]);
 
     return !isSuccess ?
         (
             <main className="min-h-screen flex flex-col w-full p-32 gap-y-4">
+                {isOpenQr && (
+                    <Modal>
+                            <div>
+                                <MdClose onClick={() => setIsOpenQr(false)} className="size-10 cursor-pointer -translate-8" />
+                                <div className="bg-white text-black flex flex-col gap-y-3 px-6 py-4 rounded-lg shadow-xl">
+                                    <QRCode
+                                        size={256}
+                                        value={JSON.stringify({ user_id: user.id, schedule_id: schedule.id, seat_id: userSeat?.id })}
+                                        className="bg-white p-6"
+                                    />
+                                </div>
+                            </div>
+                    </Modal>
+                )}
                 <Link href="/schedule" className="w-fit flex gap-x-3 items-center">
                     <ArrowLeftIcon className="size-6" />
                     <p className="hover:underline">Back to all offers</p>
@@ -44,7 +82,9 @@ export default function ScheduleDetailPage({ schedule, bus, user, seats }: { sch
                             setSelected={setSelected} 
                             seats={seats} 
                             bus={bus}
-                            setSeatId={setSeatId} 
+                            setSeatId={setSeatId}
+                            user={user}
+                            isEditing={isEditing}
                         />
                         <div className="w-full px-4 flex justify-around">
                             <div className="w-fit flex flex-col gap-y-2 items-center">
@@ -61,40 +101,52 @@ export default function ScheduleDetailPage({ schedule, bus, user, seats }: { sch
                             </div>
                         </div>
                     </div>
-                    <form action={action} className="w-full flex flex-col h-fit items-center gap-y-6">
-                        <div className="flex flex-col w-full gap-y-4 pt-8 pb-12 px-10 bg-gradient-end rounded-lg shadow-xl">
-                            <h1 className="font-semibold text-lg px-4">Booking Summary</h1>
-                            <span className="w-full border-b border-white"></span>
-                            <div className="flex gap-x-2 w-fit items-center">
-                                <Image
-                                    src="/assets/route-booking.png"
-                                    alt="route"
-                                    width={40}
-                                    height={44}
-                                />
-                                <div className="flex flex-col text-lg">
-                                    <p>Route</p>
-                                    <p className="font-bold">{schedule.route_name}</p>
-                                </div>
-                            </div>
-                            <p>Name : {user.name}</p>
-                            <p>Seat : {selected}</p>
-                            <p>Date : {date}</p>
-                        </div>
+                    <div className="w-full flex flex-col h-fit items-center gap-y-6">
+                        <SeatDetail
+                            schedule={schedule}
+                            user={user}
+                            userSeat={userSeat}
+                            selected={selected}
+                            isEditing={isEditing}
+                            date={date}
+                        />
                         {pending ? (
                             <div>Loading...</div>
                         ) : (
                             <>
                                 {state?.errors && (<ErrorInputForm errMsg={state.errors} />)}
-                                <button 
-                                    className="bg-midnight-purple rounded-xl py-2 px-8 font-semibold text-xl cursor-pointer hover:bg-white/20 duration-300"
-                                    type="submit"
-                                >
-                                    Book
-                                </button>
+                                {updateState?.errors && (<ErrorInputForm errMsg={updateState.errors} />)}
+                                {alreadyBooked ? isEditing ? (
+                                    <div className="w-full flex justify-center gap-x-4">
+                                        {updatePending ? (
+                                            <p>Loading...</p>
+                                        ) : (
+                                            <>
+                                                <button onClick={handleEditButton} type="button" className="bg-red-500 py-2 px-6 rounded-md hover:bg-red-200 hover:text-black cursor-pointer duration-300">Cancel</button>
+                                                <UpdateSeatForm
+                                                    updateAction={updateAction}
+                                                />
+                                            </>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className="w-full flex items-center gap-x-4 justify-center">
+                                        <button onClick={() => setIsOpenQr(true)} type="button" className="bg-midnight-purple py-2 px-6 rounded-md hover:bg-white hover:text-black cursor-pointer duration-300">View Qr</button>
+                                        <button onClick={handleEditButton} type="button" className="bg-green-800 py-2 px-6 rounded-md hover:bg-white hover:text-black cursor-pointer duration-300">Edit</button>
+                                    </div>
+                                ) : (
+                                    <form action={action} className="w-full flex justify-center">
+                                        <button 
+                                            className="bg-midnight-purple rounded-xl py-2 px-8 font-semibold text-xl cursor-pointer hover:bg-white/20 duration-300"
+                                            type="submit"
+                                        >
+                                            Book
+                                        </button>
+                                    </form>
+                                )}
                             </>
                         )}
-                    </form>
+                    </div>
                 </section>
             </main>
         ) : (

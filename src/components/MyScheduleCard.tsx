@@ -32,8 +32,8 @@ export default function MyScheduleCard({ schedule, user, seats }: { schedule: Sc
                     <p><span className="font-semibold">Filled</span> : {filledSeats.length}/{seats.length}</p>
                 </div>
                 <div className="flex flex-col mt-auto gap-y-2">
-                    <button className="w-full py-2 px-6 text-xs duration-300 rounded-md bg-gradient-end text-white cursor-pointer hover:bg-gradient-end/70">View</button>
-                    <Link href={`/schedule/${schedule.id}`} className="w-full py-2 px-6 text-xs duration-300 rounded-md bg-red-600 text-white cursor-pointer hover:bg-red-500">Cancel</Link>
+                    <Link href={`/schedule/${schedule.id}`} className="w-full py-2 px-6 text-xs duration-300 rounded-md bg-gradient-end text-white cursor-pointer text-center hover:bg-gradient-end/70">View</Link>
+                    <button className="w-full py-2 px-6 text-xs duration-300 rounded-md bg-red-600 text-white cursor-pointer hover:bg-red-500">Cancel</button>
                 </div>
             </div>
         </div>
