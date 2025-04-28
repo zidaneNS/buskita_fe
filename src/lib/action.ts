@@ -157,12 +157,13 @@ export const attachSeat = async (seat_id : string | number) => {
 
         if (response.status === 200) {
             await response.json();
-            return true;
         } else {
-            console.log('fail book seat', response.status);
+            const result = await response.json();
+            return { error: result.error }
         }
     } catch (err) {
         console.log('fail book seat', err);
+        return { error: 'something went wrong' }
     }
 }
 
@@ -186,9 +187,34 @@ export const updateSeat = async (seat_id : string | number, new_seat_id : string
         if (response.status === 200) {
             await response.json();
         } else {
-            console.log('fail update seat', response.status);
+            const error = await response.json();
+            return { error: error.message }
         }
     } catch (err) {
         console.log ('fail update seat', err);
+        return { error: 'something went wrong' }
+    }
+}
+
+export const detachSeat = async (id: number | string) => {
+    const session = await verifySession();
+    const { token } = session!;
+
+    try {
+        const response = await fetch(`${baseUrl}/seats/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (response.status !== 204) {
+            const result = await response.json();
+            console.log('fail detach seat', result.error);
+        }
+    } catch (err) {
+        console.log('fail detach seat', err);
     }
 }

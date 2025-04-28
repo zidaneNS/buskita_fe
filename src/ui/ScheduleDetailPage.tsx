@@ -11,8 +11,7 @@ import ErrorInputForm from "@/components/ErrorInputForm";
 import UpdateSeatForm from "./UpdateSeatForm";
 import Modal from "@/components/Modal";
 import SeatDetail from "./SeatDetail";
-import { MdClose } from "react-icons/md";
-import QRCode from "react-qr-code";
+import QrPresence from "@/components/QrPresence";
 
 export default function ScheduleDetailPage({ schedule, bus, user, seats }: { schedule: Schedule, bus: Bus, user: User, seats: Seat[] }) {
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -23,7 +22,6 @@ export default function ScheduleDetailPage({ schedule, bus, user, seats }: { sch
     
     const bookSeatWithId = bookSeat.bind(null, undefined, seatId);
     const [state, action, pending] = useActionState(bookSeatWithId, undefined);
-
     
     const date = format(new Date(schedule.time), "dd MMMM yyyy");
     
@@ -55,16 +53,12 @@ export default function ScheduleDetailPage({ schedule, bus, user, seats }: { sch
             <main className="min-h-screen flex flex-col w-full p-32 gap-y-4">
                 {isOpenQr && (
                     <Modal>
-                            <div>
-                                <MdClose onClick={() => setIsOpenQr(false)} className="size-10 cursor-pointer -translate-8" />
-                                <div className="bg-white text-black flex flex-col gap-y-3 px-6 py-4 rounded-lg shadow-xl">
-                                    <QRCode
-                                        size={256}
-                                        value={JSON.stringify({ user_id: user.id, schedule_id: schedule.id, seat_id: userSeat?.id })}
-                                        className="bg-white p-6"
-                                    />
-                                </div>
-                            </div>
+                        <QrPresence
+                            setIsOpenQr={setIsOpenQr}
+                            user={user}
+                            schedule={schedule}
+                            userSeat={userSeat}
+                        />
                     </Modal>
                 )}
                 <Link href="/schedule" className="w-fit flex gap-x-3 items-center">
