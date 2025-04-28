@@ -213,8 +213,10 @@ export const detachSeat = async (id: number | string) => {
         if (response.status !== 204) {
             const result = await response.json();
             console.log('fail detach seat', result.error);
+            return { error: result.error }
         }
     } catch (err) {
         console.log('fail detach seat', err);
+        return { error: 'something went wrong' }
     }
 }

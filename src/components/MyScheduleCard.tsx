@@ -5,8 +5,10 @@ import { add, format } from "date-fns";
 import Link from "next/link";
 import { FaBusAlt } from "react-icons/fa";
 import Modal from "./Modal";
-import { useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { IoWarningOutline } from "react-icons/io5";
+import { cancelSchedule } from "@/lib/formAction";
+import ErrorInputForm from "./ErrorInputForm";
 
 export default function MyScheduleCard({ schedule, user, seats }: { schedule: Schedule, user: User, seats: Seat[] }) {
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
@@ -19,6 +21,15 @@ export default function MyScheduleCard({ schedule, user, seats }: { schedule: Sc
     const timeEndStr = format(new Date(timeEnd), "HH:mm");
 
     const date = format(new Date(schedule.time), "dd MMMM yyyy");
+
+    const cancelScheduleWithId = cancelSchedule.bind(null, undefined, seat.id);
+    const [state, action, pending] = useActionState(cancelScheduleWithId, undefined);
+
+    useEffect(() => {
+        if (state?.success) {
+            if (state.success) setIsOpenModal(false);
+        }
+    }, [state]);
     return (
         <>
             {isOpenModal && (
@@ -35,8 +46,17 @@ export default function MyScheduleCard({ schedule, user, seats }: { schedule: Sc
                                 <p><span className="font-semibold">Seat</span> : {seat.seat_number}</p>
                                 <p><span className="font-semibold">Filled</span> : {filledSeats.length}/{seats.length}</p>
                             </div>
-                            <button className="w-full py-2 text-center rounded-md bg-red-500 text-white font-semibold cursor-pointer hover:bg-red-300 duration-300">Delete</button>
-                            <button onClick={() => setIsOpenModal(false)} className="w-full py-2 text-center rounded-md border border-slate-600 text-slate-600 font-semibold cursor-pointer hover:bg-slate-800 hover:text-white duration-300">Cancel</button>
+                            {state?.errors && <ErrorInputForm errMsg={state.errors} />}
+                            {pending ? (
+                                <div>Loading...</div>
+                            ): (
+                                <>
+                                    <form action={action} className="w-full">
+                                        <button type="submit" className="w-full py-2 text-center rounded-md bg-red-500 text-white font-semibold cursor-pointer hover:bg-red-300 duration-300">Delete</button>
+                                    </form>
+                                    <button onClick={() => setIsOpenModal(false)} className="w-full py-2 text-center rounded-md border border-slate-600 text-slate-600 font-semibold cursor-pointer hover:bg-slate-800 hover:text-white duration-300">Cancel</button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </Modal>

@@ -44,10 +44,17 @@ export const changeSeat = async (state: BookSeatState, seat_id: string | number,
     }
 }
 
-export const cancelSchedule = async (id: number | string) => {
+export const cancelSchedule = async (state: BookSeatState, id: number | string) => {
     try {
-        await detachSeat(id);
+        const response = await detachSeat(id);
+        if (response?.error) {
+            return { errors: response.error }
+        }
+        revalidatePath('/');
+        return { success: true }
     } catch (err) {
         console.log('fail cancel schedule', err);
+        return { errors: 'something went wrong' }
     }
+    // console.log('seat id :', id);
 }

@@ -29,7 +29,7 @@ export default function NavLinkSection({ isCo }: { isCo: boolean }) {
         }
     ]
     return (
-        <div className="flex w-fit gap-x-2 justify-between">
+        <div className="hidden md:flex w-fit gap-x-2 justify-between">
             {links.map((link, i) => {
                 if (link.text === 'Manage' && !isCo) return null;
                 return (

@@ -31,7 +31,7 @@ export default function Navbar({ isCo, user }: { isCo: boolean, user: User | und
     }, [isTop]);
     return (
         <>
-            <nav className={`w-full fixed top-0 ${isTop ? "bg-transparent shadow-none" : "bg-gradient-start/95 shadow-xl"} py-4 px-20 z-10 left-0 flex justify-between items-center`}>
+            <nav className={`w-screen fixed top-0 ${isTop ? "bg-transparent shadow-none" : "bg-gradient-start/95 shadow-xl"} py-4 px-8 md:px-20 z-10 left-0 flex justify-between items-center`}>
                 <Link href="/" className="w-fit h-fit">
                     <Image
                         alt="logo"
