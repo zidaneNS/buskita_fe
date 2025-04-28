@@ -16,7 +16,7 @@ export default function Footer() {
                     <h1 className="text-5xl font-bold">BusKita</h1>
                 </div>
                 <div className="w-fit gap-y-6 flex flex-col">
-                    <h3 className="text-xl">Transportasi Nyaman untuk Sivitas <span className="font-semibold">Universitas Airlangga!</span></h3>
+                    <h3 className="text-base md:text-xl text-center">Transportasi Nyaman untuk Sivitas <span className="font-semibold">Universitas Airlangga!</span></h3>
                     <div className="w-full flex justify-center">
                         <Link href="#" className="py-3 px-10 rounded-full bg-gradient-end hover:bg-midnight-purple duration-300">Contact Us</Link>
                     </div>

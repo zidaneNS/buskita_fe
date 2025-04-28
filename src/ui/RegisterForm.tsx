@@ -21,7 +21,7 @@ export default function RegisterForm({ setIsLogin }: { setIsLogin: Dispatch<SetS
             <MdClose onClick={() => router.back()} className="size-8 text-white cursor-pointer hover:rotate-180 duration-700" />
             <form action={action} className={`bg-white px-6 py-4 rounded-xl flex flex-col gap-y-3 text-black relative max-h-[80vh] overflow-y-auto scrollbar-thin scrollbar-track-slate-200 scrollbar-thumb-midnight-purple`}>
                 <h1 className="text-2xl text-dark-purple font-bold pb-2 border-b border-dark-purple">Register</h1>
-                <div className="flex gap-x-4">
+                <div className="flex flex-col md:flex-row gap-y-2 gap-x-4">
                     <div className="flex flex-col gap-y-2">
                         <FormInput id="nim_nip" attribute="NIM / NIP" type="text" placeholder="181221..." />
                         {state?.errors?.nim_nip && <ErrorInputForm errMsg={state.errors.nim_nip} />}
