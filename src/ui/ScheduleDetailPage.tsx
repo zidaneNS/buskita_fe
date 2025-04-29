@@ -50,7 +50,7 @@ export default function ScheduleDetailPage({ schedule, bus, user, seats }: { sch
 
     return !isSuccess ?
         (
-            <main className="min-h-screen flex flex-col w-full p-32 gap-y-4">
+            <main className="min-h-screen flex flex-col w-full px-6 pt-24 pb-10 md:p-32 gap-y-4">
                 {isOpenQr && (
                     <Modal>
                         <QrPresence
@@ -65,8 +65,8 @@ export default function ScheduleDetailPage({ schedule, bus, user, seats }: { sch
                     <ArrowLeftIcon className="size-6" />
                     <p className="hover:underline">Back to all offers</p>
                 </Link>
-                <section className="w-full flex gap-x-18">
-                    <div className="w-1/2 flex flex-col py-10 px-12 gap-y-16 bg-gradient-end rounded-lg shadow-2xl">
+                <section className="w-full flex flex-col gap-y-8 md:gap-x-18">
+                    <div className="w-full md:w-1/2 flex flex-col py-10 px-12 gap-y-16 bg-gradient-end rounded-lg shadow-2xl">
                         <div className="flex flex-col gap-y-2">
                             <h1 className="text-xl font-semibold">Pick your seat</h1>
                             <p>Bus : {bus.identity}</p>
@@ -145,8 +145,8 @@ export default function ScheduleDetailPage({ schedule, bus, user, seats }: { sch
             </main>
         ) : (
             <main className="h-screen w-full flex items-center justify-center flex-col gap-y-4">
-                <h1 className="text-3xl font-semibold">Your Booking is Succeed</h1>
-                <p className="text-sm">Check your schedule <Link href="/myschedule" className="hover:underline cursor-pointer text-blue-500">here</Link> or Click this button to back on homepage</p>
+                <h1 className="text-2xl md:text-3xl font-semibold">Your Booking is Succeed</h1>
+                <p className="text-xs md:text-sm text-center">Check your schedule <Link href="/myschedule" className="hover:underline cursor-pointer text-blue-500">here</Link> or Click this button to back on homepage</p>
                 <Link href="/schedule" className="py-2 px-6 bg-midnight-purple rounded-xl hover:bg-white/40 duration-300 cursor-pointer">Back</Link>
             </main>
         )

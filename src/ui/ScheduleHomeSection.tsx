@@ -11,7 +11,7 @@ export default function ScheduleHomeSection({ schedules, userSchedules }: { sche
     );
 
     return (
-        <div className="w-full max-h-full grid grid-cols-3 gap-y-6 gap-x-8">
+        <div className="w-full max-h-full grid grid-cols-1 md:grid-cols-3 gap-y-6 gap-x-8">
             { filteredSchedules ? 
                 filteredSchedules.map((schedule, i) => (
                     <ScheduleCardHome key={i} schedule={schedule} />

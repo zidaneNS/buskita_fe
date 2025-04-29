@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import NavLinkSection from "./NavLinkSection";
+import MobileNavLinkSection from "./MobileNavLinkSection";
 import { useRouter } from "next/navigation";
 import { User } from "@/lib/type";
 import { logout } from "@/lib/auth";
@@ -72,9 +73,26 @@ export default function Navbar({ isCo, user }: { isCo: boolean, user: User | und
                 )}
 
                 {/* Mobile */}
-                <GiHamburgerMenu onClick={() => setIsOpen(true)} className="size-8 cursor-pointer" />
-                <div className={`h-screen bg-gradient-to-b from-dark-purple via-purple-950 to-purple-900/95 min-w-64 md:hidden flex flex-col fixed top-0 shadow-xl ${isOpen ? "right-0" : "-right-full"} duration-300 py-4 px-2`}>
-                    <MdClose onClick={() => setIsOpen(false)} className="size-8 cursor-pointer" />
+                <GiHamburgerMenu onClick={() => setIsOpen(true)} className="size-8 cursor-pointer md:hidden block" />
+                <div className={`h-screen bg-gradient-to-b from-dark-purple via-purple-950 to-purple-900/95 min-w-64 md:hidden flex flex-col gap-y-3 fixed top-0 shadow-xl ${isOpen ? "right-0" : "-right-full"} duration-300 py-4 px-6`}>
+                        <MdClose onClick={() => setIsOpen(false)} className="size-8 cursor-pointer" />
+                        {user ? (
+                            <div className="flex flex-col gap-y-3">
+                                <p className="w-full pb-2 border-b border-white text-sm text-center">{user.nim_nip}</p>
+                                <p className="w-full pb-2 border-b border-white text-sm text-center">{user.email}</p>
+                                <button className="py-2 rounded-lg bg-slate-700 text-white text-sm hover:bg-slate-200/50 duration-300 cursor-pointer flex gap-x-3 items-center justify-center">
+                                    <CiSettings className="size-6" />
+                                    <p>Dashboard</p>
+                                </button>
+                                <button onClick={handleLogout} className="py-2 rounded-lg bg-white text-gradient-start text-sm hover:text-white hover:bg-slate-200/50 duration-300 cursor-pointer flex gap-x-3 items-center justify-center">
+                                    <CiLogout className="size-6" />
+                                    <p>Logout</p>
+                                </button>
+                            </div>
+                        ) : (
+                            <button onClick={() => router.push('/auth')} className="block md:hidden py-2 px-4 rounded-lg bg-white text-gradient-start text-sm font-semibold hover:text-white hover:bg-midnight-purple duration-300 cursor-pointer">Sign In</button>
+                        )}
+                        <MobileNavLinkSection isCo={isCo} />
                 </div>
             </nav>
         </>
