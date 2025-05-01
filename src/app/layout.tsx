@@ -24,15 +24,13 @@ export default async function RootLayout({
   auth: React.ReactNode
 }>) {
   const user = await getUser();
-
-  const isCo = user?.role_name === 'co_leader' || user?.role_name === 'co';
   return (
     <html lang="en" className="scrollbar-thin scrollbar-track-gradient-end/70 scrollbar-thumb-midnight-purple">
       <body
         className={`${inter.className} antialiased min-h-screen w-full text-white`}
       >
         <div className="w-full h-full bg-gradient-to-b from-gradient-start to-gradient-end flex flex-col">
-          <Navbar user={user} isCo={isCo} />
+          <Navbar user={user} />
           {children}
           {auth}
         </div>

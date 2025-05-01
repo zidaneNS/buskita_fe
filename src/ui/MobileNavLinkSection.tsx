@@ -8,7 +8,7 @@ type NavLinkType = {
     href: string
 }
 
-export default function NavLinkSection({ isCo }: { isCo: boolean }) {
+export default function NavLinkSection() {
     const pathname = usePathname();
     const links: NavLinkType[] = [
         {
@@ -20,28 +20,21 @@ export default function NavLinkSection({ isCo }: { isCo: boolean }) {
             href: '#'
         },
         {
-            text: 'Manage',
-            href: '#'
-        },
-        {
             text: 'My Schedule',
             href: '/myschedule'
         }
     ]
     return (
         <div className="mt-8 flex flex-col md:hidden w-full gap-y-2 justify-between">
-            {links.map((link, i) => {
-                if (link.text === 'Manage' && !isCo) return null;
-                return (
-                    <Link 
-                        href={link.href}
-                        key={i}
-                        className={`py-2 px-4 rounded-lg hover:bg-white/80 text-center w-full duration-300 ${pathname === link.href ? "bg-white/80 text-dark-purple" : "bg-midnight-purple "}`}
-                    >
-                        {link.text}
-                    </Link>
-                )
-            })}
+            {links.map((link, i) => (
+                <Link 
+                href={link.href}
+                key={i}
+                className={`py-2 px-4 rounded-lg hover:bg-white/80 text-center w-full duration-300 ${pathname === link.href ? "bg-white/80 text-dark-purple" : "bg-midnight-purple "}`}
+                >
+                    {link.text}
+                </Link>
+            ))}
         </div>
     )
 }

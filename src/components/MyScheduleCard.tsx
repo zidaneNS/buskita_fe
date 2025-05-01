@@ -61,13 +61,13 @@ export default function MyScheduleCard({ schedule, user, seats }: { schedule: Sc
                     </div>
                 </Modal>
             )}
-            <div className="bg-white shadow-xl text-black flex flex-col gap-y-6 md:px-6 md:py-4 px-4 py-2 rounded-xl hover:-translate-y-3 duration-300">
-                <div className="flex justify-between items-center pb-2 border-b-2 border-dashed border-black">
+            <div className="bg-black/20 shadow-xl text-white flex flex-col gap-y-6 md:px-6 md:py-4 px-4 py-2 rounded-xl hover:-translate-y-3 duration-300 border border-dark-purple">
+                <div className="flex justify-between items-center pb-2 border-b-2 border-dashed border-white">
+                    <p className="text-sm italic bg-white/20 p-2 rounded-md text-red-500">{seat.verified ? "verified" : "unverified"}</p>
                     <div className="flex gap-x-2 items-center">
                         <FaBusAlt className="size-5" />
                         <p className="text-base md:text-xl font-bold">{schedule.route_name}</p> 
                     </div>
-                    <p className="text-xs italic bg-red-200 p-2 rounded-md text-red-800">{seat.verified ? "verified" : "unverified"}</p>
                     <p className="text-xs md:text-lg font-semibold">{time} - {timeEndStr}</p>
                 </div>
                 <div className="flex flex-col md:flex-row justify-between mt-auto items-center">
