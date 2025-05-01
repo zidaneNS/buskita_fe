@@ -1,0 +1,26 @@
+'use client';
+
+import Link from "next/link";
+import { FaArrowLeft } from "react-icons/fa";
+import DashboardLinkSection from "./DashboardLinkSection";
+import { CiLogout } from "react-icons/ci";
+import { useState } from "react";
+import { MdKeyboardDoubleArrowRight } from "react-icons/md";
+
+export default function SideBar() {
+    const [isOpen, setIsOpen] = useState<boolean>(true);
+    return (
+        <aside className={`w-48 md:w-1/6 fixed md:static flex flex-col h-screen bg-black/30 backdrop-blur-xl border-r border-white border-dashed py-8 gap-y-12 px-4 text-sm duration-300 ${isOpen ? "left-0" : "-left-48"}`}>
+            <MdKeyboardDoubleArrowRight onClick={() => setIsOpen(prev => !prev)} className={`absolute md:hidden left-full top-1/2 bg-black/95 size-8 rounded-r-md ${isOpen && "rotate-180"}`}/>
+            <Link href="/schedule" className="flex items-center gap-x-3 cursor-pointer hover:underline w-fit pb-3">
+                <FaArrowLeft className="size-4" />
+                <p>Back to schedule</p>
+            </Link>
+            <DashboardLinkSection />
+            <button className="mt-auto py-2 rounded-lg bg-white text-gradient-start text-sm hover:text-white hover:bg-slate-200/50 duration-300 cursor-pointer flex gap-x-3 items-center justify-center">
+                <CiLogout className="size-4" />
+                <p>Logout</p>
+            </button>
+        </aside>
+    )
+}
