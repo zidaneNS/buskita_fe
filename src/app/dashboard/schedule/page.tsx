@@ -29,7 +29,7 @@ export default function Page() {
                 </form>
                 <button className="py-2 w-full bg-purple-800 cursor-pointer rounded-md hover:bg-purple-600 duration-300">Create</button>
             </section>
-            <section className="flex w-full px-12 py-10 h-full overflow-y-auto scrollbar-thin">
+            <section className="flex w-full px-4 py-2 md:px-12 md:py-10 h-full overflow-y-auto scrollbar-thin mb-3">
                 <ScheduleListSection />
             </section>
         </main>
