@@ -3,12 +3,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { decrypt } from "./lib/session";
 
 // const publicRoutes = ['/', '/auth'];
-const protectedRoutes = ['/schedule', 'myschedule'];
+const protectedRoutes = ['/schedule', '/myschedule', '/dashboard'];
 
 export default async function middleware(req: NextRequest) {
     const path = req.nextUrl.pathname;
     // const isPublicRoute = publicRoutes.includes(path);
-    const isProtectedRoute = protectedRoutes.includes(path);
+    const isProtectedRoute: boolean = protectedRoutes.some(route => path.startsWith(route));
 
     const cookie = (await cookies()).get('session')?.value;
     

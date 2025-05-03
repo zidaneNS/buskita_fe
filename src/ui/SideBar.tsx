@@ -11,7 +11,9 @@ export default function SideBar() {
     const [isOpen, setIsOpen] = useState<boolean>(true);
     return (
         <aside className={`w-48 md:w-1/6 z-10 fixed md:static flex flex-col h-screen bg-black/30 backdrop-blur-xl border-r border-white border-dashed py-8 gap-y-12 px-4 text-sm duration-300 ${isOpen ? "left-0" : "-left-48"}`}>
-            <MdKeyboardDoubleArrowRight onClick={() => setIsOpen(prev => !prev)} className={`absolute md:hidden left-full top-1/2 bg-black/95 size-8 rounded-r-md ${isOpen && "rotate-180"}`}/>
+            <div onClick={() => setIsOpen(prev => !prev)} className={`flex justify-center items-center absolute md:hidden left-full top-1/2 bg-black/95 rounded-r-full py-8`}>
+                <MdKeyboardDoubleArrowRight className={`size-8 ${isOpen && "rotate-180"}`}/>
+            </div>
             <Link href="/schedule" className="flex items-center gap-x-3 cursor-pointer hover:underline w-fit pb-3">
                 <FaArrowLeft className="size-4" />
                 <p>Back to schedule</p>

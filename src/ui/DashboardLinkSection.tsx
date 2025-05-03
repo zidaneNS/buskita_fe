@@ -4,7 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IconType } from "react-icons";
 import { AiFillSchedule } from "react-icons/ai";
+import { BiScan } from "react-icons/bi";
 import { FaBus, FaUser } from "react-icons/fa";
+import { MdManageAccounts } from "react-icons/md";
 
 type LinkType = {
     icon: IconType,
@@ -29,6 +31,16 @@ export default function DashboardLinkSection() {
             icon: FaBus,
             text: 'Bus',
             href: '/dashboard/bus'
+        },
+        {
+            icon: MdManageAccounts,
+            text: 'User',
+            href: '/dashboard/user'
+        },
+        {
+            icon: BiScan,
+            text: 'Verify',
+            href: '/dashboard/verify'
         },
     ]
     return (
