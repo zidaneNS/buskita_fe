@@ -1,39 +1,84 @@
 'use client';
 
-import { Html5QrcodeScanner } from "html5-qrcode";
-import { useEffect, useState } from "react";
+import { Html5Qrcode } from "html5-qrcode";
+import { useEffect, useRef, useState } from "react";
 
 export default function QrScanner() {
-    const [success, setSuccess] = useState<string>("");
-    useEffect(() => {
-        const scanner = new Html5QrcodeScanner(
-            "reader",
-            {
-                qrbox: {
-                    height: 250,
-                    width: 250
-                },
-                fps: 5
-            },
-            false
-        );
+    const [decodedText, setDecodedText] = useState<string>("");
+    const [isScanning, setIsScanning] = useState<boolean>(false);
+    const html5QrCodeRef = useRef<Html5Qrcode | null>(null);
+    const readerId = "reader";
 
-        scanner.render(
-            (decodedText: string) => {
-                setSuccess(decodedText);
-                scanner.clear();
-            },
-            (errorMessage: string) => {
-               console.warn(errorMessage);
+    const startScan = async () => {
+        const qrCode = new Html5Qrcode(readerId);
+        html5QrCodeRef.current = qrCode;
+
+        try {
+            await qrCode.start(
+                { facingMode: "environment" },
+                {
+                    fps: 5,
+                    qrbox: { width: 250, height: 250 }
+                },
+                (decoded) => {
+                    setDecodedText(decoded);
+                    stopScan();
+                },
+                (errorMessage) => {
+                    // Optional: log scan errors
+                    console.warn(errorMessage);
+                }
+            );
+            setIsScanning(true);
+        } catch (err) {
+            console.error("Failed to start scanning:", err);
+        }
+    };
+
+    const stopScan = async () => {
+        if (html5QrCodeRef.current?.isScanning) {
+            try {
+                await html5QrCodeRef.current.stop();
+                html5QrCodeRef.current.clear();
+                setIsScanning(false);
+            } catch (err) {
+                console.error("Failed to stop scanning:", err);
             }
-        )
+        }
+    };
+
+    useEffect(() => {
+        return () => {
+            // Cleanup on unmount
+            stopScan();
+        };
     }, []);
 
-    return success ? 
-    (
-        <div className="text-xl font-semibold">{success}</div>
-    ) :
-    (
-        <div id="reader" className="size-1/2"></div>
-    )
+    return (
+        <div className="w-full flex flex-col items-center gap-y-4">
+            {decodedText && (
+                <div className="text-xl font-semibold text-center">
+                    Result: {decodedText}
+                </div>
+            )}
+
+            {!isScanning ? (
+                <button
+                    onClick={startScan}
+                    className="py-2 px-4 rounded-md bg-green-600 hover:bg-green-700 text-white"
+                >
+                    Start Scan
+                </button>
+            ) : (
+                <button
+                    onClick={stopScan}
+                    className="py-2 px-4 rounded-md bg-red-600 hover:bg-red-700 text-white"
+                >
+                    Cancel
+                </button>
+            )}
+
+            <div id={readerId} className="size-64" />
+        </div>
+    );
 }
