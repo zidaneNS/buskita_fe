@@ -50,7 +50,7 @@ export default function SeatSection({
                             }
                         } else if (j > col/2 && j < col) {
                             if (index % col === j) {
-                                colStart = j + col/2;
+                                colStart = j + backseat/3;
                                 break;
                             }
                         } else {

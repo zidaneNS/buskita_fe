@@ -1,3 +1,4 @@
+import { cryptoEncrypt, generateAscii, m_digit, PUBLIC_KEY } from "@/lib/crypto";
 import { Schedule, Seat, User } from "@/lib/type";
 import { Dispatch, SetStateAction } from "react";
 import { MdClose } from "react-icons/md";
@@ -12,17 +13,23 @@ export default function QrPresence({
     setIsOpenQr: Dispatch<SetStateAction<boolean>>,
     user: User,
     schedule: Schedule,
-    userSeat: Seat | null
+    userSeat: Seat
 }) {
+    const information = [user.id, schedule.id, userSeat.id];
+    const text = JSON.stringify(information);
+    const ascii = generateAscii(text, m_digit);
+    const cipher = cryptoEncrypt(ascii, PUBLIC_KEY, m_digit);
+
     return (
         <div>
             <MdClose onClick={() => setIsOpenQr(false)} className="size-10 cursor-pointer -translate-8" />
             <div className="bg-white text-black flex flex-col gap-y-3 px-6 py-4 rounded-lg shadow-xl">
                 <QRCode
                     size={256}
-                    value={JSON.stringify({ user_id: user.id, schedule_id: schedule.id, seat_id: userSeat?.id })}
+                    value={cipher}
                     className="bg-white p-6"
                 />
+                <p className="w-full text-center">{cipher}</p>
             </div>
         </div>
     )

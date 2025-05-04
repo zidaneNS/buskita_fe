@@ -9,6 +9,8 @@ import { useActionState, useEffect, useState } from "react";
 import { IoWarningOutline } from "react-icons/io5";
 import { cancelSchedule } from "@/lib/formAction";
 import ErrorInputForm from "./ErrorInputForm";
+import QRCode from "react-qr-code";
+import { cryptoEncrypt, generateAscii, m_digit, PUBLIC_KEY } from "@/lib/crypto";
 
 export default function MyScheduleCard({ schedule, user, seats }: { schedule: Schedule, user: User, seats: Seat[] }) {
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
@@ -24,6 +26,11 @@ export default function MyScheduleCard({ schedule, user, seats }: { schedule: Sc
 
     const cancelScheduleWithId = cancelSchedule.bind(null, undefined, seat.id);
     const [state, action, pending] = useActionState(cancelScheduleWithId, undefined);
+
+    const information = [user.id, schedule.id, seat.id];
+    const text = JSON.stringify(information);
+    const ascii = generateAscii(text, m_digit);
+    const cipher = cryptoEncrypt(ascii, PUBLIC_KEY, m_digit);
 
     useEffect(() => {
         if (state?.success) {
@@ -61,9 +68,12 @@ export default function MyScheduleCard({ schedule, user, seats }: { schedule: Sc
                     </div>
                 </Modal>
             )}
-            <div className="bg-black/20 shadow-xl text-white flex flex-col gap-y-6 md:px-6 md:py-4 px-4 py-2 rounded-xl hover:-translate-y-3 duration-300 border border-dark-purple">
+            <div className="bg-midnight-purple/20 shadow-xl text-white flex flex-col gap-y-6 md:px-6 md:py-4 px-4 py-2 rounded-xl hover:-translate-y-3 duration-300 border border-dark-purple">
                 <div className="flex justify-between items-center pb-2 border-b-2 border-dashed border-white">
-                    <p className="text-sm italic bg-white/20 p-2 rounded-md text-red-500">{seat.verified ? "verified" : "unverified"}</p>
+                    <div className="flex flex-col gap-y-2">
+                        <p className="text-sm flex gap-x-2 items-center bg-black/40 py-2 px-4 rounded-full text-red-500 w-fit"><span className="size-2 rounded-full bg-red-500"></span>{seat.verified ? "verified" : "unverified"}</p>
+                        <p className="text-sm">no. {cipher}</p>
+                    </div>
                     <div className="flex gap-x-2 items-center">
                         <FaBusAlt className="size-5" />
                         <p className="text-base md:text-xl font-bold">{schedule.route_name}</p> 
@@ -74,10 +84,11 @@ export default function MyScheduleCard({ schedule, user, seats }: { schedule: Sc
                     <div className="flex flex-col w-full mt-auto">
                         <p><span className="text-sm md:text-base font-semibold">Bus</span> : {schedule.bus_identity}</p>
                         <p><span className="text-sm md:text-base font-semibold">Date</span> : {date}</p>
-                    </div>
-                    <div className="flex flex-col w-full mt-auto">
                         <p><span className="text-sm md:text-base font-semibold">Seat</span> : {seat.seat_number}</p>
                         <p><span className="text-sm md:text-base font-semibold">Filled</span> : {filledSeats.length}/{seats.length}</p>
+                    </div>
+                    <div className="flex flex-col w-full mt-auto">
+                        <QRCode size={96} className="p-2 bg-white rounded-md" value={cipher} />
                     </div>
                     <div className="flex flex-col md:mt-auto gap-y-2 w-full md:w-fit mt-3">
                         <Link href={`/schedule/${schedule.id}`} className="w-full py-2 px-6 text-xs duration-300 rounded-md bg-gradient-end text-white cursor-pointer text-center hover:bg-gradient-end/70">View</Link>

@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction, useActionState, useEffect } from "react";
 import FormInput from "@/components/FormInput";
 import { signin } from "@/lib/auth";
 import ErrorInputForm from "@/components/ErrorInputForm";
+import Loader from "@/components/Loader";
 
 export default function LoginForm({ setIsLogin }: { setIsLogin: Dispatch<SetStateAction<boolean>> }) {
     const router = useRouter();
@@ -29,7 +30,7 @@ export default function LoginForm({ setIsLogin }: { setIsLogin: Dispatch<SetStat
             <p onClick={() => setIsLogin(false)} className="text-midnight-purple cursor-pointer hover:underline text-xs">Not have any account ? sign up here</p>
             
             {pending ? (
-                <p>Loading...</p>
+                <Loader />
             ) : (
                 <button className="bg-midnight-purple py-2 rounded-lg text-sm font-semibold text-white cursor-pointer hover:bg-midnight-purple/60 duration-300">Submit</button>
             )}

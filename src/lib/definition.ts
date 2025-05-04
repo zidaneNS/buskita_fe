@@ -14,3 +14,7 @@ export const SignInFormSchema = z.object({
     nim_nip: z.string().min(1, "field cannot empty").trim(),
     password: z.string().min(1, "field cannot empty")
 })
+
+export const CheckUserSchema = z.object({
+    cipher: z.string().min(1, "field cannot empty").trim()
+})

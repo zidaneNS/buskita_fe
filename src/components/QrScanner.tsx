@@ -2,6 +2,7 @@
 
 import { Html5Qrcode } from "html5-qrcode";
 import { useEffect, useRef, useState } from "react";
+import { HiQrcode } from "react-icons/hi";
 
 export default function QrScanner() {
     const [decodedText, setDecodedText] = useState<string>("");
@@ -55,7 +56,8 @@ export default function QrScanner() {
     }, []);
 
     return (
-        <div className="w-full flex flex-col items-center gap-y-4">
+        <div className="w-full flex flex-col items-center gap-y-4 relative">
+            <div id={readerId} className="size-64" />
             {decodedText && (
                 <div className="text-xl font-semibold text-center">
                     Result: {decodedText}
@@ -63,22 +65,24 @@ export default function QrScanner() {
             )}
 
             {!isScanning ? (
-                <button
-                    onClick={startScan}
-                    className="py-2 px-4 rounded-md bg-green-600 hover:bg-green-700 text-white"
-                >
-                    Start Scan
-                </button>
+                <>
+                    <HiQrcode className="size-32 absolute bottom-1/2 text-white/30" />
+                    <p className="text-center">Point your camera at QR code to get passenger information</p>
+                    <button
+                        onClick={startScan}
+                        className="py-2 px-4 rounded-md bg-black/50 hover:bg-black/20 cursor-pointer duration-300 text-white"
+                    >
+                        Start Scan
+                    </button>
+                </>
             ) : (
                 <button
                     onClick={stopScan}
-                    className="py-2 px-4 rounded-md bg-red-600 hover:bg-red-700 text-white"
+                    className="py-2 px-4 rounded-md bg-black/50 hover:bg-black/20 cursor-pointer duration-300 text-white"
                 >
                     Cancel
                 </button>
             )}
-
-            <div id={readerId} className="size-64" />
         </div>
     );
 }

@@ -67,3 +67,11 @@ export type BookSeatState = | {
     errors?: string,
     success?: boolean
 } | undefined
+
+export type CheckState = | {
+    errors?: {
+        cipher?: string[]
+    },
+    message?: string,
+    success?: boolean
+} | undefined

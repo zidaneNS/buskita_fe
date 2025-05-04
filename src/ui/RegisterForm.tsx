@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction, useActionState, useEffect } from "react";
 import { signup } from "@/lib/auth";
 import FormInput from "@/components/FormInput";
 import ErrorInputForm from "@/components/ErrorInputForm";
+import Loader from "@/components/Loader";
 
 export default function RegisterForm({ setIsLogin }: { setIsLogin: Dispatch<SetStateAction<boolean>> }) {
     const router = useRouter();
@@ -44,7 +45,7 @@ export default function RegisterForm({ setIsLogin }: { setIsLogin: Dispatch<SetS
                 {state?.message && <ErrorInputForm errMsg={state.message} />}
                 <p onClick={() => setIsLogin(true)} className="text-midnight-purple cursor-pointer hover:underline text-xs">Already have an account ? sign in here</p>
                 {pending ? (
-                    <p>Loading...</p>
+                    <Loader />
                 ) : (
                     <button type="submit" className="bg-midnight-purple py-2 rounded-lg text-sm font-semibold text-white cursor-pointer hover:bg-midnight-purple/60 duration-300">Submit</button>
                 )}
