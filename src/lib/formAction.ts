@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { attachSeat, detachSeat, getScheduleById, getSeatById, getUserById, updateSeat } from "./action";
-import { BookSeatState, CheckState } from "./type";
+import { BookSeatState, CheckState, Schedule, Seat, User } from "./type";
 import { CheckUserSchema } from "./definition";
 import { cryptoDecrypt, generatePlain, m_digit, PRIVATE_KEY } from "./crypto";
 
@@ -83,11 +83,9 @@ export const checkUser = async (state: CheckState, formData: FormData) => {
     const schedule_id = information[1];
     const seat_id = information[2]
 
-    const passenger = await getUserById(user_id);
-    const schedule = await getScheduleById(schedule_id);
-    const seat = await getSeatById(seat_id);
-
-    console.log(information);
+    const passenger = await getUserById(user_id) as User;
+    const schedule = await getScheduleById(schedule_id) as Schedule;
+    const seat = await getSeatById(seat_id) as Seat;
 
     return {
         passenger,
