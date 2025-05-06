@@ -6,8 +6,9 @@ import DashboardLinkSection from "./DashboardLinkSection";
 import { CiLogout } from "react-icons/ci";
 import { useState } from "react";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
+import { User } from "@/lib/type";
 
-export default function SideBar() {
+export default function SideBar({ user }: { user: User }) {
     const [isOpen, setIsOpen] = useState<boolean>(true);
     return (
         <aside className={`w-48 md:w-1/6 z-10 fixed md:static flex flex-col h-screen bg-black/30 backdrop-blur-xl border-r border-white border-dashed py-8 gap-y-12 px-4 text-sm duration-300 ${isOpen ? "left-0" : "-left-48"}`}>
@@ -18,7 +19,7 @@ export default function SideBar() {
                 <FaArrowLeft className="size-4" />
                 <p>Back to schedule</p>
             </Link>
-            <DashboardLinkSection />
+            <DashboardLinkSection user={user} />
             <button className="mt-auto py-2 rounded-lg bg-white text-gradient-start text-sm hover:text-white hover:bg-slate-200/50 duration-300 cursor-pointer flex gap-x-3 items-center justify-center">
                 <CiLogout className="size-4" />
                 <p>Logout</p>

@@ -1,5 +1,5 @@
 import { verifySession } from "./dal";
-import { Bus, Schedule, Seat } from "./type";
+import { Bus, Schedule, Seat, User } from "./type";
 
 const baseUrl = process.env.BASE_URL;
 
@@ -218,5 +218,61 @@ export const detachSeat = async (id: number | string) => {
     } catch (err) {
         console.log('fail detach seat', err);
         return { error: 'something went wrong' }
+    }
+}
+
+export const getUserById = async (id: string | number) => {
+    const session = await verifySession();
+    const { token } = session!;
+
+    try {
+        const response = await fetch(`${baseUrl}/users/${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 200) {
+            const user = await response.json();
+            return user as User;
+        } else {
+            const result = await response.json();
+            console.log('fail get user by id : ', result.error);
+            return { error: result.error }
+        }
+    } catch (err) {
+        console.log('fail get user by id', err);
+        return { error: 'something went wrong' }
+    }
+}
+
+export const getSeatById = async (id: number | string) => {
+    const session = await verifySession();
+    const { token } = session!;
+
+    try {
+        const response = await fetch(`${baseUrl}/seats/${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 200) {
+            const seat = await response.json();
+            return seat as Seat;
+        } else {
+            const result = await response.json();
+            console.log('fail get seat by id : ', result.error);
+            return { error: result.error }
+        }
+    } catch (err) {
+        console.log('fail get seat by id', err);
+        return {  error: 'something went wrong' }
     }
 }

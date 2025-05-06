@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from "next/cache";
-import { attachSeat, detachSeat, updateSeat } from "./action";
+import { attachSeat, detachSeat, getScheduleById, getSeatById, getUserById, updateSeat } from "./action";
 import { BookSeatState, CheckState } from "./type";
 import { CheckUserSchema } from "./definition";
 import { cryptoDecrypt, generatePlain, m_digit, PRIVATE_KEY } from "./crypto";
@@ -74,10 +74,25 @@ export const checkUser = async (state: CheckState, formData: FormData) => {
     const text = generatePlain(plain, m_digit);
     const information: number[] = JSON.parse(text);
 
+    // console.log(information);
+
     if (information.length !== 3) return {
         message: 'invalid cipher'
     }
-    // const user_id = information[0];
-    // const schedule_id = information[1];
-    // const seat_id = information[2]
+    const user_id = information[0];
+    const schedule_id = information[1];
+    const seat_id = information[2]
+
+    const passenger = await getUserById(user_id);
+    const schedule = await getScheduleById(schedule_id);
+    const seat = await getSeatById(seat_id);
+
+    console.log(information);
+
+    return {
+        passenger,
+        schedule,
+        seat
+    }
+    // 13421386356413863564175026493050
 }
