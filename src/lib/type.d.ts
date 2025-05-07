@@ -75,3 +75,14 @@ export type CheckState = | {
     message?: string,
     success?: boolean
 } | undefined
+
+export type CreateBusState = | {
+    errors?: {
+        identity?: string[],
+        available_row?: string[],
+        available_col?: string[],
+        available_backseat?: string[]
+    },
+    message?: string,
+    success?: boolean
+} | undefined

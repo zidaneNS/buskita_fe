@@ -1,4 +1,5 @@
 import { verifySession } from "./dal";
+import { CreateBusDto } from "./dto";
 import { Bus, Schedule, Seat, User } from "./type";
 
 const baseUrl = process.env.BASE_URL;
@@ -274,5 +275,59 @@ export const getSeatById = async (id: number | string) => {
     } catch (err) {
         console.log('fail get seat by id', err);
         return {  error: 'something went wrong' }
+    }
+}
+
+export const getAllBuses = async () => {
+    const session = await verifySession();
+    const { token } = session!;
+
+    try {
+        const response = await fetch(`${baseUrl}/buses`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 200) {
+            const buses = await response.json();
+            return buses as Bus[];
+        } else {
+            const result = await response.json();
+            console.log('fail get all buses : ', result.error);
+        }
+    } catch (err) {
+        console.log('fail get all buses ', err);
+    }
+}
+
+export const createBus = async (createBusDto: CreateBusDto) => {
+    const session = await verifySession();
+    const { token } = session!;
+
+    try {
+        const response = await fetch(`${baseUrl}/buses`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(createBusDto)
+        });
+
+        if (response.status === 201) {
+            return { success: true }
+        } else {
+            const result = await response.json();
+            console.log('fail create bus : ', result.error);
+            return { error: result.error };
+        }
+    } catch (err) {
+        console.log('fail create bus', err);
+        return { error: 'something went wrong' }
     }
 }

@@ -2,8 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { attachSeat, detachSeat, getScheduleById, getSeatById, getUserById, updateSeat } from "./action";
-import { BookSeatState, CheckState, Schedule, Seat, User } from "./type";
-import { CheckUserSchema } from "./definition";
+import { BookSeatState, CheckState, CreateBusState, Schedule, Seat, User } from "./type";
+import { CheckUserSchema, CreateBusSchema } from "./definition";
 import { cryptoDecrypt, generatePlain, m_digit, PRIVATE_KEY } from "./crypto";
 
 export const bookSeat = async (state: BookSeatState, seat_id: string | number | null) => {
@@ -92,5 +92,17 @@ export const checkUser = async (state: CheckState, formData: FormData) => {
         schedule,
         seat
     }
-    // 13421386356413863564175026493050
+}
+
+export const addBus = async (state: CreateBusState, formData: FormData) => {
+    const validatedFields = CreateBusSchema.safeParse({
+        identity: formData.get('identity'),
+        available_row: formData.get('available_row'),
+        available_column: formData.get('available_column'),
+        available_backseat: formData.get('available_backseat')
+    });
+
+    if (!validatedFields.success) {
+        console.log(validatedFields);
+    }
 }
