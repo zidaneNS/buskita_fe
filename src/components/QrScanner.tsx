@@ -56,8 +56,8 @@ export default function QrScanner() {
     }, []);
 
     return (
-        <div className="w-full flex flex-col items-center gap-y-4 relative">
-            <div id={readerId} className="size-64" />
+        <div className="w-full flex flex-col items-center gap-y-4">
+            <div id={readerId} className="w-64 h-auto" />
             {decodedText && (
                 <div className="text-xl font-semibold text-center">
                     Result: {decodedText}
@@ -66,7 +66,7 @@ export default function QrScanner() {
 
             {!isScanning ? (
                 <>
-                    <HiQrcode className="size-32 absolute bottom-1/2 text-white/30" />
+                    <HiQrcode className="size-32 text-white/30" />
                     <p className="text-center">Point your camera at QR code to get passenger information</p>
                     <button
                         onClick={startScan}

@@ -9,7 +9,7 @@ import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { User } from "@/lib/type";
 
 export default function SideBar({ user }: { user: User }) {
-    const [isOpen, setIsOpen] = useState<boolean>(true);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     return (
         <aside className={`w-48 md:w-1/6 z-10 fixed md:static flex flex-col h-screen bg-black/30 backdrop-blur-xl border-r border-white border-dashed py-8 gap-y-12 px-4 text-sm duration-300 ${isOpen ? "left-0" : "-left-48"}`}>
             <div onClick={() => setIsOpen(prev => !prev)} className={`flex justify-center items-center absolute md:hidden left-full top-1/2 bg-black/95 rounded-r-full py-8`}>
