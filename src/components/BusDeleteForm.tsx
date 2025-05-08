@@ -17,17 +17,17 @@ export default function BusDeleteForm({ setIsDeleting, selectedBus }: { setIsDel
         }
     }, [state, setIsDeleting])
     return (
-        <div className="max-h-3/4 flex flex-col gap-y-4 px-6 py-4 rounded-lg shadow-xl bg-white text-black items-center">
+        <div className="max-h-3/4 max-w-3/4 md:max-w-full flex flex-col gap-y-4 px-4 py-2 md:px-6 md:py-4 rounded-lg shadow-xl bg-white text-black items-center">
             <div className="flex justify-center items-center p-2 rounded-full bg-red-500/10 w-fit">
-                <CiWarning className="size-12 text-red-500" />
+                <CiWarning className="size-8 md:size-12 text-red-500" />
             </div>
-            <h1 className="text-xl font-semibold">Are you sure to delete this bus information ?</h1>
-            <div className="grid grid-cols-2 gap-2 text-slate-600 w-full">
-                <p className="border border-slate-600 px-4 py-2 rounded-md">identity: {identity}</p>
-                <p className="border border-slate-600 px-4 py-2 rounded-md">Capacity: {capacity}</p>
-                <p className="border border-slate-600 px-4 py-2 rounded-md">Total Rows: {selectedBus.available_row}</p>
-                <p className="border border-slate-600 px-4 py-2 rounded-md">Total Columns: {selectedBus.available_col}</p>
-                <p className="border border-slate-600 px-4 py-2 rounded-md">Total Backseats: {selectedBus.available_backseat}</p>
+            <h1 className="text-base md:text-xl w-full text-center font-semibold">Are you sure to delete this bus information ?</h1>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-slate-600 w-full">
+                <p className="border border-slate-600 md:px-4 md:py-2 p-2 rounded-md text-center">identity: {identity}</p>
+                <p className="border border-slate-600 md:px-4 md:py-2 p-2 rounded-md text-center">Capacity: {capacity}</p>
+                <p className="border border-slate-600 md:px-4 md:py-2 p-2 rounded-md text-center">Total Rows: {selectedBus.available_row}</p>
+                <p className="border border-slate-600 md:px-4 md:py-2 p-2 rounded-md text-center">Total Columns: {selectedBus.available_col}</p>
+                <p className="border border-slate-600 md:px-4 md:py-2 p-2 rounded-md text-center">Total Backseats: {selectedBus.available_backseat}</p>
             </div>
             <form className="w-full" action={action}>
                 {pending ? (

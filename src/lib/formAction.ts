@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from "next/cache";
-import { attachSeat, createBus, destroyBus, detachSeat, getScheduleById, getSeatById, getUserById, updateSeat } from "./action";
+import { attachSeat, createBus, destroyBus, detachSeat, getScheduleById, getSeatById, getUserById, updateBus, updateSeat } from "./action";
 import { BookSeatState, CheckState, CreateBusState, DestroyBusState, Schedule, Seat, User } from "./type";
 import { CheckUserSchema, CreateBusSchema } from "./definition";
 import { cryptoDecrypt, generatePlain, m_digit, PRIVATE_KEY } from "./crypto";
@@ -140,6 +140,43 @@ export const deleteBus = async (state: DestroyBusState, id: number | string) => 
         return { success: true }
     } catch (err) {
         console.log('fail delete bus', err);
+        return { error: 'something went wrong' }
+    }
+}
+
+export const changeBus = async (state: CreateBusState, formData: FormData) => {
+    const validatedFields = CreateBusSchema.safeParse({
+        identity: formData.get('identity'),
+        available_row: parseInt(formData.get('available_row') as string),
+        available_col: parseInt(formData.get('available_col') as string),
+        available_backseat: parseInt(formData.get('available_backseat') as string),
+    });
+
+    const id = formData.get('id')?.toString();
+
+    if (!validatedFields.success) {
+        console.log(validatedFields);
+        return { errors: validatedFields.error.flatten().fieldErrors };
+    }
+
+    const { identity, available_row, available_col, available_backseat } = validatedFields.data;
+
+    const updateBusDto: CreateBusDto = {
+        identity,
+        available_row,
+        available_col,
+        available_backseat
+    }
+
+    try {
+        const result = await updateBus(id!, updateBusDto);
+        if (result?.error) {
+            return { error: result.error as string }
+        }
+        revalidatePath('/');
+        return { success: true }
+    } catch (err) {
+        console.log('fail edit bus', err);
         return { error: 'something went wrong' }
     }
 }

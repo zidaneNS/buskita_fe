@@ -356,3 +356,29 @@ export const destroyBus = async (id: number | string) => {
         return { error: 'something went wrong' };
     }
 }
+
+export const updateBus = async (id: number | string, updateBusDto: CreateBusDto) => {
+    const session = await verifySession();
+    const { token } = session!;
+
+    try {
+        const response = await fetch(`${baseUrl}/buses/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(updateBusDto)
+        });
+
+        if (response.status !== 200) {
+            const result = await response.json();
+            console.log('fail update bus', result.error);
+            return { error: result.error as string };
+        }
+    } catch (err) {
+        console.log('fail update bus', err);
+        return { error: 'something went wrong' }
+    }
+}
