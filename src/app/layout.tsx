@@ -27,9 +27,9 @@ export default async function RootLayout({
   return (
     <html lang="en" className="scrollbar-thin scrollbar-track-gradient-end/70 scrollbar-thumb-midnight-purple">
       <body
-        className={`${inter.className} antialiased min-h-screen w-full text-white`}
+        className={`${inter.className} antialiased min-h-screen w-full`}
       >
-        <div className="w-full h-full bg-gradient-to-b from-gradient-start to-gradient-end flex flex-col">
+        <div className="w-full h-full bg-gradient-to-b from-gradient-start to-gradient-end flex flex-col text-white">
           <Navbar user={user} />
           {children}
           {auth}

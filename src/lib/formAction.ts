@@ -1,10 +1,11 @@
 'use server';
 
 import { revalidatePath } from "next/cache";
-import { attachSeat, detachSeat, getScheduleById, getSeatById, getUserById, updateSeat } from "./action";
-import { BookSeatState, CheckState, CreateBusState, Schedule, Seat, User } from "./type";
+import { attachSeat, createBus, destroyBus, detachSeat, getScheduleById, getSeatById, getUserById, updateSeat } from "./action";
+import { BookSeatState, CheckState, CreateBusState, DestroyBusState, Schedule, Seat, User } from "./type";
 import { CheckUserSchema, CreateBusSchema } from "./definition";
 import { cryptoDecrypt, generatePlain, m_digit, PRIVATE_KEY } from "./crypto";
+import { CreateBusDto } from "./dto";
 
 export const bookSeat = async (state: BookSeatState, seat_id: string | number | null) => {
     if (!seat_id) return { 
@@ -97,12 +98,48 @@ export const checkUser = async (state: CheckState, formData: FormData) => {
 export const addBus = async (state: CreateBusState, formData: FormData) => {
     const validatedFields = CreateBusSchema.safeParse({
         identity: formData.get('identity'),
-        available_row: formData.get('available_row'),
-        available_column: formData.get('available_column'),
-        available_backseat: formData.get('available_backseat')
+        available_row: parseInt(formData.get('available_row') as string),
+        available_col: parseInt(formData.get('available_col') as string),
+        available_backseat: parseInt(formData.get('available_backseat') as string),
     });
 
     if (!validatedFields.success) {
         console.log(validatedFields);
+        return { errors: validatedFields.error.flatten().fieldErrors}
+    }
+
+    const { identity, available_row, available_col, available_backseat} = validatedFields.data;
+
+    try {
+        const dto: CreateBusDto = {
+            identity,
+            available_row,
+            available_col,
+            available_backseat
+        };
+
+        const result = await createBus(dto);
+        if (result?.error) {
+            return { error: result.error }
+        }
+        revalidatePath('/');
+        return { success: true }
+    } catch (err) {
+        console.log('fail create bus', err);
+        return { error: 'something went wrong' }
+    }
+}
+
+export const deleteBus = async (state: DestroyBusState, id: number | string) => {
+    try {
+        const result = await destroyBus(id);
+        if (result?.error) {
+            return { error: result.error as string }
+        }
+        revalidatePath('/');
+        return { success: true }
+    } catch (err) {
+        console.log('fail delete bus', err);
+        return { error: 'something went wrong' }
     }
 }

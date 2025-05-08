@@ -86,3 +86,8 @@ export type CreateBusState = | {
     message?: string,
     success?: boolean
 } | undefined
+
+export type DestroyBusState = | {
+    error?: string,
+    success?: boolean
+} | undefined

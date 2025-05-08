@@ -331,3 +331,28 @@ export const createBus = async (createBusDto: CreateBusDto) => {
         return { error: 'something went wrong' }
     }
 }
+
+export const destroyBus = async (id: number | string) => {
+    const session = await verifySession();
+    const { token } = session!;
+
+    try {
+        const response = await fetch(`${baseUrl}/buses/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (response.status !== 204) {
+            const result = await response.json();
+            console.log('fail destroy bus', result.error);
+            return { error: result.error as string};
+        }
+    } catch (err) {
+        console.log('fail destroy bus', err);
+        return { error: 'something went wrong' };
+    }
+}

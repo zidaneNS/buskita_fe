@@ -1,7 +1,7 @@
 export type CreateBusDto = {
     identity: string,
     available_row: number,
-    available_column: number,
+    available_col: number,
     available_backseat: number
 }
 
