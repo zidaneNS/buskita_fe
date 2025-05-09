@@ -35,6 +35,11 @@ export type Bus = {
     available_backseat: number
 }
 
+export type RouteType = {
+    id: string | number,
+    route_name: string
+}
+
 export type SessionPayload = {
     token: string,
     expiresAt: Date
@@ -89,5 +94,15 @@ export type CreateBusState = | {
 
 export type DestroyBusState = | {
     error?: string,
+    success?: boolean
+} | undefined
+
+export type CreateScheduleState = | {
+    errors?: {
+        time?: string[],
+        bus_id?: string[],
+        route_id?: string[]
+    },
+    message?: string,
     success?: boolean
 } | undefined

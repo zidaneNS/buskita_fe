@@ -1,6 +1,6 @@
 import { verifySession } from "./dal";
-import { CreateBusDto } from "./dto";
-import { Bus, Schedule, Seat, User } from "./type";
+import { CreateBusDto, CreateScheduleDto } from "./dto";
+import { Bus, RouteType, Schedule, Seat, User } from "./type";
 
 const baseUrl = process.env.BASE_URL;
 
@@ -381,4 +381,58 @@ export const updateBus = async (id: number | string, updateBusDto: CreateBusDto)
         console.log('fail update bus', err);
         return { error: 'something went wrong' }
     }
+}
+
+export const getRoutes = async () => {
+    const session = await verifySession();
+    const { token } = session!;
+
+    try {
+        const response = await fetch(`${baseUrl}/routes`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 200) {
+            const routes = await response.json();
+            return routes as RouteType[];
+        } else {
+            const result = await response.json();
+            console.log('fail get all routes', result.error);
+        }
+    } catch (err) {
+        console.log('fail get all routes', err);
+    }
+}
+
+export const storeSchedule = async (createScheduleDto: CreateScheduleDto) => {
+    const session = await verifySession();
+    const { token } = session!
+
+     try {
+        const response = await fetch(`${baseUrl}/schedules`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(createScheduleDto)
+        });
+
+        if (response.status !== 201) {
+            const result = await response.json();
+            console.log('fail store schedule', result.error);
+            return { error: result.error as string };
+        } else {
+            return { success: true }
+        }
+     } catch (err) {
+        console.log('fail store schedule', err);
+        return { error: 'something went wrong' };
+     }
 }

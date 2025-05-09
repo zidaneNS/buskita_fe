@@ -5,4 +5,8 @@ export type CreateBusDto = {
     available_backseat: number
 }
 
-// { identity, available_row, available_col, available_backseat }
+export type CreateScheduleDto = {
+    time: string,
+    bus_id: string | number,
+    route_id: string | number
+}

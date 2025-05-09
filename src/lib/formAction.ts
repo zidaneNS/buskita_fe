@@ -1,11 +1,11 @@
 'use server';
 
 import { revalidatePath } from "next/cache";
-import { attachSeat, createBus, destroyBus, detachSeat, getScheduleById, getSeatById, getUserById, updateBus, updateSeat } from "./action";
-import { BookSeatState, CheckState, CreateBusState, DestroyBusState, Schedule, Seat, User } from "./type";
-import { CheckUserSchema, CreateBusSchema } from "./definition";
+import { attachSeat, createBus, destroyBus, detachSeat, getScheduleById, getSeatById, getUserById, storeSchedule, updateBus, updateSeat } from "./action";
+import { BookSeatState, CheckState, CreateBusState, CreateScheduleState, DestroyBusState, Schedule, Seat, User } from "./type";
+import { CheckUserSchema, CreateBusSchema, CreateScheduleSchema } from "./definition";
 import { cryptoDecrypt, generatePlain, m_digit, PRIVATE_KEY } from "./crypto";
-import { CreateBusDto } from "./dto";
+import { CreateBusDto, CreateScheduleDto } from "./dto";
 
 export const bookSeat = async (state: BookSeatState, seat_id: string | number | null) => {
     if (!seat_id) return { 
@@ -178,5 +178,41 @@ export const changeBus = async (state: CreateBusState, formData: FormData) => {
     } catch (err) {
         console.log('fail edit bus', err);
         return { error: 'something went wrong' }
+    }
+}
+
+export const createSchedule = async (state: CreateScheduleState, formData: FormData) => {
+    const rawDate = formData.get('time');
+    const date = new Date(`${rawDate}:00`);
+
+    const validatedFields = CreateScheduleSchema.safeParse({
+        time: date.toISOString(),
+        bus_id: formData.get('bus_id'),
+        route_id: formData.get('route_id')
+    });
+    
+    if (!validatedFields.success) {
+        return { errors: validatedFields.error.flatten().fieldErrors }
+    }
+
+    const { time, bus_id, route_id } = validatedFields.data;
+
+    const createScheduleDto: CreateScheduleDto = {
+        time,
+        bus_id,
+        route_id
+    }
+
+    try {
+        const result = await storeSchedule(createScheduleDto);
+
+        if (result.error) {
+            return { error: result.error }
+        }
+        revalidatePath('/');
+        return { success: true }
+    } catch (err) {
+        console.log('fail create schedule', err);
+        return { error: 'something went wrong' };
     }
 }

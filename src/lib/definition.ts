@@ -25,3 +25,9 @@ export const CreateBusSchema = z.object({
     available_col: z.number().min(1, "field cannot empty"),
     available_backseat: z.number().min(0, "field cannot empty")
 });
+
+export const CreateScheduleSchema = z.object({
+    time: z.string().datetime(),
+    bus_id: z.string().min(1, "field cannot empty").trim(),
+    route_id: z.string().min(1, "field cannot empty").trim()
+});
