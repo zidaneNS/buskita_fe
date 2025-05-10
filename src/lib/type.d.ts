@@ -1,5 +1,4 @@
 export type Role = "passenger" | "co" | "co_leader";
-// export type Route = "SBY - GSK" | "GSK - SBY";
 
 export type User = {
     id: string | number,
@@ -23,8 +22,9 @@ export type Schedule = {
 export type Seat = {
     id: string | number,
     seat_number: string | number,
-    user_id: string | number | null,
-    verified: boolean
+    user_name: string | null,
+    verified: boolean,
+    user_id: string | number | null
 }
 
 export type Bus = {

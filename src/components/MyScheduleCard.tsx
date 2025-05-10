@@ -15,8 +15,8 @@ import { cryptoEncrypt, generateAscii, m_digit, PUBLIC_KEY } from "@/lib/crypto"
 export default function MyScheduleCard({ schedule, user, seats }: { schedule: Schedule, user: User, seats: Seat[] }) {
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
-    const filledSeats = seats.filter(seat => seat.user_id !== null);
-    const seat = seats.filter(seat => seat.user_id === user.id)[0];
+    const filledSeats = seats.filter(seat => seat.user_name !== null);
+    const seat = seats.filter(seat => seat.user_name === user.name)[0];
 
     const time = format(new Date(schedule.time), "HH:mm");
     const timeEnd = add(new Date(schedule.time), { hours: 1 });
@@ -27,7 +27,7 @@ export default function MyScheduleCard({ schedule, user, seats }: { schedule: Sc
     const cancelScheduleWithId = cancelSchedule.bind(null, undefined, seat.id);
     const [state, action, pending] = useActionState(cancelScheduleWithId, undefined);
 
-    const information = [user.id, schedule.id, seat.id];
+    const information = seat.id;
     const text = JSON.stringify(information);
     const ascii = generateAscii(text, m_digit);
     const cipher = cryptoEncrypt(ascii, PUBLIC_KEY, m_digit);
@@ -69,29 +69,29 @@ export default function MyScheduleCard({ schedule, user, seats }: { schedule: Sc
                 </Modal>
             )}
             <div className="bg-midnight-purple/20 shadow-xl text-white flex flex-col gap-y-6 md:px-6 md:py-4 px-4 py-2 rounded-xl hover:-translate-y-3 duration-300 border border-dark-purple">
-                <div className="flex justify-between items-center pb-2 border-b-2 border-dashed border-white">
-                    <div className="flex flex-col gap-y-2">
-                        <p className="text-sm flex gap-x-2 items-center bg-black/40 py-2 px-4 rounded-full text-red-500 w-fit"><span className="size-2 rounded-full bg-red-500"></span>{seat.verified ? "verified" : "unverified"}</p>
-                        <p className="text-sm">no. {cipher}</p>
+                <div className="flex flex-col md:flex-row md:justify-between gap-y-3 md:items-center pb-2 border-b-2 border-dashed border-white md:gap-x-8">
+                    <p className="text-sm flex gap-x-2 items-center bg-black/40 py-2 px-4 rounded-full text-red-500 w-fit"><span className="size-2 rounded-full bg-red-500"></span>{seat.verified ? "verified" : "unverified"}</p>
+                    <div className="flex w-full justify-between items-center">
+                        <div className="flex gap-x-2 items-center">
+                            <FaBusAlt className="size-5" />
+                            <p className="text-base md:text-xl font-bold">{schedule.route_name}</p> 
+                        </div>
+                        <p className="text-xs md:text-lg font-semibold">{time} - {timeEndStr}</p>
                     </div>
-                    <div className="flex gap-x-2 items-center">
-                        <FaBusAlt className="size-5" />
-                        <p className="text-base md:text-xl font-bold">{schedule.route_name}</p> 
-                    </div>
-                    <p className="text-xs md:text-lg font-semibold">{time} - {timeEndStr}</p>
                 </div>
-                <div className="flex flex-col md:flex-row justify-between mt-auto items-center">
-                    <div className="flex flex-col w-full mt-auto">
-                        <p><span className="text-sm md:text-base font-semibold">Bus</span> : {schedule.bus_identity}</p>
-                        <p><span className="text-sm md:text-base font-semibold">Date</span> : {date}</p>
-                        <p><span className="text-sm md:text-base font-semibold">Seat</span> : {seat.seat_number}</p>
-                        <p><span className="text-sm md:text-base font-semibold">Filled</span> : {filledSeats.length}/{seats.length}</p>
+                <div className="flex flex-col md:flex-row justify-between mt-auto md:items-center gap-y-4">
+                    <div className="flex flex-col w-fit mt-auto">
+                        <p className="text-sm mb-3 w-full">no. {cipher}</p>
+                        <p><span className="text-sm md:text-base font- w-full">Bus</span> : {schedule.bus_identity}</p>
+                        <p><span className="text-sm md:text-base font-semibold w-full">Date</span> : {date}</p>
+                        <p><span className="text-sm md:text-base font-semibold w-full">Seat</span> : {seat.seat_number}</p>
+                        <p><span className="text-sm md:text-base font-semibold w-full">Filled</span> : {filledSeats.length}/{seats.length}</p>
                     </div>
-                    <div className="flex flex-col w-full mt-auto">
+                    <div className="flex flex-col w-full mt-auto items-center md:w-fit">
                         <QRCode size={96} className="p-2 bg-white rounded-md" value={cipher} />
                     </div>
                     <div className="flex flex-col md:mt-auto gap-y-2 w-full md:w-fit mt-3">
-                        <Link href={`/schedule/${schedule.id}`} className="w-full py-2 px-6 text-xs duration-300 rounded-md bg-gradient-end text-white cursor-pointer text-center hover:bg-gradient-end/70">View</Link>
+                        <Link href={`/schedule/${schedule.id}`} className="w-full py-2 px-6 text-xs duration-300 rounded-md bg-midnight-purple text-white cursor-pointer text-center hover:bg-midnight-purple/70">View</Link>
                         <button onClick={() => setIsOpenModal(true)} className="w-full py-2 px-6 text-xs duration-300 rounded-md bg-red-600 text-white cursor-pointer hover:bg-red-400">Cancel</button>
                     </div>
                 </div>

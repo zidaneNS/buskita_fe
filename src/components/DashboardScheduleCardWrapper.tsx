@@ -1,14 +1,15 @@
-import { getSeatsBySchedule } from "@/lib/action";
+import { getAllBuses, getRoutes, getSeatsBySchedule } from "@/lib/action";
 import { Schedule } from "@/lib/type";
-import { use } from "react";
 import DashboardScheduleCard from "./DashboardScheduleCard";
 
-export default function DashboardScheduleCardWrapper({
+export default async function DashboardScheduleCardWrapper({
     schedule
 }: {
     schedule: Schedule
 }) {
-    const seats = use(getSeatsBySchedule(schedule.id)) || [];
+    const seats = await getSeatsBySchedule(schedule.id) || [];
+    const routes = await getRoutes() || [];
+    const buses = await getAllBuses() || [];
 
-    return <DashboardScheduleCard schedule={schedule} seats={seats} />
+    return <DashboardScheduleCard schedule={schedule} seats={seats} routes={routes} buses={buses} />
 }

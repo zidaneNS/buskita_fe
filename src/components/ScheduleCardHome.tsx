@@ -8,7 +8,7 @@ import { use } from "react";
 export default function ScheduleCardHome({ schedule }: { schedule: Schedule }) {
     const seats = use(getSeatsBySchedule(schedule.id)) || [];
 
-    const filledSeats = seats.filter(seat => seat.user_id !== null);
+    const filledSeats = seats.filter(seat => seat.user_name !== null);
 
     const time = format(new Date(schedule.time), "HH:mm");
     const date = format(new Date(schedule.time), "dd MMMM yyyy");

@@ -25,9 +25,9 @@ export default function ScheduleDetailPage({ schedule, bus, user, seats }: { sch
     
     const date = format(new Date(schedule.time), "dd MMMM yyyy");
     
-    const seatsUserId = seats.filter(seat => seat.user_id !== null).map(seat => seat.user_id);
-    const userSeat = seats.filter(seat => seat.user_id === user.id)[0] || null;
-    const alreadyBooked = seatsUserId.includes(user.id);
+    const seatUser = seats.filter(seat => seat.user_name !== null).map(seat => seat.user_name);
+    const userSeat = seats.filter(seat => seat.user_name === user.name)[0] || null;
+    const alreadyBooked = seatUser.includes(user.name);
 
     const preparedChangeSeat = changeSeat.bind(null, undefined, userSeat?.id, seatId);
     const [updateState, updateAction, updatePending] = useActionState(preparedChangeSeat, undefined);
@@ -55,8 +55,6 @@ export default function ScheduleDetailPage({ schedule, bus, user, seats }: { sch
                     <Modal>
                         <QrPresence
                             setIsOpenQr={setIsOpenQr}
-                            user={user}
-                            schedule={schedule}
                             userSeat={userSeat}
                         />
                     </Modal>

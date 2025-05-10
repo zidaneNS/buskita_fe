@@ -3,12 +3,28 @@
 import CreateScheduleForm from "@/components/CreateScheduleForm";
 import Modal from "@/components/Modal";
 import { Bus, RouteType } from "@/lib/type";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { MdAdd } from "react-icons/md";
 
 export default function ScheduleHeadSection({ buses, routes }: { buses: Bus[], routes: RouteType[] }) {
     const [isCreating, setIsCreating] = useState<boolean>(false);
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const { replace } = useRouter();
+
+    const handleSearch = (term: string) => {
+        const params = new URLSearchParams(searchParams);
+        if (term.length > 0) {
+            params.set('search', term)
+        } else {
+            params.delete('search')
+        }
+        
+        replace(`${pathname}?${params.toString()}`);
+    }
+
     return (
         <section className="w-full flex flex-col gap-y-4">
             {isCreating && (
@@ -34,7 +50,7 @@ export default function ScheduleHeadSection({ buses, routes }: { buses: Bus[], r
             </div>
             <div className="w-full flex gap-x-3 px-4 rounded-md bg-black/40 items-center">
                 <CiSearch className="size-6" />
-                <input type="text" placeholder="search schedules" className="py-3 flex-1 w-full outline-none" />
+                <input type="text" placeholder="search schedules" onChange={(e) => handleSearch(e.target.value)} className="py-3 flex-1 w-full outline-none" />
             </div>
         </section>
     )

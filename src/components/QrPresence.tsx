@@ -1,21 +1,17 @@
 import { cryptoEncrypt, generateAscii, m_digit, PUBLIC_KEY } from "@/lib/crypto";
-import { Schedule, Seat, User } from "@/lib/type";
+import { Seat } from "@/lib/type";
 import { Dispatch, SetStateAction } from "react";
 import { MdClose } from "react-icons/md";
 import QRCode from "react-qr-code";
 
 export default function QrPresence({
     setIsOpenQr,
-    user,
-    schedule,
     userSeat
 }: {
     setIsOpenQr: Dispatch<SetStateAction<boolean>>,
-    user: User,
-    schedule: Schedule,
     userSeat: Seat
 }) {
-    const information = [user.id, schedule.id, userSeat.id];
+    const information = userSeat.id;
     const text = JSON.stringify(information);
     const ascii = generateAscii(text, m_digit);
     const cipher = cryptoEncrypt(ascii, PUBLIC_KEY, m_digit);

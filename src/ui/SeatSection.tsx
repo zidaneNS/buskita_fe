@@ -27,10 +27,10 @@ export default function SeatSection({
 
     const sortedSeats = seats.sort((a, b) => parseInt(a.seat_number as string) - parseInt(b.seat_number as string));
 
-    const seatsUserId = seats.filter(seat => seat.user_id !== null).map(seat => seat.user_id);
+    const seatsUserId = seats.filter(seat => seat.user_name !== null).map(seat => seat.user_name);
 
     const handleClick = (seat: Seat) => {
-        if (!seat.user_id && !seatsUserId.includes(user.id) || isEditing) {
+        if (!seat.user_name && !seatsUserId.includes(user.name) || isEditing) {
             setSelected(seat.seat_number as number);
             setSeatId(seat.id);
         }
@@ -50,7 +50,7 @@ export default function SeatSection({
                             }
                         } else if (j > col/2 && j < col) {
                             if (index % col === j) {
-                                colStart = j + Math.floor(backseat/3);
+                                colStart = j + backseat - col;
                                 break;
                             }
                         } else {
@@ -65,7 +65,7 @@ export default function SeatSection({
                     <span 
                         key={i} 
                         onClick={() => handleClick(seat)} 
-                        className={`p-2 hover:bg-lime-400 duration-300 cursor-pointer text-black text-sm text-center rounded-md col-start-${colStart} ${selected == index && !seat.user_id ? "bg-lime-400" : seat.user_id ? "bg-teal-700" : "bg-white"}`}
+                        className={`p-2 hover:bg-lime-400 duration-300 cursor-pointer text-black text-sm text-center rounded-md col-start-${colStart} ${selected == index && !seat.user_name ? "bg-lime-400" : seat.user_name ? "bg-teal-700" : "bg-white"}`}
                     >
                         {seat.seat_number}
                     </span>
