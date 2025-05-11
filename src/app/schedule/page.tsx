@@ -1,16 +1,18 @@
 import DropDown from "@/components/DropDown";
 import { getSchedules, getUserSchedule } from "@/lib/action";
+import { getUser } from "@/lib/dal";
 import { dummyDates, dummyRoutes } from "@/lib/dummyData";
 import ScheduleHomeSection from "@/ui/ScheduleHomeSection";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Suspense } from "react";
 
-export default function Page() {
+export default async function Page() {
     const routes = dummyRoutes;
     const dates = dummyDates;
 
     const schedules = getSchedules();
     const userSchedules = getUserSchedule();
+    const user = await getUser();
     return (
         <main className="flex flex-col gap-y-6 px-6 md:px-32 pt-24 md:pt-32 pb-10 w-full min-h-screen">
             <section className="flex flex-col gap-y-6 w-full">
@@ -18,7 +20,7 @@ export default function Page() {
                 <div className="w-full shadow-xl bg-white rounded-xl py-2 px-4 md:py-6 md:px-10 text-black flex flex-col gap-y-3">
                     <div className="border-b border-black w-full flex flex-col pb-2">
                         <p className="text-sm md:text-base">Your Credits</p>
-                        <p className="text-base md:text-lg font-semibold">15 Credits</p>
+                        <p className="text-base md:text-lg font-semibold">{user?.credit_score} Credits</p>
                     </div>
                     <div className="w-full flex justify-between">
                         <div className="w-full md:justify-between flex flex-col md:flex-row gap-y-3 text-white">

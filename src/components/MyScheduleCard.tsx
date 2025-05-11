@@ -70,7 +70,7 @@ export default function MyScheduleCard({ schedule, user, seats }: { schedule: Sc
             )}
             <div className="bg-midnight-purple/20 shadow-xl text-white flex flex-col gap-y-6 md:px-6 md:py-4 px-4 py-2 rounded-xl hover:-translate-y-3 duration-300 border border-dark-purple">
                 <div className="flex flex-col md:flex-row md:justify-between gap-y-3 md:items-center pb-2 border-b-2 border-dashed border-white md:gap-x-8">
-                    <p className="text-sm flex gap-x-2 items-center bg-black/40 py-2 px-4 rounded-full text-red-500 w-fit"><span className="size-2 rounded-full bg-red-500"></span>{seat.verified ? "verified" : "unverified"}</p>
+                    <p className={`text-sm flex gap-x-2 items-center bg-black/40 py-2 px-4 rounded-full ${seat.verified ? "text-green-500" : "text-red-500"} w-fit`}><span className={`size-2 rounded-full bg-${seat.verified ? "green" : "red"}-500`}></span>{seat.verified ? "verified" : "unverified"}</p>
                     <div className="flex w-full justify-between items-center">
                         <div className="flex gap-x-2 items-center">
                             <FaBusAlt className="size-5" />

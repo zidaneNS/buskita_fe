@@ -8,9 +8,11 @@ import { FaUserAlt } from "react-icons/fa";
 import { TbArmchair } from "react-icons/tb";
 import { GrSchedule } from "react-icons/gr";
 import { addHours, format } from "date-fns";
+import VerifyForm from "./VerifyForm";
 
 export default function InputCodeBox() {
     const [isQR, setIsQR] = useState<boolean>(false);
+    const [cipher, setCipher] = useState<number | string>("");
     const [state, action, pending] = useActionState(checkUser, undefined);
 
     const seat_number = state?.seat?.seat_number.toString().padStart(2, '0');
@@ -28,7 +30,7 @@ export default function InputCodeBox() {
                 </div>
                 {!isQR ? (
                     <form action={action} className="w-full flex gap-x-3 items-center">
-                        <input type="number" name="cipher" placeholder="122..." className="bg-black/30 w-full flex-1 py-2 px-3 outline-none" />
+                        <input type="number" name="cipher" value={cipher} onChange={(e) => setCipher(parseInt(e.target.value))} placeholder="122..." className="bg-black/30 w-full flex-1 py-2 px-3 outline-none" />
                         {state?.errors?.cipher && <ErrorInputForm errMsg={state.errors.cipher} />}
                         {pending ? (
                             <div>Loading...</div>
@@ -38,7 +40,7 @@ export default function InputCodeBox() {
                     </form>
                 ) : (
                     <div className="w-full flex justify-center py-10">
-                        <QrScanner />
+                        <QrScanner setCipher={setCipher} setIsQR={setIsQR} />
                     </div>
                 )}
             </div>
@@ -69,9 +71,7 @@ export default function InputCodeBox() {
                         <p className="text-sm font-thin">{date}, {time} - {endTimeStr}</p>
                         <p className="text-sm font-thin">Bus: {state.schedule.bus_identity}</p>
                     </div>
-                    <div className="w-full flex justify-center">
-                        <button className="bg-black/60 px-4 py-2 rounded-md cursor-pointer hover:bg-white/40 duration-300">Verify</button>
-                    </div>
+                    <VerifyForm initState={state} />
                 </div>
             )}
         </>

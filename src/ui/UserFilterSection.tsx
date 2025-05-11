@@ -16,22 +16,23 @@ export default function UserFilterSection({ initUsers }: { initUsers: User[] }) 
     const [role, setRole] = useState<RadioRoleType>('all');
 
     useEffect(() => {
-        if (term.length > 0) {
-            setUsers(initUsers.filter(user => user.name.toLowerCase().includes(term.toLocaleLowerCase()) ||
-            user.email.toLowerCase().includes(term.toLowerCase()) ||
-            user.role_name.toLowerCase().includes(term.toLowerCase()) ||
-            user.nim_nip.toLowerCase().includes(term.toLowerCase())));
-            if (role !== 'all') {
-                setUsers(initUsers.filter(user => user.role_name.toLowerCase() === role.toLowerCase()));
-            }
-        } else {
-            if (role !== 'all') {
-                setUsers(initUsers.filter(user => user.role_name.toLowerCase() === role.toLowerCase()));
-            } else {
-                setUsers(initUsers);
-            }
+        let filteredUsers = [...initUsers];
+
+        if (role !== 'all') {
+            filteredUsers = filteredUsers.filter(user => user.role_name.toLowerCase() === role.toLowerCase());
         }
 
+        if (term.length > 0) {
+            const lowerTerm = term.toLowerCase();
+            filteredUsers = filteredUsers.filter(user =>
+                user.name.toLowerCase().includes(lowerTerm) ||
+                user.email.toLowerCase().includes(lowerTerm) ||
+                user.role_name.toLowerCase().includes(lowerTerm) ||
+                user.nim_nip.toLowerCase().includes(lowerTerm)
+            );
+        }
+
+        setUsers(filteredUsers);
     }, [term, setUsers, role, initUsers]);
 
     return (

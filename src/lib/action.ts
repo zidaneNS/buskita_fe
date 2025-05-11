@@ -1,5 +1,5 @@
 import { verifySession } from "./dal";
-import { CreateBusDto, CreateScheduleDto, UpdateScheduleDto } from "./dto";
+import { CreateBusDto, CreateScheduleDto, UpdateProfileDto, UpdateScheduleDto } from "./dto";
 import { Bus, RouteType, Schedule, Seat, User } from "./type";
 
 const baseUrl = process.env.BASE_URL;
@@ -269,12 +269,10 @@ export const getSeatById = async (id: number | string) => {
             return seat as Seat;
         } else {
             const result = await response.json();
-            console.log('fail get seat by id : ', result.error);
-            return { error: result.error || result.message as string }
+            console.log('fail get seat by id : ', result.error || result.message);
         }
     } catch (err) {
         console.log('fail get seat by id', err);
-        return {  error: 'something went wrong' }
     }
 }
 
@@ -515,5 +513,60 @@ export const getAllUsers = async () => {
         }
     } catch (err) {
         console.log('fail get all users', err);
+    }
+}
+
+export const verify = async (id: string | number) => {
+    const session = await verifySession();
+    const { token } = session!;
+
+    try {
+        const response = await fetch(`${baseUrl}/seats/${id}/verify`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 200) {
+            return { success: true }   
+        } else {
+            const result = await response.json();
+            console.log('fail verify passenegr', result.error || result.message);
+            return { error: result.error || result.message as string };
+        }
+    } catch (err) {
+        console.log('fail verify', err);
+        return { error: 'something went wrong' };
+    }
+}
+
+export const updateProfile = async (updateProfileDto: UpdateProfileDto, id: number | string) => {
+    const session = await verifySession();
+    const { token } = session!;
+
+    try {
+        const response = await fetch(`${baseUrl}/users/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content_Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(updateProfileDto)
+        });
+
+        if (response.status === 200) {
+            return { success: true }
+        } else {
+            const result = await response.json();
+            console.log('fail update profile', result.error || result.message);
+            return { error: result.error || result.message }
+        }
+    } catch (err) {
+        console.log('fail update profile', err);
+        return { error: 'something went wrong' }
     }
 }

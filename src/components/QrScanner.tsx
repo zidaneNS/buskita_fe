@@ -1,10 +1,10 @@
 'use client';
 
 import { Html5Qrcode } from "html5-qrcode";
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { HiQrcode } from "react-icons/hi";
 
-export default function QrScanner() {
+export default function QrScanner({ setCipher, setIsQR }: { setCipher: Dispatch<SetStateAction<number | string>>, setIsQR: Dispatch<SetStateAction<boolean>> }) {
     const [decodedText, setDecodedText] = useState<string>("");
     const [isScanning, setIsScanning] = useState<boolean>(false);
     const html5QrCodeRef = useRef<Html5Qrcode | null>(null);
@@ -23,6 +23,7 @@ export default function QrScanner() {
                 },
                 (decoded) => {
                     setDecodedText(decoded);
+                    setCipher(decoded);
                     stopScan();
                 },
                 (errorMessage) => {
@@ -55,6 +56,11 @@ export default function QrScanner() {
         };
     }, []);
 
+    useEffect(() => {
+        if (decodedText) setIsQR(false);
+        
+    }, [decodedText, setCipher, setIsQR]);
+
     return (
         <div className="w-full flex flex-col items-center gap-y-4">
             <div id={readerId} className="w-64 h-auto" />
@@ -62,6 +68,7 @@ export default function QrScanner() {
                 <div className="text-xl font-semibold text-center">
                     Result: {decodedText}
                 </div>
+                
             )}
 
             {!isScanning ? (

@@ -24,7 +24,8 @@ export type Seat = {
     seat_number: string | number,
     user_name: string | null,
     verified: boolean,
-    user_id: string | number | null
+    user_id: string | number | null,
+    schedule_id: string | number
 }
 
 export type Bus = {
@@ -120,5 +121,22 @@ export type UpdateScheduleState = | {
 
 export type DeleteScheduleState = | {
     error?: string,
+    success?: boolean
+} | undefined
+
+export type VerifyState = | {
+    error?: string,
+    success?: boolean
+} | undefined
+
+export type UpdateProfileState = | {
+    errors?: {
+        nim_nip?: string[],
+        name?: string[],
+        email?: string[],
+        phone_number?: string[],
+        address?: string[],
+    },
+    message?: string,
     success?: boolean
 } | undefined

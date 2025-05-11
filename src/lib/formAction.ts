@@ -1,11 +1,13 @@
 'use server';
 
 import { revalidatePath } from "next/cache";
-import { attachSeat, createBus, destroyBus, destroySchedule, detachSeat, getScheduleById, getSeatById, getUserById, storeSchedule, updateBus, updateSchedule, updateSeat } from "./action";
-import { BookSeatState, CheckState, CreateBusState, CreateScheduleState, DeleteScheduleState, DestroyBusState, Schedule, Seat, UpdateScheduleState, User } from "./type";
-import { CheckUserSchema, CreateBusSchema, CreateScheduleSchema, UpdateScheduleSchema } from "./definition";
+import { attachSeat, createBus, destroyBus, destroySchedule, detachSeat, getScheduleById, getSeatById, getUserById, storeSchedule, updateBus, updateProfile, updateSchedule, updateSeat, verify } from "./action";
+import { BookSeatState, CheckState, CreateBusState, CreateScheduleState, DeleteScheduleState, DestroyBusState, Schedule, Seat, SignUpFormState, UpdateProfileState, UpdateScheduleState, User, VerifyState } from "./type";
+import { CheckUserSchema, CreateBusSchema, CreateScheduleSchema, SignUpFormSchema, UpdateProfileFormSchema, UpdateScheduleSchema } from "./definition";
 import { cryptoDecrypt, generatePlain, m_digit, PRIVATE_KEY } from "./crypto";
-import { CreateBusDto, CreateScheduleDto, UpdateScheduleDto } from "./dto";
+import { CreateBusDto, CreateScheduleDto, UpdateProfileDto, UpdateScheduleDto } from "./dto";
+
+const baseUrl = process.env.BASE_URL;
 
 export const bookSeat = async (state: BookSeatState, seat_id: string | number | null) => {
     if (!seat_id) return { 
@@ -73,25 +75,26 @@ export const checkUser = async (state: CheckState, formData: FormData) => {
     const { cipher } = validatedFields.data;
     const plain = cryptoDecrypt(cipher, PRIVATE_KEY, m_digit);
     const text = generatePlain(plain, m_digit);
-    const information: number[] = JSON.parse(text);
+    const seat_id: number = JSON.parse(text);
 
-    // console.log(information);
+    // console.log(seat_id);
 
-    if (information.length !== 3) return {
-        message: 'invalid cipher'
-    }
-    const user_id = information[0];
-    const schedule_id = information[1];
-    const seat_id = information[2]
+    try {
+        const seat = await getSeatById(seat_id) as Seat | null;
+        if (!seat) {
+            return { error: 'fail fetch seat' }
+        }
+        const passenger = await getUserById(seat.user_id!) as User | null;
+        const schedule = await getScheduleById(seat.schedule_id!) as Schedule | null;
 
-    const passenger = await getUserById(user_id) as User;
-    const schedule = await getScheduleById(schedule_id) as Schedule;
-    const seat = await getSeatById(seat_id) as Seat;
+        if (!passenger) return { error: 'no passenger found' }
+        if (!schedule) return { error: 'no schedule found' }
 
-    return {
-        passenger,
-        schedule,
-        seat
+        return { seat, passenger, schedule }
+
+    } catch (err) {
+        console.log('fail get seat', err);
+        return { error: 'something went wrong' }
     }
 }
 
@@ -267,5 +270,111 @@ export const deleteSchedule = async (state: DeleteScheduleState, id: number | st
     } catch (err) {
         console.log('fail delete schedule', err);
         return  { error: 'something went wrong' }
+    }
+}
+
+export const createCo = async (state: SignUpFormState, formData: FormData) => {
+    const validatedFields = SignUpFormSchema.safeParse({
+        nim_nip: formData.get('nim_nip'),
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone_number: formData.get('phone_number'),
+        address: formData.get('address'),
+        password: formData.get('password'),
+        password_confirmation: formData.get('password_confirmation'),
+    });
+
+    if (!validatedFields.success) {
+        console.log(validatedFields.error);
+        return {
+            errors: validatedFields.error.flatten().fieldErrors
+        }
+    }
+
+    const { nim_nip, name, email, phone_number, address, password, password_confirmation } = validatedFields.data;
+
+    try {
+        const response = await fetch(`${baseUrl}/register`, {
+            method: "POST",
+            body: JSON.stringify({
+                nim_nip,
+                name,
+                email,
+                phone_number,
+                address,
+                password,
+                password_confirmation,
+                role_id: 2
+            }),
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        })
+
+        if (response.status === 422) {
+            return {  message: "system error" }
+        } else if (response.status === 201) {
+            revalidatePath('/');
+            return { success: true }
+        } else if (response.status === 500) {
+            return {  message: "server error" }
+        } else {
+            return { message: "uncatch error"}
+        }
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+export const verifyPassenger = async (state: VerifyState, id: string | number) => {
+    // console.log(id);
+    try {
+        const result = await verify(id);
+
+        if (result.error) return { error: result.error };
+        revalidatePath('/');
+        return { success: true };
+    } catch (err) {
+        console.log('fail verify', err);
+        return { error: 'something went wrong' }
+    }
+}
+
+export const editProfile = async (state: UpdateProfileState, formData: FormData) => {
+    const id = formData.get('id')?.toString();
+    
+    const validatedFields = UpdateProfileFormSchema.safeParse({
+        nim_nip: formData.get('nim_nip'),
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone_number: formData.get('phone_number'),
+        address: formData.get('address')
+    })
+
+    if (!validatedFields.success) {
+        return { errors: validatedFields.error.flatten().fieldErrors}
+    }
+
+    const { nim_nip, name, email, phone_number, address } = validatedFields.data;
+
+    const updateProfileDto: UpdateProfileDto = {
+        nim_nip,
+        name,
+        email,
+        phone_number,
+        address
+    }
+
+    try {
+        const result = await updateProfile(updateProfileDto, id!);
+        if (result?.error) {
+            return { error: result.error }
+        }
+        revalidatePath('/');
+        return { success: true }
+    } catch (err) {
+        console.log('fail update profile', err);
+        return { error: 'something went wrong' }
     }
 }
