@@ -32,7 +32,7 @@ export default function UserFilterSection({ initUsers }: { initUsers: User[] }) 
             }
         }
 
-    }, [term, setUsers, role]);
+    }, [term, setUsers, role, initUsers]);
 
     return (
         <section className="flex flex-col md:flex-row gap-y-2 w-full md:gap-x-2">
