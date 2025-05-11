@@ -491,3 +491,29 @@ export const destroySchedule = async (id: string | number) => {
         return { error: 'something went wrong' }
     }
 }
+
+export const getAllUsers = async () => {
+    const session = await verifySession();
+    const { token } = session!;
+
+    try {
+        const response = await fetch(`${baseUrl}/users`, {
+            method: "GET",
+            headers: {
+                "Content_Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 200) {
+            const users = await response.json();
+            return users as User[];
+        } else {
+            const result = await response.json();
+            console.log('fail get all users', result.error || result.message);
+        }
+    } catch (err) {
+        console.log('fail get all users', err);
+    }
+}
