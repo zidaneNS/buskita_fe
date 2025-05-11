@@ -21,7 +21,7 @@ export default function BusDeleteForm({ setIsDeleting, selectedBus }: { setIsDel
             <div className="flex justify-center items-center p-2 rounded-full bg-red-500/10 w-fit">
                 <CiWarning className="size-8 md:size-12 text-red-500" />
             </div>
-            <h1 className="text-base md:text-xl w-full text-center font-semibold">Are you sure to delete this bus information ?</h1>
+            <h1 className="text-base md:text-xl w-full text-center font-semibold">Are you sure to delete this bus</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-slate-600 w-full">
                 <p className="border border-slate-600 md:px-4 md:py-2 p-2 rounded-md text-center">identity: {identity}</p>
                 <p className="border border-slate-600 md:px-4 md:py-2 p-2 rounded-md text-center">Capacity: {capacity}</p>

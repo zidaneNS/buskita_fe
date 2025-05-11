@@ -2,11 +2,17 @@
 
 import { createSchedule } from "@/lib/formAction";
 import { Bus, RouteType } from "@/lib/type";
-import { useActionState } from "react";
+import { Dispatch, SetStateAction, useActionState, useEffect } from "react";
 import ErrorInputForm from "./ErrorInputForm";
 
-export default function CreateScheduleForm({ buses, routes }: { buses: Bus[], routes: RouteType[] }) {
+export default function CreateScheduleForm({ buses, routes, setIsCreating }: { buses: Bus[], routes: RouteType[], setIsCreating: Dispatch<SetStateAction<boolean>> }) {
     const [state, action, pending] = useActionState(createSchedule, undefined);
+
+    useEffect(() => {
+        if (state?.success) {
+            if (state.success) setIsCreating(false)
+        }
+    }, [state, setIsCreating])
     return (
         <form action={action} className="flex flex-col gap-y-3">
             <div className="flex flex-col gap-y-2">

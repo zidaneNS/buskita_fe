@@ -1,11 +1,11 @@
 'use server';
 
 import { revalidatePath } from "next/cache";
-import { attachSeat, createBus, destroyBus, detachSeat, getScheduleById, getSeatById, getUserById, storeSchedule, updateBus, updateSeat } from "./action";
-import { BookSeatState, CheckState, CreateBusState, CreateScheduleState, DestroyBusState, Schedule, Seat, User } from "./type";
-import { CheckUserSchema, CreateBusSchema, CreateScheduleSchema } from "./definition";
+import { attachSeat, createBus, destroyBus, destroySchedule, detachSeat, getScheduleById, getSeatById, getUserById, storeSchedule, updateBus, updateSchedule, updateSeat } from "./action";
+import { BookSeatState, CheckState, CreateBusState, CreateScheduleState, DeleteScheduleState, DestroyBusState, Schedule, Seat, UpdateScheduleState, User } from "./type";
+import { CheckUserSchema, CreateBusSchema, CreateScheduleSchema, UpdateScheduleSchema } from "./definition";
 import { cryptoDecrypt, generatePlain, m_digit, PRIVATE_KEY } from "./crypto";
-import { CreateBusDto, CreateScheduleDto } from "./dto";
+import { CreateBusDto, CreateScheduleDto, UpdateScheduleDto } from "./dto";
 
 export const bookSeat = async (state: BookSeatState, seat_id: string | number | null) => {
     if (!seat_id) return { 
@@ -184,7 +184,7 @@ export const changeBus = async (state: CreateBusState, formData: FormData) => {
 export const createSchedule = async (state: CreateScheduleState, formData: FormData) => {
     const rawDate = formData.get('time');
     const date = new Date(`${rawDate}:00`);
-
+    
     const validatedFields = CreateScheduleSchema.safeParse({
         time: date.toISOString(),
         bus_id: formData.get('bus_id'),
@@ -214,5 +214,58 @@ export const createSchedule = async (state: CreateScheduleState, formData: FormD
     } catch (err) {
         console.log('fail create schedule', err);
         return { error: 'something went wrong' };
+    }
+}
+
+export const editSchedule = async (state: UpdateScheduleState, formData: FormData) => {
+    const id = formData.get('id')?.toString();
+    const isClosed = formData.get('closed') === 'on';
+    const rawDate = formData.get('time');
+    const date = new Date(`${rawDate}:00`);
+    
+    const validatedFields = UpdateScheduleSchema.safeParse({
+        closed: isClosed,
+        time: date.toISOString(),
+        bus_id: formData.get('bus_id'),
+        route_id: formData.get('route_id')
+    });
+
+    if (!validatedFields.success) {
+        return { errors: validatedFields.error.flatten().fieldErrors}
+    }
+
+    const { closed, time, bus_id, route_id } = validatedFields.data;
+
+    const updateScheduleDto: UpdateScheduleDto = {
+        closed,
+        time,
+        bus_id,
+        route_id
+    }
+
+    try {
+        const result = await updateSchedule(updateScheduleDto, id!);
+        if (result?.error) {
+            return { error: result.error }
+        }
+        revalidatePath('/');
+        return { success: true }
+    } catch (err) {
+        console.log('fail update schedule', err);
+        return { error: 'something went wrong' }
+    }
+}
+
+export const deleteSchedule = async (state: DeleteScheduleState, id: number | string) => {
+    try {
+        const result = await destroySchedule(id);
+        if (result?.error) {
+            return { error: result.error }
+        }
+        revalidatePath('/');
+        return { success: true }
+    } catch (err) {
+        console.log('fail delete schedule', err);
+        return  { error: 'something went wrong' }
     }
 }

@@ -13,7 +13,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
     schedule.route_name.toLowerCase().includes(search.toLowerCase()) ||
     schedule.time.toString().toLowerCase().includes(search.toLowerCase())) : rawSchedules;
     return (
-        <main className="flex flex-col h-screen w-full gap-y-6 py-8 px-10">
+        <main className="flex flex-col h-screen w-full gap-y-6 px-8 py-6 md:py-8 md:px-10">
             <ScheduleHeadSection buses={buses} routes={routes} />
             <section className="max-h-full pr-4 py-4 overflow-y-auto scrollbar-thin w-full">
                 <ScheduleList schedules={schedules} />

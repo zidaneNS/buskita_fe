@@ -29,12 +29,12 @@ export default function ScheduleHeadSection({ buses, routes }: { buses: Bus[], r
         <section className="w-full flex flex-col gap-y-4">
             {isCreating && (
                 <Modal>
-                    <div className="flex flex-col max-h-4/5 w-1/3 overflow-y-auto px-6 py-4 rounded-lg shadow-xl bg-dark-purple gap-y-4">
+                    <div className="flex flex-col max-h-4/5 md:w-1/3 overflow-y-auto px-6 py-4 rounded-lg shadow-xl bg-dark-purple gap-y-4">
                         <div className="flex flex-col gap-y-2">
                             <h1 className="text-2xl font-semibold">Create New Schedule</h1>
                             <p className="text-slate-200">Add a new bus schedule to the system</p>
                         </div>
-                        <CreateScheduleForm buses={buses} routes={routes} />
+                        <CreateScheduleForm buses={buses} routes={routes} setIsCreating={setIsCreating} />
                         <div className="flex flex-row-reverse gap-x-4 w-full">
                             <button onClick={() => setIsCreating(false)} className="py-2 px-4 rouned-md border border-slate-400 cursor-pointer hover:bg-slate-400 duration-300 rounded-md">Cancel</button>
                         </div>

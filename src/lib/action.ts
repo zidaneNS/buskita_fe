@@ -1,5 +1,5 @@
 import { verifySession } from "./dal";
-import { CreateBusDto, CreateScheduleDto } from "./dto";
+import { CreateBusDto, CreateScheduleDto, UpdateScheduleDto } from "./dto";
 import { Bus, RouteType, Schedule, Seat, User } from "./type";
 
 const baseUrl = process.env.BASE_URL;
@@ -160,7 +160,7 @@ export const attachSeat = async (seat_id : string | number) => {
             await response.json();
         } else {
             const result = await response.json();
-            return { error: result.error }
+            return { error: result.error || result.message as string }
         }
     } catch (err) {
         console.log('fail book seat', err);
@@ -188,8 +188,8 @@ export const updateSeat = async (seat_id : string | number, new_seat_id : string
         if (response.status === 200) {
             await response.json();
         } else {
-            const error = await response.json();
-            return { error: error.message }
+            const result = await response.json();
+            return { error: result.error || result.message as string }
         }
     } catch (err) {
         console.log ('fail update seat', err);
@@ -214,7 +214,7 @@ export const detachSeat = async (id: number | string) => {
         if (response.status !== 204) {
             const result = await response.json();
             console.log('fail detach seat', result.error);
-            return { error: result.error }
+            return { error: result.error || result.message as string }
         }
     } catch (err) {
         console.log('fail detach seat', err);
@@ -242,7 +242,7 @@ export const getUserById = async (id: string | number) => {
         } else {
             const result = await response.json();
             console.log('fail get user by id : ', result.error);
-            return { error: result.error }
+            return { error: result.error || result.message as string }
         }
     } catch (err) {
         console.log('fail get user by id', err);
@@ -270,7 +270,7 @@ export const getSeatById = async (id: number | string) => {
         } else {
             const result = await response.json();
             console.log('fail get seat by id : ', result.error);
-            return { error: result.error }
+            return { error: result.error || result.message as string }
         }
     } catch (err) {
         console.log('fail get seat by id', err);
@@ -297,7 +297,7 @@ export const getAllBuses = async () => {
             return buses as Bus[];
         } else {
             const result = await response.json();
-            console.log('fail get all buses : ', result.error);
+            console.log('fail get all buses : ', result.error || result.message);
         }
     } catch (err) {
         console.log('fail get all buses ', err);
@@ -324,7 +324,7 @@ export const createBus = async (createBusDto: CreateBusDto) => {
         } else {
             const result = await response.json();
             console.log('fail create bus : ', result.error);
-            return { error: result.error };
+            return { error: result.error || result.message as string };
         }
     } catch (err) {
         console.log('fail create bus', err);
@@ -349,7 +349,7 @@ export const destroyBus = async (id: number | string) => {
         if (response.status !== 204) {
             const result = await response.json();
             console.log('fail destroy bus', result.error);
-            return { error: result.error as string};
+            return { error: result.error || result.message as string};
         }
     } catch (err) {
         console.log('fail destroy bus', err);
@@ -375,7 +375,7 @@ export const updateBus = async (id: number | string, updateBusDto: CreateBusDto)
         if (response.status !== 200) {
             const result = await response.json();
             console.log('fail update bus', result.error);
-            return { error: result.error as string };
+            return { error: result.error || result.message as string };
         }
     } catch (err) {
         console.log('fail update bus', err);
@@ -435,4 +435,59 @@ export const storeSchedule = async (createScheduleDto: CreateScheduleDto) => {
         console.log('fail store schedule', err);
         return { error: 'something went wrong' };
      }
+}
+
+export const updateSchedule = async (updateScheduleDto: UpdateScheduleDto, id: string | number) => {
+    const session = await verifySession();
+    const { token } = session!
+
+    try {
+        const response = await fetch(`${baseUrl}/schedules/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(updateScheduleDto)
+        });
+
+        if (response.status === 200) {
+            return { success: true }
+        } else {
+            const result = await response.json();
+            console.log('fail update shcedule', result);
+            return { error: result.error || result.message as string }
+        }
+    } catch (err) {
+        console.log('fail update schedule', err);
+        return { error: 'something went wrong' };
+    }
+}
+
+export const destroySchedule = async (id: string | number) => {
+    const session = await verifySession();
+    const { token } = session!;
+
+    try {
+        const response = await fetch(`${baseUrl}/schedules/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 204) {
+            return { success: true }
+        } else {
+            const result = await response.json();
+            console.log('fail destroy schedule', result.error || result.message);
+            return { error: result.error || result.message as string }
+        }
+    } catch (err) {
+        console.log('fail destroy schedule', err);
+        return { error: 'something went wrong' }
+    }
 }

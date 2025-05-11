@@ -10,3 +10,10 @@ export type CreateScheduleDto = {
     bus_id: string | number,
     route_id: string | number
 }
+
+export type UpdateScheduleDto = {
+    time: string,
+    bus_id: string | number,
+    route_id: string | number,
+    closed: boolean
+}

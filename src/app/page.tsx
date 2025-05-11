@@ -16,6 +16,7 @@ export default async function Page() {
           <h1 className="text-6xl md:text-8xl font-bold"><span className="underline">BusK</span>ita</h1>
           <p className="text-sm md:text-base text-justify">BusKita adalah sebuah website yang dirancang untuk memudahkan mahasiswa dan tenaga kependidikan (tendik) Universitas Airlangga dalam melakukan pemesanan bus secara online. Dengan BusKita, pengguna dapat dengan mudah memilih jadwal perjalanan, memesan tiket, dan mengelola perjalanan mereka dengan lebih efisien.</p>
           <a href="#booking" className="py-2 px-4 text-sm md:text-base rounded-md bg-midnight-purple w-fit cursor-pointer hover:bg-gradient-end duration-300">Cara Booking</a>
+          <Link href="/schedule" className="py-2 w-full rounded-lg text-3xl bg-midnight-purple cursor-pointer hover:bg-white hover:text-black duration-300 text-center">Pesan Sekarang</Link>
         </div>
         
         <div className="bg-white rounded-2xl md:w-2/5 flex flex-col p-4 w-full md:p-10 gap-y-4 text-black">

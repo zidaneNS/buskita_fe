@@ -2,7 +2,7 @@ import { Seat } from "@/lib/type";
 
 export default function FilledSeatList({ seats }: { seats: Seat[] }) {
     return seats.length > 0 ? (
-        <table className="table-fixed border-collapse">
+        <table className="table-fixed border-collapse text-xs md:text-base">
             <thead>
                 <tr>
                     <th className="text-center pb-2 border-b border-white/40">Name</th>
@@ -16,7 +16,7 @@ export default function FilledSeatList({ seats }: { seats: Seat[] }) {
                         <td className="text-center py-2">{seat.user_name}</td>
                         <td className="text-center py-2">{seat.seat_number}</td>
                         <td className="flex justify-center py-2">
-                            <div className={`px-4 py-2 border ${seat.verified ? "border-green-500 text-green-500" : "border-red-500 text-red-500"} w-fit rounded-full`}>{seat.verified ? "Verified" : "Unverified"}</div>
+                            <div className={`px-4 py-2 ${seat.verified ? "bg-green-500/10 text-green-500" : "bg-red-500/10 text-red-500"} w-fit rounded-full font-semibold`}>{seat.verified ? "Verified" : "Unverified"}</div>
                         </td>
                     </tr>
                 ))}

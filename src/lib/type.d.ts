@@ -106,3 +106,19 @@ export type CreateScheduleState = | {
     message?: string,
     success?: boolean
 } | undefined
+
+export type UpdateScheduleState = | {
+    errors?: {
+        time?: string[],
+        bus_id?: string[],
+        route_id?: string[],
+        closed?: string[]
+    },
+    message?: string,
+    success?: boolean
+} | undefined
+
+export type DeleteScheduleState = | {
+    error?: string,
+    success?: boolean
+} | undefined

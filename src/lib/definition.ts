@@ -31,3 +31,10 @@ export const CreateScheduleSchema = z.object({
     bus_id: z.string().min(1, "field cannot empty").trim(),
     route_id: z.string().min(1, "field cannot empty").trim()
 });
+
+export const UpdateScheduleSchema = z.object({
+    time: z.string().datetime(),
+    bus_id: z.string().min(1, "field cannot empty").trim(),
+    route_id: z.string().min(1, "field cannot empty").trim(),
+    closed: z.boolean()
+});

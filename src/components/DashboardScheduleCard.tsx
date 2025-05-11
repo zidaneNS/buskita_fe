@@ -9,6 +9,7 @@ import { TbBus } from "react-icons/tb";
 import Modal from "./Modal";
 import ScheduleDetails from "./ScheduleDetails";
 import EditScheduleForm from "./EditScheduleForm";
+import DeleteScheduleForm from "./DeleteScheduleForm";
 
 export default function DashboardScheduleCard({ 
     schedule, 
@@ -30,6 +31,7 @@ export default function DashboardScheduleCard({
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [isDeleting, setIsDeleting] = useState<boolean>(false);
     return (
         <>
             {isOpen && (
@@ -46,13 +48,27 @@ export default function DashboardScheduleCard({
             )}
             {isEditing && (
                 <Modal>
-                    <div className="flex flex-col gap-y-4 px-6 py-4 rounded-md bg-dark-purple shadow-xl max-h-4/5 overflow-y-auto w-1/4">
+                    <div className="flex flex-col gap-y-4 px-6 py-4 rounded-md bg-dark-purple shadow-xl max-h-4/5 overflow-y-auto md:w-1/4">
+                        <h1 className="text-2xl font-semibold">Edit Schedule</h1>
+                        <p className="text-sm">Edit schedule informations</p>
                         <EditScheduleForm
                             routes={routes}
                             buses={buses}
+                            schedule={schedule}
+                            setIsEditing={setIsEditing}
                         />
                         <button onClick={() => setIsEditing(false)} className="py-2 w-full rounded-md border border-gray-400 cursor-pointer hover:bg-gray-400 duration-300">Cancel</button>
                     </div>
+                </Modal>
+            )}
+            {isDeleting && (
+                <Modal>
+                    <DeleteScheduleForm
+                        time={time}
+                        identity={identity}
+                        schedule={schedule}
+                        setIsDeleting={setIsDeleting}
+                    />
                 </Modal>
             )}
             <div onClick={() => setIsOpen(true)} className={`flex flex-col gap-y-6 w-full px-6 py-4 rounded-lg shadow-xl cursor-pointer hover:-translate-y-3 bg-black/40 border ${schedule.closed ? "border-red-500": "border-dark-purple"} hover:bg-black/30 duration-300`}>
@@ -87,7 +103,10 @@ export default function DashboardScheduleCard({
                     }} className="flex justify-center items-center p-2 rounded-md hover:bg-white/15 cursor-pointer duration-300">
                         <FaEdit className="size-6" />
                     </button>
-                    <button className="flex justify-center items-center p-2 rounded-md hover:bg-white/15 cursor-pointer duration-300">
+                    <button onClick={(e) => {
+                        e.stopPropagation();
+                        setIsDeleting(true);
+                    }} className="flex justify-center items-center p-2 rounded-md hover:bg-white/15 cursor-pointer duration-300">
                         <FaRegTrashAlt className="size-6 text-red-500" />
                     </button>
                 </div>
