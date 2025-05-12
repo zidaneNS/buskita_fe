@@ -75,7 +75,7 @@ export const checkUser = async (state: CheckState, formData: FormData) => {
     const { cipher } = validatedFields.data;
     const plain = cryptoDecrypt(cipher, PRIVATE_KEY, m_digit);
     const text = generatePlain(plain, m_digit);
-    const seat_id: number = parseInt(text);
+    const seat_id: number = JSON.parse(text);
 
     // console.log(seat_id);
 
