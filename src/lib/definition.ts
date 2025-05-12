@@ -22,8 +22,8 @@ export const CheckUserSchema = z.object({
 export const CreateBusSchema = z.object({
     identity: z.string().min(1, "field cannot empty").trim(),
     available_row: z.number().min(1, "field cannot empty"),
-    available_col: z.number().min(1, "field cannot empty"),
-    available_backseat: z.number().min(0, "field cannot empty")
+    available_col: z.number().min(1, "field cannot empty").max(12, "seat only available to 12"),
+    available_backseat: z.number().min(0, "field cannot empty").max(12, "seat only available to 12")
 });
 
 export const CreateScheduleSchema = z.object({

@@ -18,9 +18,9 @@ export default function BusEditForm({ selectedBus, setIsEditing }: { selectedBus
         }
     }, [state, setIsEditing]);
     return (
-        <div className="max-h-4/5 w-4/5 md:w-fit flex flex-col gap-y-4 p-4 md:py-4 md:px-6 rounded-lg bg-dark-purple shadow-xl overflow-y-auto scrollbar-thin">
+        <div className="max-h-4/5 max-w-6/7 md:w-fit flex flex-col gap-y-4 p-4 md:py-4 md:px-6 rounded-lg bg-dark-purple shadow-xl overflow-auto scrollbar-thin">
             <h1 className="w-full text-center text-lg md:text-2xl font-bold">Bus Information</h1>
-            <div className="flex flex-col md:flex-row items-center gap-y-6 md:gap-x-8">
+            <div className="flex flex-col md:flex-row md:items-center gap-y-6 md:gap-x-8">
                 <form action={action} className="flex flex-col gap-y-3">
                     <input type="hidden" name="id" value={selectedBus.id.toString()} />
                     <div className="flex flex-col gap-y-2">
@@ -44,7 +44,7 @@ export default function BusEditForm({ selectedBus, setIsEditing }: { selectedBus
                         <button className="w-full py-2 rounded-md bg-midnight-purple cursor-pointer hover:bg-white hover:text-black duration-300">Edit</button>
                     )}
                 </form>
-                <div className={`grid grid-cols-${selectedBus.available_backseat} gap-2`}>
+                <div className={`grid grid-cols-${selectedBus.available_backseat.toString()} gap-2 px-4`}>
                     {Array.from({ length: capacity }).map((_, i) => {
                         const index = i + 1;
                         let colStart = index;

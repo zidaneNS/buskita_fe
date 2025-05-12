@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { decrypt } from "./lib/session";
 
 // const publicRoutes = ['/', '/auth'];
-const protectedRoutes = ['/schedule', '/myschedule', '/dashboard'];
+const protectedRoutes = ['/schedule', '/myschedule', '/dashboard', '/telegram'];
 
 export default async function middleware(req: NextRequest) {
     const baseUrl = process.env.BASE_URL

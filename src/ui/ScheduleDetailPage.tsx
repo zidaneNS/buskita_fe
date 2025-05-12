@@ -64,7 +64,7 @@ export default function ScheduleDetailPage({ schedule, bus, user, seats }: { sch
                     <p className="hover:underline">Back to all offers</p>
                 </Link>
                 <section className="w-full flex flex-col md:flex-row gap-y-8 md:gap-x-18">
-                    <div className="w-full md:w-1/2 flex flex-col py-10 px-12 gap-y-16 bg-gradient-end rounded-lg shadow-2xl">
+                    <div className="w-full max-w-full overflow-x-auto md:w-1/2 flex flex-col py-10 px-12 gap-y-16 bg-gradient-end rounded-lg shadow-2xl">
                         <div className="flex flex-col gap-y-2">
                             <h1 className="text-xl font-semibold">Pick your seat</h1>
                             <p>Bus : {bus.identity}</p>

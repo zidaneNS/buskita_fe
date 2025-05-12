@@ -77,8 +77,6 @@ export const checkUser = async (state: CheckState, formData: FormData) => {
     const text = generatePlain(plain, m_digit);
     const seat_id: number = JSON.parse(text);
 
-    // console.log(seat_id);
-
     try {
         const seat = await getSeatById(seat_id) as Seat | null;
         if (!seat) {
@@ -112,6 +110,10 @@ export const addBus = async (state: CreateBusState, formData: FormData) => {
     }
 
     const { identity, available_row, available_col, available_backseat} = validatedFields.data;
+
+    if (available_col > available_backseat) {
+        return { error: 'total column cannot greater than total backseats' }
+    }
 
     try {
         const dto: CreateBusDto = {
@@ -163,6 +165,10 @@ export const changeBus = async (state: CreateBusState, formData: FormData) => {
     }
 
     const { identity, available_row, available_col, available_backseat } = validatedFields.data;
+
+    if (available_col > available_backseat) {
+        return { error: 'total column cannot greater than total backseats' }
+    }
 
     const updateBusDto: CreateBusDto = {
         identity,

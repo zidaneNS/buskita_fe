@@ -17,7 +17,7 @@ export default function NavLinkSection() {
         },
         {
             text: 'Telegram',
-            href: '#'
+            href: '/telegram'
         },
         {
             text: 'My Schedule',
