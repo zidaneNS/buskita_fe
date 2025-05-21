@@ -4,7 +4,7 @@ import LinkFooterSection from "./LinkFooterSection";
 
 export default function Footer() {
     return (
-        <footer className="h-screen w-full flex justify-center items-center bg-dark-purple">
+        <footer className="h-screen w-full flex justify-center items-center bg-dark-purple text-white">
             <div className="w-fit flex flex-col gap-y-12">
                 <div className="flex gap-x-4 w-full items-center justify-center">
                     <Image
