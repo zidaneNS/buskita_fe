@@ -1,6 +1,8 @@
 'use client';
 
-import { Bus, Seat, User } from "@/lib/type";
+import { Bus } from "@/lib/type/bus";
+import { Seat } from "@/lib/type/seat";
+import { User } from "@/lib/type/user";
 import { Dispatch, SetStateAction } from "react";
 
 export default function SeatSection({ 
@@ -21,18 +23,18 @@ export default function SeatSection({
         isEditing: boolean
     }) {
 
-    const row = bus.available_row;
-    const col = bus.available_col;
-    const backseat = bus.available_backseat;
+    const row = bus.totalRow;
+    const col = bus.totalCol;
+    const backseat = bus.totalBackseat;
 
-    const sortedSeats = seats.sort((a, b) => parseInt(a.seat_number as string) - parseInt(b.seat_number as string));
+    const sortedSeats = seats.sort((a, b) => a.seatNumber - b.seatNumber);
 
-    const seatsUserId = seats.filter(seat => seat.user_name !== null).map(seat => seat.user_name);
+    const seatsUserId = seats.filter(seat => seat.user?.name !== null).map(seat => seat.user?.name);
 
     const handleClick = (seat: Seat) => {
-        if (!seat.user_name && !seatsUserId.includes(user.name) || isEditing) {
-            setSelected(seat.seat_number as number);
-            setSeatId(seat.id);
+        if (!seat.user?.name && !seatsUserId.includes(user.name) || isEditing) {
+            setSelected(seat.seatNumber as number);
+            setSeatId(seat.seatId);
         }
     }
 
@@ -65,9 +67,9 @@ export default function SeatSection({
                     <span 
                         key={i} 
                         onClick={() => handleClick(seat)} 
-                        className={`p-2 hover:bg-lime-400 duration-300 cursor-pointer text-black text-sm text-center rounded-md col-start-${colStart} ${selected == index && !seat.user_name ? "bg-lime-400" : seat.user_name ? "bg-teal-700" : "bg-white"}`}
+                        className={`p-2 hover:bg-lime-400 duration-300 cursor-pointer text-black text-sm text-center rounded-md col-start-${colStart} ${selected == index && !seat.user?.name ? "bg-lime-400" : seat.user?.name ? "bg-teal-700" : "bg-white"}`}
                     >
-                        {seat.seat_number}
+                        {seat.seatNumber}
                     </span>
                 )
             })}

@@ -1,4 +1,6 @@
-import { Schedule, Seat, User } from "@/lib/type";
+import { Schedule } from "@/lib/type/schedule";
+import { Seat } from "@/lib/type/seat";
+import { User } from "@/lib/type/user";
 import Image from "next/image";
 
 export default function SeatDetail({
@@ -29,11 +31,11 @@ export default function SeatDetail({
                 />
                 <div className="flex flex-col text-lg">
                     <p>Route</p>
-                    <p className="font-bold">{schedule.route_name}</p>
+                    <p className="font-bold">{schedule.route?.name}</p>
                 </div>
             </div>
             <p>Name : {user.name}</p>
-            <p>Seat : {userSeat && !isEditing ? userSeat.seat_number : selected}</p>
+            <p>Seat : {userSeat && !isEditing ? userSeat.seatNumber : selected}</p>
             <p>Date : {date}</p>
         </div>
     )

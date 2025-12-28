@@ -4,7 +4,6 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import SeatSection from "./SeatSection";
 import { useActionState, useEffect, useState } from "react";
-import { Bus, Schedule, Seat, User } from "@/lib/type";
 import { format } from "date-fns";
 import { bookSeat, changeSeat } from "@/lib/formAction";
 import ErrorInputForm from "@/components/ErrorInputForm";
@@ -12,6 +11,10 @@ import UpdateSeatForm from "./UpdateSeatForm";
 import Modal from "@/components/Modal";
 import SeatDetail from "./SeatDetail";
 import QrPresence from "@/components/QrPresence";
+import { Schedule } from "@/lib/type/schedule";
+import { Bus } from "@/lib/type/bus";
+import { User } from "@/lib/type/user";
+import { Seat } from "@/lib/type/seat";
 
 export default function ScheduleDetailPage({ schedule, bus, user, seats }: { schedule: Schedule, bus: Bus, user: User, seats: Seat[] }) {
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -25,11 +28,11 @@ export default function ScheduleDetailPage({ schedule, bus, user, seats }: { sch
     
     const date = format(new Date(schedule.time), "dd MMMM yyyy");
     
-    const seatUser = seats.filter(seat => seat.user_name !== null).map(seat => seat.user_name);
-    const userSeat = seats.filter(seat => seat.user_name === user.name)[0] || null;
+    const seatUser = seats.filter(seat => seat.user?.name !== null).map(seat => seat.user?.name);
+    const userSeat = seats.filter(seat => seat.user?.name === user.name)[0] || null;
     const alreadyBooked = seatUser.includes(user.name);
 
-    const preparedChangeSeat = changeSeat.bind(null, undefined, userSeat?.id, seatId);
+    const preparedChangeSeat = changeSeat.bind(null, undefined, userSeat?.seatId, seatId);
     const [updateState, updateAction, updatePending] = useActionState(preparedChangeSeat, undefined);
 
     const handleEditButton = () => {
@@ -67,7 +70,7 @@ export default function ScheduleDetailPage({ schedule, bus, user, seats }: { sch
                     <div className="w-full max-w-full overflow-x-auto md:w-1/2 flex flex-col py-10 px-12 gap-y-16 bg-gradient-end rounded-lg shadow-2xl">
                         <div className="flex flex-col gap-y-2">
                             <h1 className="text-xl font-semibold">Pick your seat</h1>
-                            <p>Bus : {bus.identity}</p>
+                            <p>Bus : {bus.name}</p>
                         </div>
                         <SeatSection 
                             selected={selected} 
