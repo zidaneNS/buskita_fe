@@ -1,8 +1,8 @@
 import DashboardScheduleCardWrapper from "@/components/DashboardScheduleCardWrapper";
-import { Schedule } from "@/lib/type";
+import { ScheduleCard } from "@/lib/type/schedule";
 import { Suspense } from "react";
 
-export default function ScheduleList({ schedules }: { schedules: Schedule[] }) {
+export default function ScheduleList({ schedules }: { schedules: ScheduleCard[] }) {
     return (
         <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-3">
             {schedules.map((schedule, i) => (

@@ -1,4 +1,5 @@
-import { Seat } from "@/lib/type";
+import { Seat } from "@/lib/type/seat";
+
 
 export default function FilledSeatList({ seats }: { seats: Seat[] }) {
     return seats.length > 0 ? (
@@ -13,8 +14,8 @@ export default function FilledSeatList({ seats }: { seats: Seat[] }) {
             <tbody>
                 {seats.map((seat, i) => (
                     <tr key={i}>
-                        <td className="text-center py-2">{seat.user_name}</td>
-                        <td className="text-center py-2">{seat.seat_number}</td>
+                        <td className="text-center py-2">{seat.user?.name}</td>
+                        <td className="text-center py-2">{seat.seatNumber}</td>
                         <td className="flex justify-center py-2">
                             <div className={`px-4 py-2 ${seat.verified ? "bg-green-500/10 text-green-500" : "bg-red-500/10 text-red-500"} w-fit rounded-full font-semibold`}>{seat.verified ? "Verified" : "Unverified"}</div>
                         </td>

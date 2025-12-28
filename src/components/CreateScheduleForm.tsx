@@ -1,11 +1,12 @@
 'use client';
 
 import { createSchedule } from "@/lib/formAction";
-import { Bus, RouteType } from "@/lib/type";
 import { Dispatch, SetStateAction, useActionState, useEffect } from "react";
 import ErrorInputForm from "./ErrorInputForm";
+import { Bus } from "@/lib/type/bus";
+import { Route } from "@/lib/type/schedule";
 
-export default function CreateScheduleForm({ buses, routes, setIsCreating }: { buses: Bus[], routes: RouteType[], setIsCreating: Dispatch<SetStateAction<boolean>> }) {
+export default function CreateScheduleForm({ buses, routes, setIsCreating }: { buses: Bus[], routes: Route[], setIsCreating: Dispatch<SetStateAction<boolean>> }) {
     const [state, action, pending] = useActionState(createSchedule, undefined);
 
     useEffect(() => {
@@ -25,11 +26,11 @@ export default function CreateScheduleForm({ buses, routes, setIsCreating }: { b
                 <select name="bus_id" id="bus_id" className="px-4 py-2 rounded-md bg-white text-black">
                     <option value="">Select a bus</option>
                     {buses.map((bus, i) => {
-                        const identity = bus.identity.padStart(2, '0');
-                        const capacity = bus.available_row * bus.available_col + bus.available_backseat;
+                        const identity = bus.name.padStart(2, '0');
+                        const capacity = bus.totalRow * bus.totalCol + bus.totalBackseat;
 
                         return (
-                            <option value={bus.id} key={i}>Bus: {identity} | Capacity: {capacity}</option>
+                            <option value={bus.busId} key={i}>Bus: {identity} | Capacity: {capacity}</option>
                         )
                     })}
                 </select>
@@ -40,7 +41,7 @@ export default function CreateScheduleForm({ buses, routes, setIsCreating }: { b
                 <select name="route_id" id="route_id" className="px-4 py-2 rounded-md bg-white text-black">
                     <option value="">Select a route</option>
                     {routes.map((route, i) => (
-                        <option value={route.id} key={i}>{route.route_name}</option>
+                        <option value={route.routeId} key={i}>{route.name}</option>
                     ))}
                 </select>
                 {state?.errors?.route_id && <ErrorInputForm errMsg={state.errors.route_id} />}

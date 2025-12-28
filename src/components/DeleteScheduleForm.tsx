@@ -1,8 +1,8 @@
 import { deleteSchedule } from "@/lib/formAction"
-import { Schedule } from "@/lib/type"
 import { Dispatch, SetStateAction, useActionState, useEffect } from "react"
 import { CiWarning } from "react-icons/ci"
 import ErrorInputForm from "./ErrorInputForm"
+import { ScheduleCard } from "@/lib/type/schedule"
 
 export default function DeleteScheduleForm({
     time,
@@ -12,10 +12,10 @@ export default function DeleteScheduleForm({
 }: {
     time: string,
     identity: string,
-    schedule: Schedule,
+    schedule: ScheduleCard,
     setIsDeleting: Dispatch<SetStateAction<boolean>>
 }) {
-    const deleteScheduleWithId = deleteSchedule.bind(null, undefined, schedule.id);
+    const deleteScheduleWithId = deleteSchedule.bind(null, undefined, schedule.scheduleId);
     const [state, action, pending] = useActionState(deleteScheduleWithId, undefined);
 
     useEffect(() => {
@@ -34,7 +34,7 @@ export default function DeleteScheduleForm({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-slate-600 w-full">
                 <p className="border border-slate-600 md:px-4 md:py-2 p-2 rounded-md text-center">Time: {time}</p>
                 <p className="border border-slate-600 md:px-4 md:py-2 p-2 rounded-md text-center">Bus Identity: {identity}</p>
-                <p className="border border-slate-600 md:px-4 md:py-2 p-2 rounded-md text-center">Route: {schedule.route_name}</p>
+                <p className="border border-slate-600 md:px-4 md:py-2 p-2 rounded-md text-center">Route: {schedule.route?.name}</p>
             </div>
             <form className="w-full" action={action}>
                 {pending ? (

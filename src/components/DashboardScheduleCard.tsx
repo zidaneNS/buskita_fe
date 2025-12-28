@@ -1,6 +1,5 @@
 'use client';
 
-import { Bus, RouteType, Schedule, Seat } from "@/lib/type";
 import { format } from "date-fns";
 import { useState } from "react";
 import { CiLock, CiRoute, CiUser } from "react-icons/ci";
@@ -10,6 +9,9 @@ import Modal from "./Modal";
 import ScheduleDetails from "./ScheduleDetails";
 import EditScheduleForm from "./EditScheduleForm";
 import DeleteScheduleForm from "./DeleteScheduleForm";
+import { Route, ScheduleCard } from "@/lib/type/schedule";
+import { Seat } from "@/lib/type/seat";
+import { Bus } from "@/lib/type/bus";
 
 export default function DashboardScheduleCard({ 
     schedule, 
@@ -17,16 +19,16 @@ export default function DashboardScheduleCard({
     routes,
     buses
 }: { 
-    schedule: Schedule, 
+    schedule: ScheduleCard, 
     seats: Seat[],
-    routes: RouteType[],
+    routes: Route[],
     buses: Bus[]
 }) {
-    const filledSeats = seats.filter(seat => seat.user_name !== null);
+    const filledSeats = seats.filter(seat => seat.user?.name !== null);
 
     const date = format(schedule.time, "dd MMMM yyyy");
     const time = format(schedule.time, "HH:mm");
-    const identity = schedule.bus_identity.padStart(2, '0');
+    const identity = schedule.bus?.name.padStart(2, '0') || '';
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -70,11 +72,11 @@ export default function DashboardScheduleCard({
                     />
                 </Modal>
             )}
-            <div onClick={() => setIsOpen(true)} className={`flex flex-col gap-y-6 w-full px-6 py-4 rounded-lg shadow-xl cursor-pointer hover:-translate-y-3 bg-black/40 border ${schedule.closed ? "border-red-500": "border-dark-purple"} hover:bg-black/30 duration-300`}>
+            <div onClick={() => setIsOpen(true)} className={`flex flex-col gap-y-6 w-full px-6 py-4 rounded-lg shadow-xl cursor-pointer hover:-translate-y-3 bg-black/40 border ${schedule.isClosed ? "border-red-500": "border-dark-purple"} hover:bg-black/30 duration-300`}>
                 <div className="flex flex-col gap-y-2 w-full">
                     <div className="flex gap-x-6 items-center w-full">
                         <p className="text-2xl font-bold">{time}</p>
-                        {schedule.closed && (
+                        {schedule.isClosed && (
                             <div className="flex gap-x-1 w-fit items-center py-1 px-4 rounded-full bg-red-500">
                                 <CiLock className="size-5" />
                                 <p className="text-sm">Closed</p>
@@ -84,7 +86,7 @@ export default function DashboardScheduleCard({
                     <p className="text-xs">{date}</p>
                     <div className="flex gap-x-3 items-center">
                         <CiRoute className="size-8" />
-                        <p className="font-semibold">{schedule.route_name}</p>
+                        <p className="font-semibold">{schedule.route?.name}</p>
                     </div>
                     <div className="flex gap-x-3 items-center">
                         <TbBus className="size-8" />

@@ -1,6 +1,5 @@
 'use client';
 
-import { Schedule, Seat, User } from "@/lib/type";
 import { add, format } from "date-fns";
 import Link from "next/link";
 import { FaBusAlt } from "react-icons/fa";
@@ -11,12 +10,15 @@ import { cancelSchedule } from "@/lib/formAction";
 import ErrorInputForm from "./ErrorInputForm";
 import QRCode from "react-qr-code";
 import { cryptoEncrypt, generateAscii, m_digit, PUBLIC_KEY } from "@/lib/crypto";
+import { ScheduleCard } from "@/lib/type/schedule";
+import { User } from "@/lib/type/user";
+import { Seat } from "@/lib/type/seat";
 
-export default function MyScheduleCard({ schedule, user, seats }: { schedule: Schedule, user: User, seats: Seat[] }) {
+export default function MyScheduleCard({ schedule, user, seats }: { schedule: ScheduleCard, user: User, seats: Seat[] }) {
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
-    const filledSeats = seats.filter(seat => seat.user_name !== null);
-    const seat = seats.filter(seat => seat.user_name === user.name)[0];
+    const filledSeats = seats.filter(seat => seat.user?.name !== null);
+    const seat = seats.filter(seat => seat.user?.name === user.name)[0];
 
     const time = format(new Date(schedule.time), "HH:mm");
     const timeEnd = add(new Date(schedule.time), { hours: 1 });
@@ -24,10 +26,10 @@ export default function MyScheduleCard({ schedule, user, seats }: { schedule: Sc
 
     const date = format(new Date(schedule.time), "dd MMMM yyyy");
 
-    const cancelScheduleWithId = cancelSchedule.bind(null, undefined, seat.id);
+    const cancelScheduleWithId = cancelSchedule.bind(null, undefined, seat.seatId);
     const [state, action, pending] = useActionState(cancelScheduleWithId, undefined);
 
-    const information = seat.id;
+    const information = seat.seatId;
     const text = JSON.stringify(information);
     const ascii = generateAscii(text, m_digit);
     const cipher = cryptoEncrypt(ascii, PUBLIC_KEY, m_digit);
@@ -48,9 +50,9 @@ export default function MyScheduleCard({ schedule, user, seats }: { schedule: Sc
                             <div className="w-fit gap-y-2 text-slate-700">
                                 <p>Are you sure want to cancel this schedule ?</p>
                                 <p><span className="text-sm font-semibold">Time</span> : {time} - {timeEndStr}</p>
-                                <p><span className="text-sm font-semibold">Bus</span> : {schedule.bus_identity}</p>
+                                <p><span className="text-sm font-semibold">Bus</span> : {schedule.bus?.name}</p>
                                 <p><span className="text-sm font-semibold">Date</span> : {date}</p>
-                                <p><span className="text-sm font-semibold">Seat</span> : {seat.seat_number}</p>
+                                <p><span className="text-sm font-semibold">Seat</span> : {seat.seatNumber}</p>
                                 <p><span className="text-sm font-semibold">Filled</span> : {filledSeats.length}/{seats.length}</p>
                             </div>
                             {state?.errors && <ErrorInputForm errMsg={state.errors} />}
@@ -74,7 +76,7 @@ export default function MyScheduleCard({ schedule, user, seats }: { schedule: Sc
                     <div className="flex w-full justify-between items-center">
                         <div className="flex gap-x-2 items-center">
                             <FaBusAlt className="size-5" />
-                            <p className="text-base md:text-xl font-bold">{schedule.route_name}</p> 
+                            <p className="text-base md:text-xl font-bold">{schedule.route?.name}</p> 
                         </div>
                         <p className="text-xs md:text-lg font-semibold">{time} - {timeEndStr}</p>
                     </div>
@@ -82,16 +84,16 @@ export default function MyScheduleCard({ schedule, user, seats }: { schedule: Sc
                 <div className="flex flex-col md:flex-row justify-between mt-auto md:items-center gap-y-4">
                     <div className="flex flex-col w-fit mt-auto">
                         <p className="text-sm mb-3 w-full">no. {cipher}</p>
-                        <p><span className="text-sm md:text-base font- w-full">Bus</span> : {schedule.bus_identity}</p>
+                        <p><span className="text-sm md:text-base font- w-full">Bus</span> : {schedule.bus?.name}</p>
                         <p><span className="text-sm md:text-base font-semibold w-full">Date</span> : {date}</p>
-                        <p><span className="text-sm md:text-base font-semibold w-full">Seat</span> : {seat.seat_number}</p>
+                        <p><span className="text-sm md:text-base font-semibold w-full">Seat</span> : {seat.seatNumber}</p>
                         <p><span className="text-sm md:text-base font-semibold w-full">Filled</span> : {filledSeats.length}/{seats.length}</p>
                     </div>
                     <div className="flex flex-col w-full mt-auto items-center md:w-fit">
                         <QRCode size={96} className="p-2 bg-white rounded-md" value={cipher} />
                     </div>
                     <div className="flex flex-col md:mt-auto gap-y-2 w-full md:w-fit mt-3">
-                        <Link href={`/schedule/${schedule.id}`} className="w-full py-2 px-6 text-xs duration-300 rounded-md bg-midnight-purple text-white cursor-pointer text-center hover:bg-midnight-purple/70">View</Link>
+                        <Link href={`/schedule/${schedule.scheduleId}`} className="w-full py-2 px-6 text-xs duration-300 rounded-md bg-midnight-purple text-white cursor-pointer text-center hover:bg-midnight-purple/70">View</Link>
                         <button onClick={() => setIsOpenModal(true)} className="w-full py-2 px-6 text-xs duration-300 rounded-md bg-red-600 text-white cursor-pointer hover:bg-red-400">Cancel</button>
                     </div>
                 </div>

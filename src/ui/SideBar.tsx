@@ -6,9 +6,9 @@ import DashboardLinkSection from "./DashboardLinkSection";
 import { CiLogout } from "react-icons/ci";
 import { useState } from "react";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
-import { User } from "@/lib/type";
 import { logout } from "@/lib/auth";
 import { useRouter } from "next/navigation";
+import { User } from "@/lib/type/user";
 
 export default function SideBar({ user }: { user: User }) {
     const [isOpen, setIsOpen] = useState<boolean>(false);

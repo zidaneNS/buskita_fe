@@ -2,13 +2,14 @@
 
 import CreateScheduleForm from "@/components/CreateScheduleForm";
 import Modal from "@/components/Modal";
-import { Bus, RouteType } from "@/lib/type";
+import { Bus } from "@/lib/type/bus";
+import { Route } from "@/lib/type/schedule";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { MdAdd } from "react-icons/md";
 
-export default function ScheduleHeadSection({ buses, routes }: { buses: Bus[], routes: RouteType[] }) {
+export default function ScheduleHeadSection({ buses, routes }: { buses: Bus[], routes: Route[] }) {
     const [isCreating, setIsCreating] = useState<boolean>(false);
     const pathname = usePathname();
     const searchParams = useSearchParams();

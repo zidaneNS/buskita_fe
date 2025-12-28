@@ -5,7 +5,8 @@ import { MdClose } from "react-icons/md";
 import { TbBus } from "react-icons/tb";
 import FilledSeatList from "./FIlledSeatList";
 import { Dispatch, SetStateAction } from "react";
-import { Schedule, Seat } from "@/lib/type";
+import { ScheduleCard } from "@/lib/type/schedule";
+import { Seat } from "@/lib/type/seat";
 
 export default function ScheduleDetails({
     setIsOpen,
@@ -18,7 +19,7 @@ export default function ScheduleDetails({
     setIsOpen: Dispatch<SetStateAction<boolean>>,
     time: string,
     identity: string,
-    schedule: Schedule,
+    schedule: ScheduleCard,
     filledSeats: Seat[],
     seats: Seat[]
 }) {
@@ -41,19 +42,19 @@ export default function ScheduleDetails({
                 </div>
                 <div className="flex items-center gap-x-4">
                     <LuRoute className="text-purple-300 size-6"/>
-                    <p>{schedule.route_name}</p>
+                    <p>{schedule.route?.name}</p>
                 </div>
                 <div className="flex items-center gap-x-4">
                     <FaRegUser className="text-purple-300 size-6"/>
                     <p>{filledSeats.length}/{seats.length} Passengers</p>
                 </div>
                 <div className="flex items-center gap-x-4">
-                    {schedule.closed ? (
+                    {schedule.isClosed ? (
                         <FaLock className="text-purple-300 size-6"/>
                     ) : (
                         <FaLockOpen className="text-purple-300 size-6"/>
                     )}
-                    <p>{schedule.closed ? "Closed" : "Open"}</p>
+                    <p>{schedule.isClosed ? "Closed" : "Open"}</p>
                 </div>
             </div>
             <FilledSeatList seats={filledSeats} />
