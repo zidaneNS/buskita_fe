@@ -15,3 +15,8 @@ export interface User extends DefaultModel {
   creditScore: number;
   role?: Role;
 }
+
+export interface SignInDto {
+  userId: string;
+  password: string;
+}

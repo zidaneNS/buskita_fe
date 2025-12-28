@@ -1,4 +1,4 @@
-import { getAllBuses } from "@/lib/action";
+import { getAllBuses } from "@/api/buses";
 import BusHeadPage from "@/ui/BusHeadPage";
 import BusListWrapper from "@/ui/BusListWrapper";
 import { Suspense } from "react";

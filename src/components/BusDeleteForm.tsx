@@ -1,14 +1,14 @@
 import { deleteBus } from "@/lib/formAction";
-import { Bus } from "@/lib/type";
 import { Dispatch, SetStateAction, useActionState, useEffect } from "react";
 import { CiWarning } from "react-icons/ci";
 import ErrorInputForm from "./ErrorInputForm";
+import { Bus } from "@/lib/type/bus";
 
 export default function BusDeleteForm({ setIsDeleting, selectedBus }: { setIsDeleting: Dispatch<SetStateAction<boolean>>, selectedBus: Bus }) {
-    const capacity = selectedBus.available_row * selectedBus.available_col + selectedBus.available_backseat;
-    const identity = selectedBus.identity.padStart(2, '0');
+    const capacity = selectedBus.totalRow * selectedBus.totalCol + selectedBus.totalBackseat;
+    const identity = selectedBus.name.padStart(2, '0');
 
-    const deleteBusWithId = deleteBus.bind(null, undefined, selectedBus.id);
+    const deleteBusWithId = deleteBus.bind(null, undefined, selectedBus.busId);
     const [state, action, pending] = useActionState(deleteBusWithId, undefined);
 
     useEffect(() => {
@@ -25,9 +25,9 @@ export default function BusDeleteForm({ setIsDeleting, selectedBus }: { setIsDel
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-slate-600 w-full">
                 <p className="border border-slate-600 md:px-4 md:py-2 p-2 rounded-md text-center">identity: {identity}</p>
                 <p className="border border-slate-600 md:px-4 md:py-2 p-2 rounded-md text-center">Capacity: {capacity}</p>
-                <p className="border border-slate-600 md:px-4 md:py-2 p-2 rounded-md text-center">Total Rows: {selectedBus.available_row}</p>
-                <p className="border border-slate-600 md:px-4 md:py-2 p-2 rounded-md text-center">Total Columns: {selectedBus.available_col}</p>
-                <p className="border border-slate-600 md:px-4 md:py-2 p-2 rounded-md text-center">Total Backseats: {selectedBus.available_backseat}</p>
+                <p className="border border-slate-600 md:px-4 md:py-2 p-2 rounded-md text-center">Total Rows: {selectedBus.totalRow}</p>
+                <p className="border border-slate-600 md:px-4 md:py-2 p-2 rounded-md text-center">Total Columns: {selectedBus.totalCol}</p>
+                <p className="border border-slate-600 md:px-4 md:py-2 p-2 rounded-md text-center">Total Backseats: {selectedBus.totalBackseat}</p>
             </div>
             <form className="w-full" action={action}>
                 {pending ? (

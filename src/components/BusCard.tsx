@@ -1,6 +1,6 @@
 'use client';
 
-import { Bus } from "@/lib/type";
+import { Bus } from "@/lib/type/bus";
 import { Dispatch, SetStateAction } from "react";
 import { FaBusAlt } from "react-icons/fa";
 
@@ -15,8 +15,8 @@ export default function BusCard({
     setSelectedBus: Dispatch<SetStateAction<Bus>>,
     setIsEditing: Dispatch<SetStateAction<boolean>>
 }) {
-    const identity = bus.identity.padStart(2, '0');
-    const capacity = bus.available_row * bus.available_col + bus.available_backseat;
+    const identity = bus.name.padStart(2, '0');
+    const capacity = bus.totalRow * bus.totalCol + bus.totalBackseat;
     const handleDelete = () => {
         setIsDeleting(true);
         setSelectedBus(bus);

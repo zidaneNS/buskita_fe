@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "axios": "^1.13.2",
     "date-fns": "^4.1.0",
     "html5-qrcode": "^2.3.8",
     "jose": "^6.0.10",

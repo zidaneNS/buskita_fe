@@ -12,3 +12,7 @@ export async function getBusBySchedule(scheduleId: string): Promise<Bus | null> 
 
   return foundBus;
 }
+
+export async function getAllBuses(): Promise<Bus[] | undefined> {
+  return buses;
+}

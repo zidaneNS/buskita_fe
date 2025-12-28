@@ -1,13 +1,13 @@
-import { Bus } from "@/lib/type";
 import { Dispatch, SetStateAction, useActionState, useEffect } from "react";
 import AddBusInputForm from "./AddBusInputForm";
 import { changeBus } from "@/lib/formAction";
 import ErrorInputForm from "./ErrorInputForm";
+import { Bus } from "@/lib/type/bus";
 
 export default function BusEditForm({ selectedBus, setIsEditing }: { selectedBus: Bus, setIsEditing: Dispatch<SetStateAction<boolean>> }) {
-    const row = selectedBus.available_row;
-    const col = selectedBus.available_col;
-    const backseat = selectedBus.available_backseat;
+    const row = selectedBus.totalRow;
+    const col = selectedBus.totalCol;
+    const backseat = selectedBus.totalBackseat;
     const capacity =  row * col + backseat;
 
     const [state, action, pending] = useActionState(changeBus, undefined);
@@ -22,18 +22,18 @@ export default function BusEditForm({ selectedBus, setIsEditing }: { selectedBus
             <h1 className="w-full text-center text-lg md:text-2xl font-bold">Bus Information</h1>
             <div className="flex flex-col md:flex-row md:items-center gap-y-6 md:gap-x-8">
                 <form action={action} className="flex flex-col gap-y-3">
-                    <input type="hidden" name="id" value={selectedBus.id.toString()} />
+                    <input type="hidden" name="id" value={selectedBus.busId.toString()} />
                     <div className="flex flex-col gap-y-2">
-                        <AddBusInputForm value={selectedBus.identity} name="identity" type="text" title="Identity" placeholder="07">
+                        <AddBusInputForm value={selectedBus.name} name="identity" type="text" title="Identity" placeholder="07">
                             {state?.errors?.identity && <ErrorInputForm errMsg={state.errors.identity} />}
                         </AddBusInputForm>
-                        <AddBusInputForm value={selectedBus.available_row} name="available_row" type="number" title="Total Rows" placeholder="Input number of rows" minValue={1}>
+                        <AddBusInputForm value={selectedBus.totalRow} name="available_row" type="number" title="Total Rows" placeholder="Input number of rows" minValue={1}>
                             {state?.errors?.available_row && <ErrorInputForm errMsg={state.errors.available_row} />}
                         </AddBusInputForm>
-                        <AddBusInputForm value={selectedBus.available_col} name="available_col" type="number" title="Total Columns" placeholder="Input number of columns" minValue={1}>
+                        <AddBusInputForm value={selectedBus.totalCol} name="available_col" type="number" title="Total Columns" placeholder="Input number of columns" minValue={1}>
                             {state?.errors?.available_col && <ErrorInputForm errMsg={state.errors.available_col} />}
                         </AddBusInputForm>
-                        <AddBusInputForm value={selectedBus.available_backseat} name="available_backseat" type="number" title="Total Backseats" placeholder="Input number of backseats" minValue={0}>
+                        <AddBusInputForm value={selectedBus.totalBackseat} name="available_backseat" type="number" title="Total Backseats" placeholder="Input number of backseats" minValue={0}>
                             {state?.errors?.available_backseat && <ErrorInputForm errMsg={state.errors.available_backseat} />}
                         </AddBusInputForm>
                         {state?.error && <ErrorInputForm errMsg={state.error} />}
@@ -44,7 +44,7 @@ export default function BusEditForm({ selectedBus, setIsEditing }: { selectedBus
                         <button className="w-full py-2 rounded-md bg-midnight-purple cursor-pointer hover:bg-white hover:text-black duration-300">Edit</button>
                     )}
                 </form>
-                <div className={`grid grid-cols-${selectedBus.available_backseat.toString()} gap-2 px-4`}>
+                <div className={`grid grid-cols-${selectedBus.totalBackseat.toString()} gap-2 px-4`}>
                     {Array.from({ length: capacity }).map((_, i) => {
                         const index = i + 1;
                         let colStart = index;
