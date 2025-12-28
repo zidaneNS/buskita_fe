@@ -14,11 +14,12 @@ export default async function middleware(req: NextRequest) {
     const cookie = (await cookies()).get('session')?.value;
     
     const session = await decrypt(cookie);
-    if (isProtectedRoute && !session?.token) {
-        return NextResponse.redirect(new URL('/auth', req.nextUrl));
-    }
+    // if (isProtectedRoute && !session?.token) {
+    //     return NextResponse.redirect(new URL('/auth', req.nextUrl));
+    // }
     
-    const response = await fetch(`${baseUrl}/user`, {
+    console.log(`${baseUrl}/user/info`);
+    const response = await fetch(`${baseUrl}/user/info`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -31,6 +32,7 @@ export default async function middleware(req: NextRequest) {
         console.log('will redirect invalid action');
         return NextResponse.redirect(new URL('/invalid', req.nextUrl));
     }
+    // return NextResponse.redirect(new URL('/invalid', req.nextUrl));
 }
 
 export const config = {

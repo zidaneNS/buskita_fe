@@ -5,6 +5,7 @@ import Navbar from "@/ui/Navbar";
 import Footer from "@/ui/Footer";
 import React from "react";
 import { getUser } from "@/lib/dal";
+import { user } from "@/mockup/user";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -23,7 +24,7 @@ export default async function RootLayout({
   children: React.ReactNode,
   auth: React.ReactNode
 }>) {
-  const user = await getUser();
+  // const user = await getUser();
   return (
     <html lang="en" className="scrollbar-thin scrollbar-track-gradient-end/70 scrollbar-thumb-midnight-purple">
       <body

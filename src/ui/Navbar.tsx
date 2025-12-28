@@ -6,12 +6,12 @@ import { useEffect, useState } from "react";
 import NavLinkSection from "./NavLinkSection";
 import MobileNavLinkSection from "./MobileNavLinkSection";
 import { usePathname, useRouter } from "next/navigation";
-import { User } from "@/lib/type";
 import { logout } from "@/lib/auth";
 import { FaChevronRight } from "react-icons/fa";
 import { CiLogout, CiSettings } from "react-icons/ci";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdClose } from "react-icons/md";
+import { User } from "@/lib/type/user";
 
 export default function Navbar({ user }: { user: User | undefined | null }) {
     const [isTop, setIsTop] = useState<boolean>(true);
@@ -58,7 +58,7 @@ export default function Navbar({ user }: { user: User | undefined | null }) {
                             <p className="text-sm">{user.name}</p>
                         </div>
                         <div className={`absolute top-full right-0 ${isOpen ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0"} mt-2 flex flex-col gap-y-4 bg-slate-700 py-4 px-6 rounded-lg shadow-xl min-w-64 origin-top duration-300`}>
-                            <p className="w-full pb-2 border-b border-white text-sm text-center">{user.nim_nip}</p>
+                            <p className="w-full pb-2 border-b border-white text-sm text-center">{user.userId}</p>
                             <p className="w-full pb-2 border-b border-white text-sm text-center">{user.email}</p>
                             <button onClick={() => router.push('/dashboard')} className="py-2 rounded-lg bg-slate-600 text-sm hover:bg-slate-400 duration-300 cursor-pointer flex gap-x-3 items-center justify-center">
                                 <CiSettings className="size-6" />
@@ -80,7 +80,7 @@ export default function Navbar({ user }: { user: User | undefined | null }) {
                         <MdClose onClick={() => setIsOpen(false)} className="size-8 cursor-pointer" />
                         {user ? (
                             <div className="flex flex-col gap-y-3">
-                                <p className="w-full pb-2 border-b border-white text-sm text-center">{user.nim_nip}</p>
+                                <p className="w-full pb-2 border-b border-white text-sm text-center">{user.userId}</p>
                                 <p className="w-full pb-2 border-b border-white text-sm text-center">{user.email}</p>
                                 <button onClick={() => router.push('/dashboard')} className="py-2 rounded-lg bg-slate-500 text-white text-sm hover:bg-slate-600/50 duration-300 cursor-pointer flex gap-x-3 items-center justify-center">
                                     <CiSettings className="size-6" />

@@ -1,5 +1,5 @@
+import { getSchedules, getUserSchedule } from "@/api/schedules";
 import DropDown from "@/components/DropDown";
-import { getSchedules, getUserSchedule } from "@/lib/action";
 import { getUser } from "@/lib/dal";
 import { dummyDates, dummyRoutes } from "@/lib/dummyData";
 import ScheduleHomeSection from "@/ui/ScheduleHomeSection";
@@ -20,7 +20,7 @@ export default async function Page() {
                 <div className="w-full shadow-xl bg-white rounded-xl py-2 px-4 md:py-6 md:px-10 text-black flex flex-col gap-y-3">
                     <div className="border-b border-black w-full flex flex-col pb-2">
                         <p className="text-sm md:text-base">Your Credits</p>
-                        <p className="text-base md:text-lg font-semibold">{user?.credit_score} Credits</p>
+                        <p className="text-base md:text-lg font-semibold">{user?.creditScore} Credits</p>
                     </div>
                     <div className="w-full flex justify-between">
                         <div className="w-full md:justify-between flex flex-col md:flex-row gap-y-3 text-white">

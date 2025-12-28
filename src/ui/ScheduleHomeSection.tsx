@@ -1,13 +1,13 @@
 import ScheduleCardHome from "@/components/ScheduleCardHome";
-import { Schedule } from "@/lib/type";
+import { ScheduleCard } from "@/lib/type/schedule";
 import { use } from "react";
 
-export default function ScheduleHomeSection({ schedules, userSchedules }: { schedules: Promise<Schedule[] | null>, userSchedules: Promise<Schedule[] | null> }) {
+export default function ScheduleHomeSection({ schedules, userSchedules }: { schedules: Promise<ScheduleCard[] | null>, userSchedules: Promise<ScheduleCard[] | null> }) {
     const allSchedules = use(schedules) || [];
     const allUserSchedules = use(userSchedules) || [];
 
     const filteredSchedules = allSchedules.filter(schedule => 
-        !allUserSchedules.some(userSchedule => userSchedule.id === schedule.id)
+        !allUserSchedules.some(userSchedule => userSchedule.scheduleId === schedule.scheduleId)
     );
 
     return (
