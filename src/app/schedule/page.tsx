@@ -1,5 +1,5 @@
-import { getSchedules, getUserSchedule } from "@/api/schedules";
 import DropDown from "@/components/DropDown";
+import { getSchedules, getUserSchedule } from "@/lib/action";
 import { getUser } from "@/lib/dal";
 import { dummyDates, dummyRoutes } from "@/lib/dummyData";
 import ScheduleHomeSection from "@/ui/ScheduleHomeSection";

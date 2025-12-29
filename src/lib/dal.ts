@@ -3,7 +3,8 @@ import 'server-only';
 import { cookies } from 'next/headers';
 import { cache } from 'react';
 import { decrypt } from './session';
-import { User } from './type';
+import { DefaultResponse } from './type';
+import { User } from './type/user';
 
 const baseUrl = process.env.BASE_URL;
 
@@ -26,7 +27,7 @@ export const getUser = cache(async () => {
     const { token } = session;
 
     try {
-        const response = await fetch(`${baseUrl}/user`, {
+        const response = await fetch(`${baseUrl}/users/info`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -35,9 +36,10 @@ export const getUser = cache(async () => {
             }
         });
 
-        if (response.status === 200) {
-            const user = await response.json();
-            return user as User;
+        const result = await response.json() as DefaultResponse<User>;
+        
+        if (result.payloads?.data) {
+            return result.payloads.data;
         } else {
             console.log('failed fetching user data');
             return null;

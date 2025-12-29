@@ -16,9 +16,9 @@ import { Seat } from "@/lib/type/seat";
 
 export default function MyScheduleCard({ schedule, user, seats }: { schedule: ScheduleCard, user: User, seats: Seat[] }) {
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-
-    const filledSeats = seats.filter(seat => seat.user?.name !== null);
-    const seat = seats.filter(seat => seat.user?.name === user.name)[0];
+    
+    const filledSeats = seats.filter(st => st.user?.name !== null);
+    const seat = seats.find(st => st.userId === user.userId)!;
 
     const time = format(new Date(schedule.time), "HH:mm");
     const timeEnd = add(new Date(schedule.time), { hours: 1 });
@@ -26,11 +26,11 @@ export default function MyScheduleCard({ schedule, user, seats }: { schedule: Sc
 
     const date = format(new Date(schedule.time), "dd MMMM yyyy");
 
-    const cancelScheduleWithId = cancelSchedule.bind(null, undefined, seat.seatId);
+    const cancelScheduleWithId = cancelSchedule.bind(null, undefined, seat!.seatId);
     const [state, action, pending] = useActionState(cancelScheduleWithId, undefined);
 
-    const information = seat.seatId;
-    const text = JSON.stringify(information);
+    const information = seat?.seatId;
+    const text = JSON.stringify('test');
     const ascii = generateAscii(text, m_digit);
     const cipher = cryptoEncrypt(ascii, PUBLIC_KEY, m_digit);
 

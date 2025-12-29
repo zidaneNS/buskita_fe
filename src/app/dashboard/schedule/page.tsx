@@ -1,13 +1,11 @@
 import { getAllBuses, getRoutes, getSchedules } from "@/lib/action";
-import { buses } from "@/mockup/buses";
-import { routes } from "@/mockup/routes";
 import { schedules } from "@/mockup/schedules";
 import ScheduleHeadSection from "@/ui/ScheduleHeadSection";
 import ScheduleList from "@/ui/ScheduleList";
 
 export default async function Page({ searchParams }: { searchParams: Promise<{ [key: string]: string }>}) {
-    // const buses = await getAllBuses() || [];
-    // const routes = await getRoutes() || [];
+    const buses = await getAllBuses() || [];
+    const routes = await getRoutes() || [];
 
     const { search } = await searchParams;
 

@@ -2,8 +2,9 @@
 
 import { SignInFormSchema, SignUpFormSchema } from "./definition";
 import { createSession, deleteSession } from "./session";
-import { SignInFormState, SignUpFormState } from "./type";
+import { DefaultResponse, SignInFormState, SignUpFormState } from "./type";
 import { verifySession } from "./dal";
+import { User } from "./type/user";
 
 const baseUrl = process.env.BASE_URL;
 
@@ -76,35 +77,38 @@ export const signin = async (state: SignInFormState, formData: FormData) => {
     const { nim_nip, password } = validatedFields.data;
 
     try {
-        const response = await fetch(`${baseUrl}/login`, {
+        const response = await fetch(`${baseUrl}/auth/signin`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             },
             body: JSON.stringify({
-                nim_nip,
+                userId: nim_nip,
                 password
             })
         });
+
+        const result = await response.json() as DefaultResponse<string>;
+
+        if (result.payloads?.data) {
+            const token = result.payloads.data;
+            await createSession(token);
+            return { success: true }
+        }
 
         if (response.status === 500) {
             return { message: "server error" }
         } else if (response.status === 422) {
             return { message: "credentials error"}
-        } else if (response.status === 200) {
-            const { token } = await response.json();
-            await createSession(token);
-            
-            return { success: true }
         } else if (response.status === 400) {
-            const result = await response.json();
-            return { message: result.error }
+            return { message: result.message }
         } else {
             return { message: "uncatch error" }
         }
+
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 }
 

@@ -1,9 +1,7 @@
 // import { getAllBuses, getRoutes, getSeatsBySchedule } from "@/lib/action";
 import DashboardScheduleCard from "./DashboardScheduleCard";
 import { ScheduleCard } from "@/lib/type/schedule";
-import { routes } from "@/mockup/routes";
-import { buses } from "@/mockup/buses";
-import { getSeatsBySchedule } from "@/api/schedules";
+import { getAllBuses, getRoutes, getSeatsBySchedule } from "@/lib/action";
 
 export default async function DashboardScheduleCardWrapper({
     schedule
@@ -11,8 +9,8 @@ export default async function DashboardScheduleCardWrapper({
     schedule: ScheduleCard
 }) {
     const seats = await getSeatsBySchedule(schedule.scheduleId) || [];
-    // const routes = await getRoutes() || [];
-    // const buses = await getAllBuses() || [];
+    const routes = await getRoutes() || [];
+    const buses = await getAllBuses() || [];
 
     return <DashboardScheduleCard schedule={schedule} seats={seats} routes={routes} buses={buses} />
 }

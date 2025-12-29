@@ -143,3 +143,11 @@ export type UpdateProfileState = | {
   message?: string,
   success?: boolean
 } | undefined
+
+export interface DefaultResponse<T> {
+  statusCode: number;
+  message: string;
+  payloads?: {
+    data: T
+  }
+}

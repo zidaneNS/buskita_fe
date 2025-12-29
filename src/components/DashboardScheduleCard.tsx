@@ -24,7 +24,7 @@ export default function DashboardScheduleCard({
     routes: Route[],
     buses: Bus[]
 }) {
-    const filledSeats = seats.filter(seat => seat.user?.name !== null);
+    const filledSeats = seats.filter(seat => seat.userId !== null);
 
     const date = format(schedule.time, "dd MMMM yyyy");
     const time = format(schedule.time, "HH:mm");

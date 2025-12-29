@@ -2,7 +2,7 @@
 
 import RadioButton from "@/components/RadioButton";
 import userContext from "@/context/UserContext";
-import { User } from "@/lib/type";
+import { User } from "@/lib/type/user";
 import { useContext, useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 
@@ -19,7 +19,7 @@ export default function UserFilterSection({ initUsers }: { initUsers: User[] }) 
         let filteredUsers = [...initUsers];
 
         if (role !== 'all') {
-            filteredUsers = filteredUsers.filter(user => user.role_name.toLowerCase() === role.toLowerCase());
+            filteredUsers = filteredUsers.filter(user => user.role?.name.toLowerCase() === role.toLowerCase());
         }
 
         if (term.length > 0) {
@@ -27,8 +27,8 @@ export default function UserFilterSection({ initUsers }: { initUsers: User[] }) 
             filteredUsers = filteredUsers.filter(user =>
                 user.name.toLowerCase().includes(lowerTerm) ||
                 user.email.toLowerCase().includes(lowerTerm) ||
-                user.role_name.toLowerCase().includes(lowerTerm) ||
-                user.nim_nip.toLowerCase().includes(lowerTerm)
+                user.role?.name.toLowerCase().includes(lowerTerm) ||
+                user.userId.toLowerCase().includes(lowerTerm)
             );
         }
 
