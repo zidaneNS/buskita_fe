@@ -5,6 +5,7 @@ import { createSession, deleteSession } from "./session";
 import { DefaultResponse, SignInFormState, SignUpFormState } from "./type";
 import { verifySession } from "./dal";
 import { User } from "./type/user";
+import { CreateCoDto } from "./dto";
 
 const baseUrl = process.env.BASE_URL;
 
@@ -27,34 +28,36 @@ export const signup = async (state: SignUpFormState, formData: FormData) => {
     }
 
     const { nim_nip, name, email, phone_number, address, password, password_confirmation } = validatedFields.data;
+    const createUserDto: CreateCoDto = {
+        userId: nim_nip,
+        name,
+        email,
+        phoneNumber: phone_number,
+        address,
+        password,
+        confirmPassword: password_confirmation,
+        roleId: 3
+    }
 
     try {
-        const response = await fetch(`${baseUrl}/register`, {
+        const response = await fetch(`${baseUrl}/auth/signup`, {
             method: "POST",
-            body: JSON.stringify({
-                nim_nip,
-                name,
-                email,
-                phone_number,
-                address,
-                password,
-                password_confirmation,
-                role_id: 3
-            }),
+            body: JSON.stringify(createUserDto),
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
-        })
+        });
 
-        if (response.status === 422) {
+        const result = await response.json() as DefaultResponse<User>;
+        if (result.payloads?.data) {
+            return {success: true}
+        } else if (response.status === 422) {
             return {  message: "system error" }
-        } else if (response.status === 201) {
-            return { success: true }
-        } else if (response.status === 500) {
-            return {  message: "server error" }
+        }  else if (response.status === 500) {
+            return {  message: result.message || "server error" }
         } else {
-            return { message: "uncatch error"}
+            return { message: result.message || "uncatch error"}
         }
     } catch (err) {
         console.log(err)
@@ -104,7 +107,7 @@ export const signin = async (state: SignInFormState, formData: FormData) => {
         } else if (response.status === 400) {
             return { message: result.message }
         } else {
-            return { message: "uncatch error" }
+            return { message: result.message || 'uncatch error' }
         }
 
     } catch (err) {

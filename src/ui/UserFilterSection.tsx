@@ -6,11 +6,11 @@ import { User } from "@/lib/type/user";
 import { useContext, useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 
-export type RadioRoleType = "all" | "co" | "passenger"
+export type RadioRoleType = "all" | "admin" | "superadmin"
 
 export default function UserFilterSection({ initUsers }: { initUsers: User[] }) {
     const { setUsers } = useContext(userContext);
-    const radioValues: RadioRoleType[] = ['all', 'co', 'passenger'];
+    const radioValues: RadioRoleType[] = ['all', 'admin', 'superadmin'];
 
     const [term, setTerm] = useState<string>("");
     const [role, setRole] = useState<RadioRoleType>('all');

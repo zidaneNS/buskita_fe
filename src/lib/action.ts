@@ -1,8 +1,8 @@
 import { verifySession } from "./dal";
-import { CreateBusDto, CreateScheduleDto, UpdateProfileDto, UpdateScheduleDto } from "./dto";
+import { CreateBusDto, CreateScheduleDto, UpdateProfileDto } from "./dto";
 import { DefaultResponse } from "./type";
 import { Bus } from "./type/bus";
-import { Route, ScheduleCard } from "./type/schedule";
+import { Route, Schedule, ScheduleCard } from "./type/schedule";
 import { Seat } from "./type/seat";
 import { User } from "./type/user";
 
@@ -65,9 +65,8 @@ export const getSeatsBySchedule = async (id: string | number) => {
 export const getBusBySchedule = async (id: string | number) => {
   const session = await verifySession();
   const { token } = session!;
-
   try {
-    const response = await fetch(`${baseUrl}/bus/schedule/${id}`, {
+    const response = await fetch(`${baseUrl}/buses/schedule/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -76,9 +75,9 @@ export const getBusBySchedule = async (id: string | number) => {
       }
     });
 
-    if (response.status === 200) {
-      const bus = await response.json();
-      return bus as Bus;
+    const result = await response.json() as DefaultResponse<Bus>;
+    if (result.payloads?.data) {
+      return result.payloads.data
     } else {
       console.log('failed fetch bus by schedule', response.status);
       return null
@@ -142,70 +141,59 @@ export const getUserSchedule = async () => {
   }
 }
 
-export const attachSeat = async (seat_id: string | number) => {
+export const attachSeat = async (seat_id: string | number): Promise<DefaultResponse<Seat>> => {
   const session = await verifySession();
   const { token } = session!;
 
   try {
-    const response = await fetch(`${baseUrl}/seats`, {
-      method: "POST",
+    const response = await fetch(`${baseUrl}/seats/attach/${seat_id}`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
         "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        seat_id
-      })
+      }
     });
 
-    if (response.status === 200) {
-      await response.json();
-    } else {
-      const result = await response.json();
-      return { error: result.error || result.message as string }
-    }
+    const result = await response.json() as DefaultResponse<Seat>;
+    return result;
   } catch (err) {
     console.log('fail book seat', err);
-    return { error: 'something went wrong' }
+    return { message: 'something went wrong', statusCode: 500 }
   }
 }
 
-export const updateSeat = async (seat_id: string | number, new_seat_id: string | number) => {
+export const updateSeat = async (seat_id: string | number, new_seat_id: string | number): Promise<DefaultResponse<Seat>> => {
   const session = await verifySession();
   const { token } = session!;
 
   try {
     const response = await fetch(`${baseUrl}/seats/${seat_id}`, {
-      method: "PUT",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
         "Authorization": `Bearer ${token}`
       },
       body: JSON.stringify({
-        new_seat_id: new_seat_id
+        seatId: new_seat_id
       })
     });
 
-    if (response.status === 200) {
-      await response.json();
-    } else {
-      const result = await response.json();
-      return { error: result.error || result.message as string }
-    }
+    const result = await response.json() as DefaultResponse<Seat>;
+    return result;
   } catch (err) {
     console.log('fail update seat', err);
-    return { error: 'something went wrong' }
+    return { message: 'something went wrong', statusCode: 500 }
   }
 }
 
-export const detachSeat = async (id: number | string) => {
+export const detachSeat = async (id: number | string): Promise<DefaultResponse<null>> => {
   const session = await verifySession();
   const { token } = session!;
 
   try {
-    const response = await fetch(`${baseUrl}/seats/${id}`, {
+    const response = await fetch(`${baseUrl}/seats/detach/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -214,14 +202,11 @@ export const detachSeat = async (id: number | string) => {
       }
     });
 
-    if (response.status !== 204) {
-      const result = await response.json();
-      console.log('fail detach seat', result.error);
-      return { error: result.error || result.message as string }
-    }
+    const result = await response.json() as DefaultResponse<null>;
+    return result;
   } catch (err) {
     console.log('fail detach seat', err);
-    return { error: 'something went wrong' }
+    return { message: 'something went wrong', statusCode: 500 }
   }
 }
 
@@ -305,7 +290,7 @@ export const getAllBuses = async () => {
   }
 }
 
-export const createBus = async (createBusDto: CreateBusDto) => {
+export const createBus = async (createBusDto: CreateBusDto): Promise<DefaultResponse<Bus>> => {
   const session = await verifySession();
   const { token } = session!;
 
@@ -320,20 +305,16 @@ export const createBus = async (createBusDto: CreateBusDto) => {
       body: JSON.stringify(createBusDto)
     });
 
-    if (response.status === 201) {
-      return { success: true }
-    } else {
-      const result = await response.json();
-      console.log('fail create bus : ', result.error);
-      return { error: result.error || result.message as string };
-    }
+    const result = await response.json() as DefaultResponse<Bus>;
+    return result;
+
   } catch (err) {
     console.log('fail create bus', err);
-    return { error: 'something went wrong' }
+    return { message: 'something went wrong', statusCode: 500 }
   }
 }
 
-export const destroyBus = async (id: number | string) => {
+export const destroyBus = async (id: number | string): Promise<DefaultResponse<null>> => {
   const session = await verifySession();
   const { token } = session!;
 
@@ -347,18 +328,15 @@ export const destroyBus = async (id: number | string) => {
       }
     });
 
-    if (response.status !== 204) {
-      const result = await response.json();
-      console.log('fail destroy bus', result.error);
-      return { error: result.error || result.message as string };
-    }
+    const result = await response.json() as DefaultResponse<null>;
+    return result;
   } catch (err) {
     console.log('fail destroy bus', err);
-    return { error: 'something went wrong' };
+    return { message: 'something went wrong', statusCode: 500 };
   }
 }
 
-export const updateBus = async (id: number | string, updateBusDto: CreateBusDto) => {
+export const updateBus = async (id: number | string, updateBusDto: CreateBusDto): Promise<DefaultResponse<Bus>> => {
   const session = await verifySession();
   const { token } = session!;
 
@@ -373,14 +351,11 @@ export const updateBus = async (id: number | string, updateBusDto: CreateBusDto)
       body: JSON.stringify(updateBusDto)
     });
 
-    if (response.status !== 200) {
-      const result = await response.json();
-      console.log('fail update bus', result.error);
-      return { error: result.error || result.message as string };
-    }
+    const result = await response.json() as DefaultResponse<Bus>;
+    return result;
   } catch (err) {
     console.log('fail update bus', err);
-    return { error: 'something went wrong' }
+    return { message: 'something went wrong', statusCode: 500 }
   }
 }
 
@@ -410,7 +385,7 @@ export const getRoutes = async () => {
   }
 }
 
-export const storeSchedule = async (createScheduleDto: CreateScheduleDto) => {
+export const storeSchedule = async (createScheduleDto: CreateScheduleDto): Promise<DefaultResponse<Schedule>> => {
   const session = await verifySession();
   const { token } = session!
 
@@ -425,20 +400,15 @@ export const storeSchedule = async (createScheduleDto: CreateScheduleDto) => {
       body: JSON.stringify(createScheduleDto)
     });
 
-    if (response.status !== 201) {
-      const result = await response.json();
-      console.log('fail store schedule', result.error);
-      return { error: result.error as string };
-    } else {
-      return { success: true }
-    }
+    const result = await response.json() as DefaultResponse<Schedule>;
+    return result;
   } catch (err) {
     console.log('fail store schedule', err);
-    return { error: 'something went wrong' };
+    return { message: 'something went wrong', statusCode: 500 };
   }
 }
 
-export const updateSchedule = async (updateScheduleDto: UpdateScheduleDto, id: string | number) => {
+export const updateSchedule = async (updateScheduleDto: CreateScheduleDto, id: string | number): Promise<DefaultResponse<Schedule>> => {
   const session = await verifySession();
   const { token } = session!
 
@@ -453,20 +423,16 @@ export const updateSchedule = async (updateScheduleDto: UpdateScheduleDto, id: s
       body: JSON.stringify(updateScheduleDto)
     });
 
-    if (response.status === 200) {
-      return { success: true }
-    } else {
-      const result = await response.json();
-      console.log('fail update shcedule', result);
-      return { error: result.error || result.message as string }
-    }
+    const result = await response.json() as DefaultResponse<Schedule>
+
+    return result;
   } catch (err) {
     console.log('fail update schedule', err);
-    return { error: 'something went wrong' };
+    return { message: 'something went wrong', statusCode: 500 };
   }
 }
 
-export const destroySchedule = async (id: string | number) => {
+export const destroySchedule = async (id: string | number): Promise<DefaultResponse<null>> => {
   const session = await verifySession();
   const { token } = session!;
 
@@ -480,16 +446,12 @@ export const destroySchedule = async (id: string | number) => {
       }
     });
 
-    if (response.status === 204) {
-      return { success: true }
-    } else {
-      const result = await response.json();
-      console.log('fail destroy schedule', result.error || result.message);
-      return { error: result.error || result.message as string }
-    }
+    const result = await response.json() as DefaultResponse<null>;
+    return result;
+
   } catch (err) {
     console.log('fail destroy schedule', err);
-    return { error: 'something went wrong' }
+    return { message: 'something went wrong', statusCode: 500 }
   }
 }
 

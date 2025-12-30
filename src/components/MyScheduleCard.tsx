@@ -17,7 +17,7 @@ import { Seat } from "@/lib/type/seat";
 export default function MyScheduleCard({ schedule, user, seats }: { schedule: ScheduleCard, user: User, seats: Seat[] }) {
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
     
-    const filledSeats = seats.filter(st => st.user?.name !== null);
+    const filledSeats = seats.filter(st => st.userId !== null);
     const seat = seats.find(st => st.userId === user.userId)!;
 
     const time = format(new Date(schedule.time), "HH:mm");

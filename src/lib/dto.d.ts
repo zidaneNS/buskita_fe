@@ -1,21 +1,15 @@
 export type CreateBusDto = {
-    identity: string,
-    available_row: number,
-    available_col: number,
-    available_backseat: number
+    name: string;
+    totalRow: number;
+    totalCol: number;
+    totalBackseat: number
 }
 
 export type CreateScheduleDto = {
     time: string,
-    bus_id: string | number,
-    route_id: string | number
-}
-
-export type UpdateScheduleDto = {
-    time: string,
-    bus_id: string | number,
-    route_id: string | number,
-    closed: boolean
+    busId: string,
+    routeId: string,
+    isClosed: boolean,
 }
 
 export type UpdateProfileDto = {
@@ -24,4 +18,15 @@ export type UpdateProfileDto = {
     email: string,
     phone_number: string,
     address: string
+}
+
+export type CreateCoDto = {
+    userId: string;
+    name: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    address: string;
+    phoneNumber: string;
+    roleId: 1 | 2 | 3;
 }

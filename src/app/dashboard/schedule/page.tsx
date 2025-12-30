@@ -9,7 +9,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
 
     const { search } = await searchParams;
 
-    const rawSchedules = schedules;
+    const rawSchedules = await getSchedules() || [];
     const finalSchedules = search ? rawSchedules.filter(schedule => schedule.bus?.name.toLowerCase().includes(search.toLowerCase()) ||
     schedule.route?.name.toLowerCase().includes(search.toLowerCase()) ||
     schedule.time.toString().toLowerCase().includes(search.toLowerCase())) : rawSchedules;
