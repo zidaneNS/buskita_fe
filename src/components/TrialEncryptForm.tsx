@@ -35,7 +35,7 @@ export default function TrialEncryptForm({
   }, [decryptState]);
 
   return (
-    <div className="flex flex-col flex-1 md:w-1/3 w-full gap-y-8">
+    <div className="flex flex-col flex-1 md:w-1/3 w-full gap-y-8 pb-8">
       <h2 className="text-3xl font-semibold text-center">Current encryption key</h2>
       <div className="w-full flex gap-x-8 items-center">
         <div className="flex flex-col w-full gap-y-2">
@@ -65,7 +65,7 @@ export default function TrialEncryptForm({
         </div>
         {decryptPending ? <p className="text-center w-full">Loading...</p> : <button className="w-full bg-purple-900 py-2 text-center rounded-md cursor-pointer hover:bg-white hover:text-dark-purple duration-300">Get decrypted data</button>}
       </form>
-      <p className="px-4 bg-black/40 py-2 rounded-md w-full">{decrypted ? decrypted : 'undefined'}</p>
+      <p className="px-4 bg-black/40 py-2 rounded-md w-full h-auto break-words">{decrypted ? decrypted : 'undefined'}</p>
     </div>
   )
 }

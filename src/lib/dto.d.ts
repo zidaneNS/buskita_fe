@@ -42,3 +42,7 @@ export type GenerateKeyDto = {
     toitent: number;
     eValue: number;
 }
+export interface SignInDto {
+  userId: string;
+  password: string;
+}

@@ -1,50 +1,65 @@
-import { ScheduleCard } from "./type/schedule";
-
-export interface Role {
-  roleId: string;
-  name: string
+export interface DefaultModel {
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+export interface Role extends DefaultModel {
+  roleId: number;
+  name: string;
 }
 
-export type User = {
-  userId: string,
-  name: string,
-  email: string,
-  phoneNumber: string,
-  address: string,
-  creditScore: number,
-  roleId: string,
-  role?: Role
+export interface User extends DefaultModel {
+  userId: string;
+  name: string;
+  email: string;
+  phoneNumber: string;
+  address: string;
+  roleId: number;
+  creditScore: number;
+  role?: Role;
 }
 
-export type Schedule = {
-  id: string | number,
-  time: Date,
-  bus_identity: string,
-  route_name: string,
-  closed: boolean
+export interface Schedule extends DefaultModel {
+  scheduleId: string;
+  time: Date;
+  isClosed: false;
+  busId: string;
+  routeId: string;
+  bus?: Bus;
+  route?: Route;
+  users?: User[];
 }
 
-export type Seat = {
-  id: string | number,
-  seat_number: string | number,
-  user_name: string | null,
-  verified: boolean,
-  user_id: string | number | null,
-  schedule_id: string | number
+export interface ScheduleCard extends Schedule {
+  totalSeats: number;
+  totalUser: number;
 }
 
-export type Bus = {
-  id: string | number,
-  identity: string,
-  available_row: number,
-  available_col: number,
-  available_backseat: number
+export interface Seat extends DefaultModel {
+  seatId: string;
+  busId: string;
+  userId?: string;
+  scheduleId: string;
+  seatNumber: number;
+  verified: boolean;
+  bus?: Bus;
+  user?: User;
+  schedule?: ScheduleCard;
 }
 
-export type RouteType = {
-  id: string | number,
-  route_name: string
+export interface Bus extends DefaultModel {
+  busId: string;
+  name: string;
+  totalRow: number;
+  totalCol: number;
+  totalBackseat: number;
 }
+
+export interface Route extends DefaultModel {
+  routeId: string;
+  name: string;
+}
+
+
 
 export type SessionPayload = {
   token: string,
@@ -214,6 +229,6 @@ export interface Plaintext {
   seatNumber: number;
 }
 
-export interface EncryptedSchedule extends ScheduleCard {
+export interface EncryptedSeat extends Seat {
   ciphertext: string;
 }

@@ -3,8 +3,7 @@ import 'server-only';
 import { cookies } from 'next/headers';
 import { cache } from 'react';
 import { decrypt } from './session';
-import { DefaultResponse } from './type';
-import { User } from './type/user';
+import { DefaultResponse, User } from './type';
 
 const baseUrl = process.env.BASE_URL;
 

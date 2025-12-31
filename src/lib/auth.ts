@@ -2,9 +2,8 @@
 
 import { SignInFormSchema, SignUpFormSchema } from "./definition";
 import { createSession, deleteSession } from "./session";
-import { DefaultResponse, SignInFormState, SignUpFormState } from "./type";
+import { DefaultResponse, SignInFormState, SignUpFormState, User } from "./type";
 import { verifySession } from "./dal";
-import { User } from "./type/user";
 import { CreateCoDto } from "./dto";
 
 const baseUrl = process.env.BASE_URL;

@@ -2,11 +2,7 @@ import 'server-only';
 
 import { verifySession } from "./dal";
 import { CreateBusDto, CreateScheduleDto, GenerateEvaluesDto, GenerateKeyDto, UpdateProfileDto } from "./dto";
-import { DefaultResponse, GenerateEValuesResponse, PublicKey } from "./type";
-import { Bus } from "./type/bus";
-import { Route, Schedule, ScheduleCard } from "./type/schedule";
-import { Seat } from "./type/seat";
-import { User } from "./type/user";
+import { Bus, DefaultResponse, GenerateEValuesResponse, PublicKey, Route, Schedule, ScheduleCard, Seat, User } from "./type";
 
 const baseUrl = process.env.BASE_URL;
 
@@ -116,7 +112,7 @@ export const getScheduleById = async (id: string | number) => {
   }
 }
 
-export const getUserSchedule = async () => {
+export const getUserSeatWithSchedule = async () => {
   const session = await verifySession();
   const { token } = session!;
 
@@ -130,7 +126,7 @@ export const getUserSchedule = async () => {
       }
     });
 
-    const result = await response.json() as DefaultResponse<ScheduleCard[]>
+    const result = await response.json() as DefaultResponse<Seat[]>
     if (result.payloads?.data) {
       return result.payloads.data
     } else {

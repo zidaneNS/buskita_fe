@@ -1,4 +1,5 @@
-import { ScheduleCard } from "@/lib/type/schedule";
+
+import { ScheduleCard } from "@/lib/type";
 import { add, format } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";

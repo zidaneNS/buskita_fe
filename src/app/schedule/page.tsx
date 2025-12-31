@@ -1,5 +1,5 @@
 import DropDown from "@/components/DropDown";
-import { getSchedules, getUserSchedule } from "@/lib/action";
+import { getSchedules } from "@/lib/action";
 import { getUser } from "@/lib/dal";
 import { dummyDates, dummyRoutes } from "@/lib/dummyData";
 import ScheduleHomeSection from "@/ui/ScheduleHomeSection";
@@ -10,8 +10,7 @@ export default async function Page() {
     const routes = dummyRoutes;
     const dates = dummyDates;
 
-    const schedules = getSchedules();
-    const userSchedules = getUserSchedule();
+    const schedules = await getSchedules() || [];
     const user = await getUser();
     return (
         <main className="flex flex-col gap-y-6 px-6 md:px-32 pt-24 md:pt-32 pb-10 w-full min-h-screen">
@@ -49,7 +48,7 @@ export default async function Page() {
                 <h1 className="text-xl md:text-3xl font-bold">Results</h1>
                 <div className="h-full overflow-y-auto pr-6 py-4 scrollbar-thin scrollbar-track-gradient-end/70 scrollbar-thumb-midnight-purple">
                     <Suspense fallback={<div>Loading...</div>}>
-                        <ScheduleHomeSection userSchedules={userSchedules} schedules={schedules} />
+                        <ScheduleHomeSection user={user!} schedules={schedules} />
                     </Suspense>
                 </div>
             </section>

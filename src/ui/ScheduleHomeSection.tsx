@@ -1,24 +1,25 @@
 import ScheduleCardHome from "@/components/ScheduleCardHome";
-import { ScheduleCard } from "@/lib/type/schedule";
-import { use } from "react";
+import { ScheduleCard, User } from "@/lib/type";
 
-export default function ScheduleHomeSection({ schedules, userSchedules }: { schedules: Promise<ScheduleCard[] | null>, userSchedules: Promise<ScheduleCard[] | null> }) {
-    const allSchedules = use(schedules) || [];
-    const allUserSchedules = use(userSchedules) || [];
+export interface ScheduleHomeSectionProps {
+  schedules: ScheduleCard[];
+  user: User;
+}
 
-    const filteredSchedules = allSchedules.filter(schedule => 
-        !allUserSchedules.some(userSchedule => userSchedule.scheduleId === schedule.scheduleId)
-    );
-
-    return (
-        <div className="w-full max-h-full grid grid-cols-1 md:grid-cols-3 gap-y-6 gap-x-8">
-            { filteredSchedules ? 
-                filteredSchedules.map((schedule, i) => (
-                    <ScheduleCardHome key={i} schedule={schedule} />
-                ))
-            : (
-                <div>Schedule empty</div>
-            )}
-        </div>
-    )
+export default function ScheduleHomeSection({
+  schedules,
+  user
+}: ScheduleHomeSectionProps) {
+  const filteredSchedules = schedules.filter(schedule => schedule.users?.some(us => us.userId !== user.userId));
+  return (
+    <div className="w-full max-h-full grid grid-cols-1 md:grid-cols-3 gap-y-6 gap-x-8">
+      {filteredSchedules ?
+        filteredSchedules.map((schedule, i) => (
+          <ScheduleCardHome key={i} schedule={schedule} />
+        ))
+        : (
+          <div>Schedule empty</div>
+        )}
+    </div>
+  )
 }
