@@ -1,11 +1,11 @@
 'use server';
 
 import { revalidatePath } from "next/cache";
-import { attachSeat, createBus, destroyBus, destroySchedule, detachSeat, generateEvaluesReq, getScheduleById, getSeatById, getUserById, storeSchedule, updateBus, updateProfile, updateSchedule, updateSeat, verify } from "./action";
-import { BookSeatState, CheckState, CreateBusState, CreateScheduleState, DefaultResponse, DeleteScheduleState, DestroyBusState, GenerateEValuesState, Schedule, Seat, SignUpFormState, UpdateProfileState, UpdateScheduleState, User, VerifyState } from "./type";
-import { CheckUserSchema, CreateBusSchema, CreateScheduleSchema, GenerateEvaluesSchema, SignUpFormSchema, UpdateProfileFormSchema, UpdateScheduleSchema } from "./definition";
+import { attachSeat, createBus, destroyBus, destroySchedule, detachSeat, generateEvaluesReq, generateKeyReq, getScheduleById, getSeatById, getUserById, storeSchedule, updateBus, updateProfile, updateSchedule, updateSeat, verify } from "./action";
+import { BookSeatState, CheckState, CreateBusState, CreateScheduleState, DefaultResponse, DeleteScheduleState, DestroyBusState, GenerateEValuesState, GenerateKeyState, Schedule, Seat, SignUpFormState, UpdateProfileState, UpdateScheduleState, User, VerifyState } from "./type";
+import { CheckUserSchema, CreateBusSchema, CreateScheduleSchema, GenerateEvaluesSchema, GenerateKeySchema, SignUpFormSchema, UpdateProfileFormSchema, UpdateScheduleSchema } from "./definition";
 import { cryptoDecrypt, generatePlain, m_digit, PRIVATE_KEY } from "./crypto";
-import { CreateBusDto, CreateCoDto, CreateScheduleDto, GenerateEvaluesDto, UpdateProfileDto } from "./dto";
+import { CreateBusDto, CreateCoDto, CreateScheduleDto, GenerateEvaluesDto, GenerateKeyDto, UpdateProfileDto } from "./dto";
 
 const baseUrl = process.env.BASE_URL;
 
@@ -397,7 +397,7 @@ export const generateEvalues = async (state: GenerateEValuesState, formData: For
   });
 
   if (!validatedFields.success) {
-    return { erros: validatedFields.error.flatten().fieldErrors }
+    return { errors: validatedFields.error.flatten().fieldErrors }
   }
 
   const { pValue, qValue, total } = validatedFields.data;
@@ -409,13 +409,50 @@ export const generateEvalues = async (state: GenerateEValuesState, formData: For
 
   try {
     const result = await generateEvaluesReq(generateEValuesDto);
+
     if (!result.payloads?.data) {
       return { error: result.message }
     }
 
-    return result.payloads.data
+    return {
+      success: true,
+      data: result.payloads.data
+    }
   } catch (err) {
     console.error('fail generate e values', err);
+    return { error: 'something went wrong' }
+  }
+}
+
+export const generateKey = async (state: GenerateKeyState, formData: FormData) => {
+  const validatedFields = GenerateKeySchema.safeParse({
+    toitent: parseInt(formData.get('toitent') as string),
+    nValue: parseInt(formData.get('nValue') as string),
+    eValue: parseInt(formData.get('eValue') as string)
+  });
+
+  if (!validatedFields.success) {
+    return { errors: validatedFields.error.flatten().fieldErrors }
+  }
+
+  const { toitent, nValue, eValue } = validatedFields.data;
+
+  const generateKeyDto: GenerateKeyDto = {
+    toitent,
+    nValue,
+    eValue
+  }
+
+  try {
+    const result = await generateKeyReq(generateKeyDto);
+    if(result.statusCode !== 201) {
+      return { error: result.message }
+    }
+
+    revalidatePath('/');
+    return { success: true }
+  } catch (err) {
+    console.error('fail generate key', err);
     return { error: 'something went wrong' }
   }
 }

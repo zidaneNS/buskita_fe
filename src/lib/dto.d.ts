@@ -36,3 +36,9 @@ export type GenerateEvaluesDto = {
     qValue: number;
     total: number;
 }
+
+export type GenerateKeyDto = {
+    nValue: number;
+    toitent: number;
+    eValue: number;
+}

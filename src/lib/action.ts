@@ -1,8 +1,8 @@
 import 'server-only';
 
 import { verifySession } from "./dal";
-import { CreateBusDto, CreateScheduleDto, GenerateEvaluesDto, UpdateProfileDto } from "./dto";
-import { DefaultResponse, GenerateEValuesResponse } from "./type";
+import { CreateBusDto, CreateScheduleDto, GenerateEvaluesDto, GenerateKeyDto, UpdateProfileDto } from "./dto";
+import { DefaultResponse, GenerateEValuesResponse, PublicKey } from "./type";
 import { Bus } from "./type/bus";
 import { Route, Schedule, ScheduleCard } from "./type/schedule";
 import { Seat } from "./type/seat";
@@ -540,6 +540,7 @@ export const updateProfile = async (updateProfileDto: UpdateProfileDto, id: numb
 export const generateEvaluesReq = async (generateEValuesDto: GenerateEvaluesDto): Promise<DefaultResponse<GenerateEValuesResponse>> => {
   try {
     const response = await fetch(`${baseUrl}/rsa`, {
+      method: 'POST',
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json"
@@ -552,5 +553,45 @@ export const generateEvaluesReq = async (generateEValuesDto: GenerateEvaluesDto)
   } catch (err) {
     console.error('fail generate e values', err);
     return { message: 'something went wrong', statusCode: 500 }
+  }
+}
+
+export const generateKeyReq = async (generateKeyDto: GenerateKeyDto): Promise<DefaultResponse<null>> => {
+  try {
+    const response = await fetch(`${baseUrl}/rsa/generate-key`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(generateKeyDto)
+    });
+
+    const result = await response.json() as DefaultResponse<null>;
+    return result;
+  } catch (err) {
+    console.error('fail generate key', err);
+    return { message: 'something went wrong', statusCode: 500 }
+  }
+}
+
+export const getKey = async () => {
+  try {
+    const response = await fetch(`${baseUrl}/rsa/get-key`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+    });
+
+    const result = await response.json() as DefaultResponse<PublicKey>
+
+    if (result.payloads?.data) {
+      return result.payloads.data
+    }
+
+    console.error('fail fetch public key', result.message);
+  } catch (err) {
+    console.error('fail get public key', err);
   }
 }

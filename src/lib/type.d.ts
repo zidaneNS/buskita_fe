@@ -144,11 +144,23 @@ export type UpdateProfileState = | {
   success?: boolean
 } | undefined
 
-export type GenerateEValuesState = | {
+export type GenerateEValuesState = {
   errors?: {
     pValue?: string[];
     qValue?: string[];
+    total?: string[]
   },
+  message?: string;
+  success?: boolean;
+  data?: GenerateEValuesResponse
+} | undefined
+
+export type GenerateKeyState = {
+  errors?: {
+    nValue?: string[];
+    toitent?: string[];
+    eValue?: string[];
+  };
   message?: string;
   success?: boolean;
 } | undefined
@@ -165,4 +177,9 @@ export interface DefaultResponse<T> {
   payloads?: {
     data: T
   }
+}
+
+export type PublicKey = {
+  eValue: number;
+  nValue: number;
 }

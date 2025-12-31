@@ -51,4 +51,10 @@ export const GenerateEvaluesSchema = z.object({
     pValue: z.number().min(1, 'field cannot empty'),
     qValue: z.number().min(1, 'field cannot empty'),
     total: z.number().min(1, 'field cannot empty'),
-})
+});
+
+export const GenerateKeySchema = z.object({
+    toitent: z.number().min(1, 'field cannot empty'),
+    nValue: z.number().min(1, 'field cannot empty'),
+    eValue: z.number().min(1, 'field cannot empty'),
+});
