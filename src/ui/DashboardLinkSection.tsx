@@ -7,6 +7,7 @@ import { IconType } from "react-icons";
 import { AiFillSchedule } from "react-icons/ai";
 import { BiScan } from "react-icons/bi";
 import { FaBus, FaHome, FaUser } from "react-icons/fa";
+import { IoKeyOutline } from "react-icons/io5";
 import { MdManageAccounts } from "react-icons/md";
 
 export type DashboardLinkType = {
@@ -24,7 +25,7 @@ export const dashboardLinks: DashboardLinkType[] = [
         icon: FaHome,
         text: 'Home',
         href: '/dashboard',
-        allowedRoles: ['passenger', 'admin', 'superadmin'],
+        allowedRoles: ['user', 'admin', 'superadmin'],
         description: 'View available options',
         buttonText: 'Back Home',
         title: 'Home'
@@ -33,7 +34,7 @@ export const dashboardLinks: DashboardLinkType[] = [
         icon: FaUser,
         text: 'Profile',
         href: '/dashboard/profile',
-        allowedRoles: ['passenger', 'admin', 'superadmin'],
+        allowedRoles: ['user', 'admin', 'superadmin'],
         description: 'View and manage user profile',
         buttonText: 'Manage Profile',
         title: 'Profile Management'
@@ -66,6 +67,15 @@ export const dashboardLinks: DashboardLinkType[] = [
         title: 'User Management'
     },
     {
+        icon: IoKeyOutline,
+        text: 'Key',
+        href: '/dashboard/key',
+        allowedRoles: ['admin', 'superadmin'],
+        description: 'Generate encryption key',
+        buttonText: 'Manage Key',
+        title: 'Key Management'
+    },
+    {
         icon: BiScan,
         text: 'Verify',
         href: '/dashboard/verify',
@@ -81,7 +91,7 @@ export default function DashboardLinkSection({ user }: { user: User }) {
     return (
         <div className="flex flex-col w-full gap-y-2">
             {dashboardLinks.map((link, id) => {
-                if (link.allowedRoles.includes(user.role?.name || '')) return (
+                if (link.allowedRoles.includes(user.role?.name || 'user')) return (
                     <Link key={id} href={link.href} className={`flex items-center gap-x-3 cursor-pointer py-2 px-4 rounded-md hover:bg-white/50 duration-300 w-full ${pathname === link.href ? "bg-white/50" : "bg-white/10"}`}>
                         <link.icon className="size-4" />
                         <p>{link.text}</p>

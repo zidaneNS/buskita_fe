@@ -1,6 +1,8 @@
+import 'server-only';
+
 import { verifySession } from "./dal";
-import { CreateBusDto, CreateScheduleDto, UpdateProfileDto } from "./dto";
-import { DefaultResponse } from "./type";
+import { CreateBusDto, CreateScheduleDto, GenerateEvaluesDto, UpdateProfileDto } from "./dto";
+import { DefaultResponse, GenerateEValuesResponse } from "./type";
 import { Bus } from "./type/bus";
 import { Route, Schedule, ScheduleCard } from "./type/schedule";
 import { Seat } from "./type/seat";
@@ -515,7 +517,7 @@ export const updateProfile = async (updateProfileDto: UpdateProfileDto, id: numb
     const response = await fetch(`${baseUrl}/users/${id}`, {
       method: "PUT",
       headers: {
-        "Content_Type": "application/json",
+        "Content-Type": "application/json",
         "Accept": "application/json",
         "Authorization": `Bearer ${token}`
       },
@@ -532,5 +534,23 @@ export const updateProfile = async (updateProfileDto: UpdateProfileDto, id: numb
   } catch (err) {
     console.log('fail update profile', err);
     return { error: 'something went wrong' }
+  }
+}
+
+export const generateEvaluesReq = async (generateEValuesDto: GenerateEvaluesDto): Promise<DefaultResponse<GenerateEValuesResponse>> => {
+  try {
+    const response = await fetch(`${baseUrl}/rsa`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(generateEValuesDto)
+    });
+
+    const result = await response.json() as DefaultResponse<GenerateEValuesResponse>;
+    return result
+  } catch (err) {
+    console.error('fail generate e values', err);
+    return { message: 'something went wrong', statusCode: 500 }
   }
 }

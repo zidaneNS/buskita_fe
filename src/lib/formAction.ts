@@ -1,11 +1,11 @@
 'use server';
 
 import { revalidatePath } from "next/cache";
-import { attachSeat, createBus, destroyBus, destroySchedule, detachSeat, getScheduleById, getSeatById, getUserById, storeSchedule, updateBus, updateProfile, updateSchedule, updateSeat, verify } from "./action";
-import { BookSeatState, CheckState, CreateBusState, CreateScheduleState, DefaultResponse, DeleteScheduleState, DestroyBusState, Schedule, Seat, SignUpFormState, UpdateProfileState, UpdateScheduleState, User, VerifyState } from "./type";
-import { CheckUserSchema, CreateBusSchema, CreateScheduleSchema, SignUpFormSchema, UpdateProfileFormSchema, UpdateScheduleSchema } from "./definition";
+import { attachSeat, createBus, destroyBus, destroySchedule, detachSeat, generateEvaluesReq, getScheduleById, getSeatById, getUserById, storeSchedule, updateBus, updateProfile, updateSchedule, updateSeat, verify } from "./action";
+import { BookSeatState, CheckState, CreateBusState, CreateScheduleState, DefaultResponse, DeleteScheduleState, DestroyBusState, GenerateEValuesState, Schedule, Seat, SignUpFormState, UpdateProfileState, UpdateScheduleState, User, VerifyState } from "./type";
+import { CheckUserSchema, CreateBusSchema, CreateScheduleSchema, GenerateEvaluesSchema, SignUpFormSchema, UpdateProfileFormSchema, UpdateScheduleSchema } from "./definition";
 import { cryptoDecrypt, generatePlain, m_digit, PRIVATE_KEY } from "./crypto";
-import { CreateBusDto, CreateCoDto, CreateScheduleDto, UpdateProfileDto } from "./dto";
+import { CreateBusDto, CreateCoDto, CreateScheduleDto, GenerateEvaluesDto, UpdateProfileDto } from "./dto";
 
 const baseUrl = process.env.BASE_URL;
 
@@ -385,6 +385,37 @@ export const editProfile = async (state: UpdateProfileState, formData: FormData)
     return { success: true }
   } catch (err) {
     console.log('fail update profile', err);
+    return { error: 'something went wrong' }
+  }
+}
+
+export const generateEvalues = async (state: GenerateEValuesState, formData: FormData) => {
+  const validatedFields = GenerateEvaluesSchema.safeParse({
+    pValue: parseInt(formData.get('pValue') as string),
+    qValue: parseInt(formData.get('qValue') as string),
+    total: parseInt(formData.get('total') as string),
+  });
+
+  if (!validatedFields.success) {
+    return { erros: validatedFields.error.flatten().fieldErrors }
+  }
+
+  const { pValue, qValue, total } = validatedFields.data;
+  const generateEValuesDto: GenerateEvaluesDto = {
+    pValue,
+    qValue,
+    total
+  }
+
+  try {
+    const result = await generateEvaluesReq(generateEValuesDto);
+    if (!result.payloads?.data) {
+      return { error: result.message }
+    }
+
+    return result.payloads.data
+  } catch (err) {
+    console.error('fail generate e values', err);
     return { error: 'something went wrong' }
   }
 }

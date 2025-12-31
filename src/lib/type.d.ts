@@ -144,6 +144,21 @@ export type UpdateProfileState = | {
   success?: boolean
 } | undefined
 
+export type GenerateEValuesState = | {
+  errors?: {
+    pValue?: string[];
+    qValue?: string[];
+  },
+  message?: string;
+  success?: boolean;
+} | undefined
+
+export type GenerateEValuesResponse = {
+  eValues: number[],
+  nValue: number,
+  toitent: number
+}
+
 export interface DefaultResponse<T> {
   statusCode: number;
   message: string;

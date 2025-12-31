@@ -46,3 +46,9 @@ export const UpdateProfileFormSchema = z.object({
     phone_number: z.string().min(1, { message: "Phone Number cannot empty" }).trim(),
     address: z.string().min(1, { message: "Address cannot empty" }).trim()
 });
+
+export const GenerateEvaluesSchema = z.object({
+    pValue: z.number().min(1, 'field cannot empty'),
+    qValue: z.number().min(1, 'field cannot empty'),
+    total: z.number().min(1, 'field cannot empty'),
+})

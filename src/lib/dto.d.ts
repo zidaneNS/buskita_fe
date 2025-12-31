@@ -30,3 +30,9 @@ export type CreateCoDto = {
     phoneNumber: string;
     roleId: 1 | 2 | 3;
 }
+
+export type GenerateEvaluesDto = {
+    pValue: number;
+    qValue: number;
+    total: number;
+}
