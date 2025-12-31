@@ -9,9 +9,9 @@ import Modal from "./Modal";
 import ScheduleDetails from "./ScheduleDetails";
 import EditScheduleForm from "./EditScheduleForm";
 import DeleteScheduleForm from "./DeleteScheduleForm";
-import { Route, ScheduleCard } from "@/lib/type/schedule";
-import { Seat } from "@/lib/type/seat";
-import { Bus } from "@/lib/type/bus";
+import { Route, ScheduleCard } from "@/lib/type";
+import { Seat } from "@/lib/type";
+import { Bus } from "@/lib/type";
 
 export default function DashboardScheduleCard({ 
     schedule, 

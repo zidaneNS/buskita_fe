@@ -1,4 +1,4 @@
-import { Seat } from "@/lib/type/seat";
+import { Seat } from "@/lib/type";
 
 
 export default function FilledSeatList({ seats }: { seats: Seat[] }) {

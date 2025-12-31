@@ -1,5 +1,5 @@
 import DashboardScheduleCardWrapper from "@/components/DashboardScheduleCardWrapper";
-import { ScheduleCard } from "@/lib/type/schedule";
+import { ScheduleCard } from "@/lib/type";
 import { Suspense } from "react";
 
 export default function ScheduleList({ schedules }: { schedules: ScheduleCard[] }) {

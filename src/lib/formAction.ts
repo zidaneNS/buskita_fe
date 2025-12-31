@@ -82,8 +82,8 @@ export const checkUser = async (state: CheckState, formData: FormData) => {
     if (!seat) {
       return { error: 'fail fetch seat' }
     }
-    const passenger = await getUserById(seat.user_id!) as User | null;
-    const schedule = await getScheduleById(seat.schedule_id!) as Schedule | null;
+    const passenger = await getUserById(seat.userId!) as User | null;
+    const schedule = await getScheduleById(seat.scheduleId!) as Schedule | null;
 
     if (!passenger) return { error: 'no passenger found' }
     if (!schedule) return { error: 'no schedule found' }

@@ -4,7 +4,7 @@ import BusCard from "@/components/BusCard";
 import BusDeleteForm from "@/components/BusDeleteForm";
 import BusEditForm from "@/components/BusEditForm";
 import Modal from "@/components/Modal";
-import { Bus } from "@/lib/type/bus";
+import { Bus } from "@/lib/type";
 import { useState } from "react";
 
 export default function BusListSection({ buses }: { buses: Bus[] }) {

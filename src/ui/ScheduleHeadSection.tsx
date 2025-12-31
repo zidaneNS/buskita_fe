@@ -2,8 +2,8 @@
 
 import CreateScheduleForm from "@/components/CreateScheduleForm";
 import Modal from "@/components/Modal";
-import { Bus } from "@/lib/type/bus";
-import { Route } from "@/lib/type/schedule";
+import { Bus } from "@/lib/type";
+import { Route } from "@/lib/type";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { CiSearch } from "react-icons/ci";

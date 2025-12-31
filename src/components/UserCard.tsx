@@ -4,7 +4,7 @@ import { useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
 import Modal from "./Modal";
 import { MdClose } from "react-icons/md";
-import { User } from "@/lib/type/user";
+import { User } from "@/lib/type";
 
 export default function UserCard({ user }: { user: User }) {
     const roleColors = user.role?.name === "user" ? "text-yellow-600 bg-yellow-600/15" : user.role?.name === "admin" ? "text-green-600 bg-green-600/15" : "text-red-600 bg-red-600/15";

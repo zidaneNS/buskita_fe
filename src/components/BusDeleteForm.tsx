@@ -2,7 +2,7 @@ import { deleteBus } from "@/lib/formAction";
 import { Dispatch, SetStateAction, useActionState, useEffect } from "react";
 import { CiWarning } from "react-icons/ci";
 import ErrorInputForm from "./ErrorInputForm";
-import { Bus } from "@/lib/type/bus";
+import { Bus } from "@/lib/type";
 
 export default function BusDeleteForm({ setIsDeleting, selectedBus }: { setIsDeleting: Dispatch<SetStateAction<boolean>>, selectedBus: Bus }) {
     const capacity = selectedBus.totalRow * selectedBus.totalCol + selectedBus.totalBackseat;

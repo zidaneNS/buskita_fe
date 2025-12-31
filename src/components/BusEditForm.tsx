@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useActionState, useEffect } from "react";
 import AddBusInputForm from "./AddBusInputForm";
 import { changeBus } from "@/lib/formAction";
 import ErrorInputForm from "./ErrorInputForm";
-import { Bus } from "@/lib/type/bus";
+import { Bus } from "@/lib/type";
 
 export default function BusEditForm({ selectedBus, setIsEditing }: { selectedBus: Bus, setIsEditing: Dispatch<SetStateAction<boolean>> }) {
     const row = selectedBus.totalRow;

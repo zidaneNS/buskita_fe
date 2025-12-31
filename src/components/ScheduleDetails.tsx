@@ -5,8 +5,8 @@ import { MdClose } from "react-icons/md";
 import { TbBus } from "react-icons/tb";
 import FilledSeatList from "./FIlledSeatList";
 import { Dispatch, SetStateAction } from "react";
-import { ScheduleCard } from "@/lib/type/schedule";
-import { Seat } from "@/lib/type/seat";
+import { ScheduleCard } from "@/lib/type";
+import { Seat } from "@/lib/type";
 
 export default function ScheduleDetails({
     setIsOpen,

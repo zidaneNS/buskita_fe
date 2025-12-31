@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import { use } from "react";
 import ScheduleDetailPage from "./ScheduleDetailPage";
-import { User } from "@/lib/type/user";
-import { ScheduleCard } from "@/lib/type/schedule";
-import { Seat } from "@/lib/type/seat";
+import { User } from "@/lib/type";
+import { ScheduleCard } from "@/lib/type";
+import { Seat } from "@/lib/type";
 import { getBusBySchedule } from "@/lib/action";
 
 export default function ScheduleDetailWrapper({ rawSchedule, user, rawSeats }: { rawSchedule: Promise<ScheduleCard | null>, user: User, rawSeats: Promise<Seat [] | null> }) {

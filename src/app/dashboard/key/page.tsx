@@ -1,7 +1,6 @@
 import GenerateKeyForm from "@/components/GenerateKeyForm";
 import TrialEncryptForm from "@/components/TrialEncryptForm";
 import { getKey } from "@/lib/action";
-import { HiQrcode } from "react-icons/hi";
 
 export default async function Page() {
   const publicKey = await getKey();

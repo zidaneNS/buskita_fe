@@ -1,5 +1,5 @@
 import { cryptoEncrypt, generateAscii, m_digit, PUBLIC_KEY } from "@/lib/crypto";
-import { Seat } from "@/lib/type/seat";
+import { Seat } from "@/lib/type";
 import { Dispatch, SetStateAction } from "react";
 import { MdClose } from "react-icons/md";
 import QRCode from "react-qr-code";

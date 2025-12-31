@@ -1,6 +1,6 @@
 import { use } from "react";
 import BusListSection from "./BusListSection";
-import { Bus } from "@/lib/type/bus";
+import { Bus } from "@/lib/type";
 
 export default function BusListWrapper({ rawBuses }: { rawBuses: Promise<Bus [] | undefined>}) {
     const buses = use(rawBuses) || [];

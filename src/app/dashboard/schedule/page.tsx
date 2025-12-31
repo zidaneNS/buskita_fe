@@ -1,5 +1,4 @@
 import { getAllBuses, getRoutes, getSchedules } from "@/lib/action";
-import { schedules } from "@/mockup/schedules";
 import ScheduleHeadSection from "@/ui/ScheduleHeadSection";
 import ScheduleList from "@/ui/ScheduleList";
 

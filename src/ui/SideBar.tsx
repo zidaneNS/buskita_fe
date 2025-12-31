@@ -8,7 +8,7 @@ import { useState } from "react";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { logout } from "@/lib/auth";
 import { useRouter } from "next/navigation";
-import { User } from "@/lib/type/user";
+import { User } from "@/lib/type";
 
 export default function SideBar({ user }: { user: User }) {
     const [isOpen, setIsOpen] = useState<boolean>(false);

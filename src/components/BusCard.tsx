@@ -1,6 +1,6 @@
 'use client';
 
-import { Bus } from "@/lib/type/bus";
+import { Bus } from "@/lib/type";
 import { Dispatch, SetStateAction } from "react";
 import { FaBusAlt } from "react-icons/fa";
 

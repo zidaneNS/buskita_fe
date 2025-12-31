@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { dashboardLinks } from "./DashboardLinkSection";
-import { User } from "@/lib/type/user";
+import { User } from "@/lib/type";
 
 export default function DashboardHomeSection({ user }: { user: User }) {
     const filteredLinks = dashboardLinks.filter(link => link.allowedRoles.includes(user.role?.name || 'user'));

@@ -1,8 +1,8 @@
 'use client';
 
-import { Bus } from "@/lib/type/bus";
-import { Seat } from "@/lib/type/seat";
-import { User } from "@/lib/type/user";
+import { Bus } from "@/lib/type";
+import { Seat } from "@/lib/type";
+import { User } from "@/lib/type";
 import { Dispatch, SetStateAction } from "react";
 
 export default function SeatSection({ 

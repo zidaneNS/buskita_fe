@@ -2,7 +2,7 @@
 
 import Modal from "@/components/Modal";
 import UserCreateForm from "@/components/UserCreateForm";
-import { User } from "@/lib/type/user";
+import { User } from "@/lib/type";
 import { useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 

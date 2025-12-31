@@ -3,7 +3,7 @@
 import ErrorInputForm from "@/components/ErrorInputForm";
 import ProfileDetail from "@/components/ProfileDetail";
 import { editProfile } from "@/lib/formAction";
-import { User } from "@/lib/type/user";
+import { User } from "@/lib/type";
 import { useActionState, useEffect, useState } from "react";
 
 export default function ProfileSection({ user }: { user: User }) {

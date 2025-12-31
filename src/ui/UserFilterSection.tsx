@@ -2,7 +2,7 @@
 
 import RadioButton from "@/components/RadioButton";
 import userContext from "@/context/UserContext";
-import { User } from "@/lib/type/user";
+import { User } from "@/lib/type";
 import { useContext, useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 

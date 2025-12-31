@@ -11,7 +11,7 @@ import { FaChevronRight } from "react-icons/fa";
 import { CiLogout, CiSettings } from "react-icons/ci";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdClose } from "react-icons/md";
-import { User } from "@/lib/type/user";
+import { User } from "@/lib/type";
 
 export default function Navbar({ user }: { user: User | undefined | null }) {
     const [isTop, setIsTop] = useState<boolean>(true);

@@ -1,6 +1,6 @@
 // import { getAllBuses, getRoutes, getSeatsBySchedule } from "@/lib/action";
 import DashboardScheduleCard from "./DashboardScheduleCard";
-import { ScheduleCard } from "@/lib/type/schedule";
+import { ScheduleCard } from "@/lib/type";
 import { getAllBuses, getRoutes, getSeatsBySchedule } from "@/lib/action";
 
 export default async function DashboardScheduleCardWrapper({

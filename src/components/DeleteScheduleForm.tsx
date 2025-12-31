@@ -2,7 +2,7 @@ import { deleteSchedule } from "@/lib/formAction"
 import { Dispatch, SetStateAction, useActionState, useEffect } from "react"
 import { CiWarning } from "react-icons/ci"
 import ErrorInputForm from "./ErrorInputForm"
-import { ScheduleCard } from "@/lib/type/schedule"
+import { ScheduleCard } from "@/lib/type"
 
 export default function DeleteScheduleForm({
     time,

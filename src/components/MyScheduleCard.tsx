@@ -9,27 +9,25 @@ import { IoWarningOutline } from "react-icons/io5";
 import { cancelSchedule } from "@/lib/formAction";
 import ErrorInputForm from "./ErrorInputForm";
 import QRCode from "react-qr-code";
-import { EncryptedSeat, User } from "@/lib/type";
+import { EncryptedSeat } from "@/lib/type";
 
 export interface MyScheduleCardProps {
     seat: EncryptedSeat;
-    user: User;
 }
 
 export default function MyScheduleCard({
-    seat,
-    user
+    seat
 }: MyScheduleCardProps) {
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
     
     const filledSeats = seat.schedule?.totalUser;
     const emptySeats = seat.schedule?.totalSeats;
 
-    const time = format(new Date(seat.schedule?.time!), "HH:mm");
-    const timeEnd = add(new Date(seat.schedule?.time!), { hours: 1 });
+    const time = format(new Date(seat.schedule?.time || ''), "HH:mm");
+    const timeEnd = add(new Date(seat.schedule?.time || ''), { hours: 1 });
     const timeEndStr = format(new Date(timeEnd), "HH:mm");
 
-    const date = format(new Date(seat.schedule?.time!), "dd MMMM yyyy");
+    const date = format(new Date(seat.schedule?.time || ''), "dd MMMM yyyy");
 
     const cancelScheduleWithId = cancelSchedule.bind(null, undefined, seat!.seatId);
     const [state, action, pending] = useActionState(cancelScheduleWithId, undefined);

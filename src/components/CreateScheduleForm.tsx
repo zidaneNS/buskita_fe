@@ -3,8 +3,8 @@
 import { createSchedule } from "@/lib/formAction";
 import { Dispatch, SetStateAction, useActionState, useEffect } from "react";
 import ErrorInputForm from "./ErrorInputForm";
-import { Bus } from "@/lib/type/bus";
-import { Route } from "@/lib/type/schedule";
+import { Bus } from "@/lib/type";
+import { Route } from "@/lib/type";
 
 export default function CreateScheduleForm({ buses, routes, setIsCreating }: { buses: Bus[], routes: Route[], setIsCreating: Dispatch<SetStateAction<boolean>> }) {
     const [state, action, pending] = useActionState(createSchedule, undefined);

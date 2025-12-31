@@ -1,6 +1,6 @@
-import { Schedule } from "@/lib/type/schedule";
-import { Seat } from "@/lib/type/seat";
-import { User } from "@/lib/type/user";
+import { Schedule } from "@/lib/type";
+import { Seat } from "@/lib/type";
+import { User } from "@/lib/type";
 import Image from "next/image";
 
 export default function SeatDetail({

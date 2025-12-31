@@ -15,7 +15,7 @@ export default function InputCodeBox() {
     const [cipher, setCipher] = useState<number | string>("");
     const [state, action, pending] = useActionState(checkUser, undefined);
 
-    const seat_number = state?.seat?.seat_number.toString().padStart(2, '0');
+    const seat_number = state?.seat?.seatNumber.toString().padStart(2, '0');
     const date = state?.schedule?.time ? format(state.schedule.time, "dd MMMM yyyy") : "invalid";
     const time = state?.schedule?.time ? format(state.schedule.time, "HH:mm") : "invalid";
     const endTime = state?.schedule?.time ? addHours(state!.schedule?.time, 1) : undefined;
@@ -53,7 +53,7 @@ export default function InputCodeBox() {
                             <p className="font-semibold">Passenger Detail</p>
                         </div>
                         <p>{state.passenger.name}</p>
-                        <p className="text-sm font-thin">{state.passenger.nim_nip}</p>
+                        <p className="text-sm font-thin">{state.passenger.userId}</p>
                     </div>
                     <div className="flex flex-col w-full">
                         <div className="flex gap-x-2 items-center">
@@ -67,9 +67,9 @@ export default function InputCodeBox() {
                             <GrSchedule className="size-5" />
                             <p className="font-semibold">Schedule Detail</p>
                         </div>
-                        <p>{state.schedule.route_name}</p>
+                        <p>{state.schedule.route?.name}</p>
                         <p className="text-sm font-thin">{date}, {time} - {endTimeStr}</p>
-                        <p className="text-sm font-thin">Bus: {state.schedule.bus_identity}</p>
+                        <p className="text-sm font-thin">Bus: {state.schedule.bus?.name}</p>
                     </div>
                     <VerifyForm initState={state} />
                 </div>

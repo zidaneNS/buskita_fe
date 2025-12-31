@@ -3,8 +3,8 @@
 import ErrorInputForm from "./ErrorInputForm";
 import { Dispatch, SetStateAction, useActionState, useEffect } from "react";
 import { editSchedule } from "@/lib/formAction";
-import { Route, Schedule } from "@/lib/type/schedule";
-import { Bus } from "@/lib/type/bus";
+import { Route, Schedule } from "@/lib/type";
+import { Bus } from "@/lib/type";
 
 export default function EditScheduleForm({
     routes,

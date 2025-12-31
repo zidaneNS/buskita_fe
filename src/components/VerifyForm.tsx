@@ -12,7 +12,7 @@ export default function VerifyForm({ initState }: { initState: {
     errors?: undefined;
     error?: undefined;
 } }) {
-    const verifyPassengerWithId = verifyPassenger.bind(null, undefined, initState.seat.id);
+    const verifyPassengerWithId = verifyPassenger.bind(null, undefined, initState.seat.seatId);
     const [state, action, pending] = useActionState(verifyPassengerWithId, undefined);
     return (
         <form action={action} className="w-full flex justify-center">

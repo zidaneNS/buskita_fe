@@ -11,10 +11,10 @@ import UpdateSeatForm from "./UpdateSeatForm";
 import Modal from "@/components/Modal";
 import SeatDetail from "./SeatDetail";
 import QrPresence from "@/components/QrPresence";
-import { Schedule } from "@/lib/type/schedule";
-import { Bus } from "@/lib/type/bus";
-import { User } from "@/lib/type/user";
-import { Seat } from "@/lib/type/seat";
+import { Schedule } from "@/lib/type";
+import { Bus } from "@/lib/type";
+import { User } from "@/lib/type";
+import { Seat } from "@/lib/type";
 
 export default function ScheduleDetailPage({ schedule, bus, user, seats }: { schedule: Schedule, bus: Bus, user: User, seats: Seat[] }) {
     const [isSuccess, setIsSuccess] = useState<boolean>(false);

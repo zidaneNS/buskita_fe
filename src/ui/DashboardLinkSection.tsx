@@ -1,6 +1,6 @@
 'use client';
 
-import { User } from "@/lib/type/user";
+import { User } from "@/lib/type";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IconType } from "react-icons";

@@ -2,7 +2,7 @@ import DropDown from "@/components/DropDown";
 import { encrypt, getUserSeatWithSchedule } from "@/lib/action";
 import { getUser } from "@/lib/dal";
 import { dummyDates, dummyRoutes } from "@/lib/dummyData"
-import { Bus, EncryptedSeat, Plaintext, ScheduleCard, Seat } from "@/lib/type";
+import { EncryptedSeat, Plaintext, Seat } from "@/lib/type";
 import MyScheduleSection from "@/ui/MyScheduleSection";
 import { Suspense } from "react";
 
@@ -44,7 +44,7 @@ export default async function Page() {
                 </div>
                 <div className="h-[90vh] w-full overflow-y-auto pr-4 scrollbar-thin scrollbar-track-gradient-end/70 scrollbar-thumb-midnight-purple pt-4">
                     <Suspense fallback={<div>Loading...</div>}>
-                        <MyScheduleSection seats={encryptedSeats} user={user!} />
+                        <MyScheduleSection seats={encryptedSeats} />
                     </Suspense>
                 </div>
             </section>
