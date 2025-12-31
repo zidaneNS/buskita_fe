@@ -1,3 +1,5 @@
+import { ScheduleCard } from "./type/schedule";
+
 export interface Role {
   roleId: string;
   name: string
@@ -165,6 +167,24 @@ export type GenerateKeyState = {
   success?: boolean;
 } | undefined
 
+export type EncryptState = {
+  errors?: {
+    plaintext?: string[];
+  };
+  message?: string;
+  data?: string;
+  success?: boolean;
+} | undefined
+
+export type DecryptState = {
+  errors?: {
+    ciphertext?: string[];
+  };
+  message?: string;
+  data?: string;
+  success?: boolean;
+} | undefined
+
 export type GenerateEValuesResponse = {
   eValues: number[],
   nValue: number,
@@ -182,4 +202,18 @@ export interface DefaultResponse<T> {
 export type PublicKey = {
   eValue: number;
   nValue: number;
+}
+
+export interface Plaintext {
+  seatId: string;
+  time: Date;
+  busName: string;
+  scheduleId: string;
+  name: string;
+  userId: string;
+  seatNumber: number;
+}
+
+export interface EncryptedSchedule extends ScheduleCard {
+  ciphertext: string;
 }

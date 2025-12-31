@@ -1,7 +1,9 @@
 import DropDown from "@/components/DropDown";
-import { getUserSchedule } from "@/lib/action";
+import { encrypt, getUserSchedule } from "@/lib/action";
 import { getUser } from "@/lib/dal";
 import { dummyDates, dummyRoutes } from "@/lib/dummyData"
+import { EncryptedSchedule } from "@/lib/type";
+import { ScheduleCard } from "@/lib/type/schedule";
 import MyScheduleSection from "@/ui/MyScheduleSection";
 import { Suspense } from "react";
 
@@ -9,7 +11,8 @@ export default async function Page() {
     const routes = dummyRoutes;
     const dates = dummyDates;
 
-    const rawSchedules = getUserSchedule();
+    const schedules = await getUserSchedule() || [];
+    console.log('schedules', schedules);
     const user = await getUser();
     return (
         <main className="flex flex-col gap-y-4 px-6 md:px-32 pt-24 md:pt-32 pb-10 w-full min-h-screen">
@@ -22,7 +25,7 @@ export default async function Page() {
                 </div>
                 <div className="h-[90vh] w-full overflow-y-auto pr-4 scrollbar-thin scrollbar-track-gradient-end/70 scrollbar-thumb-midnight-purple pt-4">
                     <Suspense fallback={<div>Loading...</div>}>
-                        <MyScheduleSection rawSchedules={rawSchedules} user={user!} />
+                        <MyScheduleSection schedules={encryptedSchedules} user={user!} />
                     </Suspense>
                 </div>
             </section>

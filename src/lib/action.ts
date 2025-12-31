@@ -591,7 +591,42 @@ export const getKey = async () => {
     }
 
     console.error('fail fetch public key', result.message);
+    return null;
   } catch (err) {
     console.error('fail get public key', err);
+  }
+}
+
+export const encrypt = async (plaintext: string): Promise<DefaultResponse<string>> => {
+  try {
+    const response = await fetch(`${baseUrl}/rsa/encrypt?plaintext=${plaintext}`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+    });
+
+    const result = await response.json() as DefaultResponse<string>;
+    return result;
+  } catch (err) {
+    console.error('fail to encrypt', err);
+    return { statusCode: 500, message: 'sommething went wrong'}
+  }
+}
+
+export const decrypt = async (ciphertext: string): Promise<DefaultResponse<string>> => {
+  try {
+    const response = await fetch(`${baseUrl}/rsa/decrypt?ciphertext=${ciphertext}`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+    });
+
+    const result = await response.json() as DefaultResponse<string>;
+    return result;
+  } catch (err) {
+    console.error('fail to decrypt', err);
+    return { statusCode: 500, message: 'sommething went wrong'}
   }
 }

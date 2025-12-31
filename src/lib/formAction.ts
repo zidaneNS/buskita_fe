@@ -1,9 +1,9 @@
 'use server';
 
 import { revalidatePath } from "next/cache";
-import { attachSeat, createBus, destroyBus, destroySchedule, detachSeat, generateEvaluesReq, generateKeyReq, getScheduleById, getSeatById, getUserById, storeSchedule, updateBus, updateProfile, updateSchedule, updateSeat, verify } from "./action";
-import { BookSeatState, CheckState, CreateBusState, CreateScheduleState, DefaultResponse, DeleteScheduleState, DestroyBusState, GenerateEValuesState, GenerateKeyState, Schedule, Seat, SignUpFormState, UpdateProfileState, UpdateScheduleState, User, VerifyState } from "./type";
-import { CheckUserSchema, CreateBusSchema, CreateScheduleSchema, GenerateEvaluesSchema, GenerateKeySchema, SignUpFormSchema, UpdateProfileFormSchema, UpdateScheduleSchema } from "./definition";
+import { attachSeat, createBus, decrypt, destroyBus, destroySchedule, detachSeat, encrypt, generateEvaluesReq, generateKeyReq, getScheduleById, getSeatById, getUserById, storeSchedule, updateBus, updateProfile, updateSchedule, updateSeat, verify } from "./action";
+import { BookSeatState, CheckState, CreateBusState, CreateScheduleState, DecryptState, DefaultResponse, DeleteScheduleState, DestroyBusState, EncryptState, GenerateEValuesState, GenerateKeyState, Schedule, Seat, SignUpFormState, UpdateProfileState, UpdateScheduleState, User, VerifyState } from "./type";
+import { CheckUserSchema, CreateBusSchema, CreateScheduleSchema, DecryptSchema, EncryptSchema, GenerateEvaluesSchema, GenerateKeySchema, SignUpFormSchema, UpdateProfileFormSchema, UpdateScheduleSchema } from "./definition";
 import { cryptoDecrypt, generatePlain, m_digit, PRIVATE_KEY } from "./crypto";
 import { CreateBusDto, CreateCoDto, CreateScheduleDto, GenerateEvaluesDto, GenerateKeyDto, UpdateProfileDto } from "./dto";
 
@@ -445,7 +445,7 @@ export const generateKey = async (state: GenerateKeyState, formData: FormData) =
 
   try {
     const result = await generateKeyReq(generateKeyDto);
-    if(result.statusCode !== 201) {
+    if (result.statusCode !== 201) {
       return { error: result.message }
     }
 
@@ -454,5 +454,55 @@ export const generateKey = async (state: GenerateKeyState, formData: FormData) =
   } catch (err) {
     console.error('fail generate key', err);
     return { error: 'something went wrong' }
+  }
+}
+
+export const getCipher = async (state: EncryptState, formData: FormData) => {
+  const validatedFields = EncryptSchema.safeParse({
+    plaintext: formData.get('plaintext') as string
+  });
+
+  if (!validatedFields.success) {
+    return { errors: validatedFields.error.flatten().fieldErrors }
+  }
+
+  const { plaintext } = validatedFields.data;
+
+  try {
+    const result = await encrypt(plaintext);
+
+    if (!result.payloads?.data) {
+      return { error: result.message }
+    }
+
+    return { success: true, data: result.payloads.data }
+  } catch (err) {
+    console.error('failed get cipher', err);
+    return { error: 'someting went wrong' }
+  }
+}
+
+export const getPlain = async (state: DecryptState, formData: FormData) => {
+  const validatedFields = DecryptSchema.safeParse({
+    ciphertext: formData.get('ciphertext') as string
+  });
+
+  if (!validatedFields.success) {
+    return { errors: validatedFields.error.flatten().fieldErrors }
+  }
+
+  const { ciphertext } = validatedFields.data;
+
+  try {
+    const result = await decrypt(ciphertext);
+
+    if (!result.payloads?.data) {
+      return { error: result.message }
+    }
+
+    return { success: true, data: result.payloads.data }
+  } catch (err) {
+    console.error('failed get plaintext', err);
+    return { error: 'someting went wrong' }
   }
 }

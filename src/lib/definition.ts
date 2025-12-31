@@ -58,3 +58,11 @@ export const GenerateKeySchema = z.object({
     nValue: z.number().min(1, 'field cannot empty'),
     eValue: z.number().min(1, 'field cannot empty'),
 });
+
+export const EncryptSchema = z.object({
+    plaintext: z.string().min(1, 'field cannout empty'),
+});
+
+export const DecryptSchema = z.object({
+    ciphertext: z.string().min(1, 'field cannout empty'),
+});

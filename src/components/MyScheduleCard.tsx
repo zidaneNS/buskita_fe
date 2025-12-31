@@ -13,8 +13,9 @@ import { cryptoEncrypt, generateAscii, m_digit, PUBLIC_KEY } from "@/lib/crypto"
 import { ScheduleCard } from "@/lib/type/schedule";
 import { User } from "@/lib/type/user";
 import { Seat } from "@/lib/type/seat";
+import { EncryptedSchedule } from "@/lib/type";
 
-export default function MyScheduleCard({ schedule, user, seats }: { schedule: ScheduleCard, user: User, seats: Seat[] }) {
+export default function MyScheduleCard({ schedule, user, seats }: { schedule: EncryptedSchedule, user: User, seats: Seat[] }) {
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
     
     const filledSeats = seats.filter(st => st.userId !== null);
@@ -28,11 +29,6 @@ export default function MyScheduleCard({ schedule, user, seats }: { schedule: Sc
 
     const cancelScheduleWithId = cancelSchedule.bind(null, undefined, seat!.seatId);
     const [state, action, pending] = useActionState(cancelScheduleWithId, undefined);
-
-    const information = seat?.seatId;
-    const text = JSON.stringify('test');
-    const ascii = generateAscii(text, m_digit);
-    const cipher = cryptoEncrypt(ascii, PUBLIC_KEY, m_digit);
 
     useEffect(() => {
         if (state?.success) {
@@ -83,14 +79,14 @@ export default function MyScheduleCard({ schedule, user, seats }: { schedule: Sc
                 </div>
                 <div className="flex flex-col md:flex-row justify-between mt-auto md:items-center gap-y-4">
                     <div className="flex flex-col w-fit mt-auto">
-                        <p className="text-sm mb-3 w-full">no. {cipher}</p>
+                        <p className="text-sm mb-3 w-full">no. on development</p>
                         <p><span className="text-sm md:text-base font- w-full">Bus</span> : {schedule.bus?.name}</p>
                         <p><span className="text-sm md:text-base font-semibold w-full">Date</span> : {date}</p>
                         <p><span className="text-sm md:text-base font-semibold w-full">Seat</span> : {seat.seatNumber}</p>
                         <p><span className="text-sm md:text-base font-semibold w-full">Filled</span> : {filledSeats.length}/{seats.length}</p>
                     </div>
                     <div className="flex flex-col w-full mt-auto items-center md:w-fit">
-                        <QRCode size={96} className="p-2 bg-white rounded-md" value={cipher} />
+                        <QRCode size={96} className="p-2 bg-white rounded-md" value={schedule.ciphertext} />
                     </div>
                     <div className="flex flex-col md:mt-auto gap-y-2 w-full md:w-fit mt-3">
                         <Link href={`/schedule/${schedule.scheduleId}`} className="w-full py-2 px-6 text-xs duration-300 rounded-md bg-midnight-purple text-white cursor-pointer text-center hover:bg-midnight-purple/70">View</Link>

@@ -8,6 +8,9 @@ export default function GenerateKeyForm() {
   const [state, action, pending] = useActionState(generateEvalues, undefined);
   const [eValues, setEValues] = useState<number[]>([]);
   const [nValue, setNValue] = useState<number | null>(null);
+  const [pValue, setPValue] = useState<number>(0);
+  const [qValue, setQValue] = useState<number>(0);
+  const [total, setTotal] = useState<number>(0);
   const [toitent, setToitent] = useState<number | null>(null);
   const [canGenerateKey, setCanGenerateKey] = useState<boolean>(false);
 
@@ -21,23 +24,31 @@ export default function GenerateKeyForm() {
     }
     setCanGenerateKey(state?.success || false);
   }, [state]);
+
+  useEffect(() => {
+    if (stateKey?.success) {
+      setPValue(0);
+      setQValue(0);
+      setTotal(0);
+    }
+  }, [stateKey]);
   return (
     <div className="flex flex-col flex-1 md:w-1/3 w-full gap-y-8">
       <h2 className="text-3xl font-semibold text-center">Generate new encryption key</h2>
       <form action={action} className="w-full flex-col gap-y-4 flex">
         <div className="flex flex-col w-full gap-y-2">
           <label htmlFor="pValue">P Value:</label>
-          <input type="number" name="pValue" id="pValue" placeholder="input prime value" className="outline-none bg-black/40 w-full px-4 py-3 rounded-md" />
+          <input type="number" name="pValue" id="pValue" value={pValue} onChange={(e) => setPValue(parseInt(e.target.value))} placeholder="input prime value" className="outline-none bg-black/40 w-full px-4 py-3 rounded-md" />
           {state?.errors?.pValue && <ErrorInputForm errMsg={state.errors.pValue} />}
         </div>
         <div className="flex flex-col w-full gap-y-2">
           <label htmlFor="qValue">Q Value:</label>
-          <input type="number" name="qValue" id="qValue" placeholder="input prime value" className="outline-none bg-black/40 w-full px-4 py-3 rounded-md" />
+          <input type="number" name="qValue" id="qValue" value={qValue} onChange={(e) => setQValue(parseInt(e.target.value))} placeholder="input prime value" className="outline-none bg-black/40 w-full px-4 py-3 rounded-md" />
           {state?.errors?.qValue && <ErrorInputForm errMsg={state.errors.qValue} />}
         </div>
         <div className="flex flex-col w-full gap-y-2">
           <label htmlFor="total">Total:</label>
-          <input type="number" name="total" id="total" placeholder="total key options" className="outline-none bg-black/40 w-full px-4 py-3 rounded-md" />
+          <input type="number" name="total" id="total" value={total} onChange={(e) => setTotal(parseInt(e.target.value))} placeholder="total key options" className="outline-none bg-black/40 w-full px-4 py-3 rounded-md" />
           {state?.errors?.total && <ErrorInputForm errMsg={state.errors.total} />}
         </div>
         {pending ? <p className="text-center w-full">Loading...</p> : <button className="w-full bg-purple-900 py-2 text-center rounded-md cursor-pointer hover:bg-white hover:text-dark-purple duration-300">Submit</button>}
@@ -45,8 +56,8 @@ export default function GenerateKeyForm() {
         {state?.error && <ErrorInputForm errMsg={state.error} />}
       </form>
       <form action={actionKey} className="flex flex-col gap-y-4 w-full">
-        <input type="number" hidden name="nValue" value={nValue || 0} />
-        <input type="number" hidden name="toitent" value={toitent || 0} />
+        <input type="number" hidden name="nValue" readOnly value={nValue || 0} />
+        <input type="number" hidden name="toitent" readOnly value={toitent || 0} />
         <div className="flex flex-col w-full">
           <label htmlFor="eValue">E Value:</label>
           <select disabled={!canGenerateKey} name="eValue" className="outline-none bg-black/40 w-full px-4 py-3 rounded-md">
