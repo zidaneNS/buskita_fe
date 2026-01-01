@@ -1,9 +1,3 @@
-// const p = 53;
-// const q = 97;
-
-// const n = p * q;
-// const toitent = (p - 1) * (q - 1);
-// e value = 29
 const d = parseInt(process.env.PRIVATE_KEY_D as string);
 const n = parseInt(process.env.PRIVATE_KEY_N as string);
 
