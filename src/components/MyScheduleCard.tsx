@@ -10,6 +10,7 @@ import { cancelSchedule } from "@/lib/formAction";
 import ErrorInputForm from "./ErrorInputForm";
 import QRCode from "react-qr-code";
 import { EncryptedSeat } from "@/lib/type";
+import QrPresence from "./QrPresence";
 
 export interface MyScheduleCardProps {
     seat: EncryptedSeat;
@@ -19,6 +20,7 @@ export default function MyScheduleCard({
     seat
 }: MyScheduleCardProps) {
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+    const [isOpenQR, setIsOpenQR] = useState<boolean>(false);
     
     const filledSeats = seat.schedule?.totalUser;
     const emptySeats = seat.schedule?.totalSeats;
@@ -70,6 +72,11 @@ export default function MyScheduleCard({
                     </div>
                 </Modal>
             )}
+            {isOpenQR && (
+                <Modal>
+                    <QrPresence setIsOpenQR={setIsOpenQR} ciphertext={seat.ciphertext} />
+                </Modal>
+            )}
             <div className="bg-midnight-purple/20 shadow-xl text-white flex flex-col gap-y-6 md:px-6 md:py-4 px-4 py-2 rounded-xl hover:-translate-y-3 duration-300 border border-dark-purple">
                 <div className="flex flex-col md:flex-row md:justify-between gap-y-3 md:items-center pb-2 border-b-2 border-dashed border-white md:gap-x-8">
                     <p className={`text-sm flex gap-x-2 items-center bg-black/40 py-2 px-4 rounded-full ${seat.verified ? "text-green-500" : "text-red-500"} w-fit`}><span className={`size-2 rounded-full bg-${seat.verified ? "green" : "red"}-500`}></span>{seat.verified ? "verified" : "unverified"}</p>
@@ -88,7 +95,7 @@ export default function MyScheduleCard({
                         <p><span className="text-sm md:text-base font-semibold w-full">Seat</span> : {seat.seatNumber}</p>
                         <p><span className="text-sm md:text-base font-semibold w-full">Filled</span> : {filledSeats}/{emptySeats}</p>
                     </div>
-                    <div className="flex flex-col w-full mt-auto items-center md:w-fit">
+                    <div onClick={() => setIsOpenQR(true)} className="flex flex-col w-full mt-auto items-center md:w-fit cursor-pointer duration-300">
                         <QRCode size={96} className="p-2 bg-white rounded-md" value={seat.ciphertext} />
                     </div>
                     <div className="flex flex-col md:mt-auto gap-y-2 w-full md:w-fit mt-3">
