@@ -15,13 +15,12 @@ export default async function Page() {
 
     const encryptedSeats: EncryptedSeat[] = await Promise.all(seats.map(async (seat: Seat) => {
         const plaintext: Plaintext = {
-            time: seat.schedule?.time || new Date(),
-            seatId: seat.seatId,
-            busName: seat.bus?.name || '',
             name: user?.name || '',
             userId: user?.userId || '',
+            routeName: seat.schedule?.route?.name || '',
+            time: seat.schedule?.time || new Date(),
             seatNumber: seat.seatNumber,
-            scheduleId: seat.scheduleId
+            seatId: seat.seatId
         }
 
         console.log(JSON.stringify(plaintext));

@@ -63,39 +63,6 @@ export const cancelSchedule = async (state: BookSeatState, id: number | string) 
   }
 }
 
-export const checkUser = async (state: CheckState, formData: FormData) => {
-  const validatedFields = CheckUserSchema.safeParse({
-    cipher: formData.get('cipher')
-  });
-
-  if (!validatedFields.success) return {
-    errors: validatedFields.error.flatten().fieldErrors
-  }
-
-  const { cipher } = validatedFields.data;
-  const plain = cryptoDecrypt(cipher, PRIVATE_KEY, m_digit);
-  const text = generatePlain(plain, m_digit);
-  const seat_id: number = JSON.parse(text);
-
-  try {
-    const seat = await getSeatById(seat_id) as Seat | null;
-    if (!seat) {
-      return { error: 'fail fetch seat' }
-    }
-    const passenger = await getUserById(seat.userId!) as User | null;
-    const schedule = await getScheduleById(seat.scheduleId!) as Schedule | null;
-
-    if (!passenger) return { error: 'no passenger found' }
-    if (!schedule) return { error: 'no schedule found' }
-
-    return { seat, passenger, schedule }
-
-  } catch (err) {
-    console.log('fail get seat', err);
-    return { error: 'something went wrong' }
-  }
-}
-
 export const addBus = async (state: CreateBusState, formData: FormData) => {
   const validatedFields = CreateBusSchema.safeParse({
     identity: formData.get('identity'),
@@ -338,13 +305,14 @@ export const createCo = async (state: SignUpFormState, formData: FormData) => {
 }
 
 export const verifyPassenger = async (state: VerifyState, id: string | number) => {
-  // console.log(id);
   try {
     const result = await verify(id);
 
-    if (result.error) return { error: result.error };
+    if (!result.payloads?.data) {
+      return { error: result.message }
+    }
     revalidatePath('/');
-    return { success: true };
+    return { success: true, data: result.payloads.data };
   } catch (err) {
     console.log('fail verify', err);
     return { error: 'something went wrong' }

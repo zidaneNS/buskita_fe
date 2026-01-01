@@ -146,7 +146,8 @@ export type DeleteScheduleState = | {
 
 export type VerifyState = | {
   error?: string,
-  success?: boolean
+  success?: boolean,
+  data?: Seat
 } | undefined
 
 export type UpdateProfileState = | {
@@ -220,13 +221,12 @@ export type PublicKey = {
 }
 
 export interface Plaintext {
-  seatId: string;
-  time: Date;
-  busName: string;
-  scheduleId: string;
   name: string;
   userId: string;
+  time: Date;
+  seatId: string;
   seatNumber: number;
+  routeName: string;
 }
 
 export interface EncryptedSeat extends Seat {

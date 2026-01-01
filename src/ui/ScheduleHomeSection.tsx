@@ -10,7 +10,7 @@ export default function ScheduleHomeSection({
   schedules,
   user
 }: ScheduleHomeSectionProps) {
-  const filteredSchedules = schedules.filter(schedule => schedule.users?.some(us => us.userId !== user.userId));
+  const filteredSchedules = schedules.filter(schedule => !schedule.users?.some(us => us.userId === user.userId));
   return (
     <div className="w-full max-h-full grid grid-cols-1 md:grid-cols-3 gap-y-6 gap-x-8">
       {filteredSchedules ?

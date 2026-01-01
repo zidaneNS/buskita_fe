@@ -32,6 +32,8 @@ export default function MyScheduleCard({
     const cancelScheduleWithId = cancelSchedule.bind(null, undefined, seat!.seatId);
     const [state, action, pending] = useActionState(cancelScheduleWithId, undefined);
 
+    console.log('cipher', seat.ciphertext);
+
     useEffect(() => {
         if (state?.success) {
             if (state.success) setIsOpenModal(false);
@@ -48,7 +50,7 @@ export default function MyScheduleCard({
                             <div className="w-fit gap-y-2 text-slate-700">
                                 <p>Are you sure want to cancel this schedule ?</p>
                                 <p><span className="text-sm font-semibold">Time</span> : {time} - {timeEndStr}</p>
-                                <p><span className="text-sm font-semibold">Bus</span> : {seat.schedule?.bus?.name}</p>
+                                <p><span className="text-sm font-semibold">Bus</span> : {seat.bus?.name}</p>
                                 <p><span className="text-sm font-semibold">Date</span> : {date}</p>
                                 <p><span className="text-sm font-semibold">Seat</span> : {seat.seatNumber}</p>
                                 <p><span className="text-sm font-semibold">Filled</span> : {filledSeats}/{emptySeats}</p>
@@ -81,8 +83,7 @@ export default function MyScheduleCard({
                 </div>
                 <div className="flex flex-col md:flex-row justify-between mt-auto md:items-center gap-y-4">
                     <div className="flex flex-col w-fit mt-auto">
-                        <p className="text-sm mb-3 w-full">no. on development</p>
-                        <p><span className="text-sm md:text-base font- w-full">Bus</span> : {seat.schedule?.bus?.name}</p>
+                        <p><span className="text-sm md:text-base font- w-full">Bus</span> : {seat.bus?.name}</p>
                         <p><span className="text-sm md:text-base font-semibold w-full">Date</span> : {date}</p>
                         <p><span className="text-sm md:text-base font-semibold w-full">Seat</span> : {seat.seatNumber}</p>
                         <p><span className="text-sm md:text-base font-semibold w-full">Filled</span> : {filledSeats}/{emptySeats}</p>

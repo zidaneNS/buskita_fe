@@ -478,13 +478,13 @@ export const getAllUsers = async () => {
   }
 }
 
-export const verify = async (id: string | number) => {
+export const verify = async (id: string | number): Promise<DefaultResponse<Seat>> => {
   const session = await verifySession();
   const { token } = session!;
 
   try {
-    const response = await fetch(`${baseUrl}/seats/${id}/verify`, {
-      method: "GET",
+    const response = await fetch(`${baseUrl}/seats/verify/${id}`, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
@@ -492,16 +492,11 @@ export const verify = async (id: string | number) => {
       }
     });
 
-    if (response.status === 200) {
-      return { success: true }
-    } else {
-      const result = await response.json();
-      console.log('fail verify passenegr', result.error || result.message);
-      return { error: result.error || result.message as string };
-    }
+    const result = await response.json() as DefaultResponse<Seat>;
+    return result;
   } catch (err) {
     console.log('fail verify', err);
-    return { error: 'something went wrong' };
+    return { message: 'something went wrong', statusCode: 500 };
   }
 }
 

@@ -8,9 +8,7 @@ import { format } from "date-fns";
 import { bookSeat, changeSeat } from "@/lib/formAction";
 import ErrorInputForm from "@/components/ErrorInputForm";
 import UpdateSeatForm from "./UpdateSeatForm";
-import Modal from "@/components/Modal";
 import SeatDetail from "./SeatDetail";
-import QrPresence from "@/components/QrPresence";
 import { Schedule } from "@/lib/type";
 import { Bus } from "@/lib/type";
 import { User } from "@/lib/type";
@@ -21,7 +19,6 @@ export default function ScheduleDetailPage({ schedule, bus, user, seats }: { sch
     const [selected, setSelected] = useState<number>(0);
     const [seatId, setSeatId] = useState<string | number | null>(null);
     const [isEditing, setIsEditing] = useState<boolean>(false);
-    const [isOpenQr, setIsOpenQr] = useState<boolean>(false);
     
     const bookSeatWithId = bookSeat.bind(null, undefined, seatId);
     const [state, action, pending] = useActionState(bookSeatWithId, undefined);
@@ -54,14 +51,6 @@ export default function ScheduleDetailPage({ schedule, bus, user, seats }: { sch
     return !isSuccess ?
         (
             <main className="min-h-screen flex flex-col w-full px-6 pt-24 pb-10 md:p-32 gap-y-4">
-                {isOpenQr && (
-                    <Modal>
-                        <QrPresence
-                            setIsOpenQr={setIsOpenQr}
-                            userSeat={userSeat}
-                        />
-                    </Modal>
-                )}
                 <Link href="/schedule" className="w-fit flex gap-x-3 items-center">
                     <ArrowLeftIcon className="size-6" />
                     <p className="hover:underline">Back to all offers</p>
@@ -126,7 +115,6 @@ export default function ScheduleDetailPage({ schedule, bus, user, seats }: { sch
                                     </div>
                                 ) : (
                                     <div className="w-full flex items-center gap-x-4 justify-center">
-                                        <button onClick={() => setIsOpenQr(true)} type="button" className="bg-midnight-purple py-2 px-6 rounded-md hover:bg-white hover:text-black cursor-pointer duration-300">View Qr</button>
                                         <button onClick={handleEditButton} type="button" className="bg-green-800 py-2 px-6 rounded-md hover:bg-white hover:text-black cursor-pointer duration-300">Edit</button>
                                     </div>
                                 ) : (
