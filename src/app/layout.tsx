@@ -23,7 +23,7 @@ export default async function RootLayout({
   children: React.ReactNode,
   auth: React.ReactNode
 }>) {
-  const user = await getUser();
+  const user = getUser();
   return (
     <html lang="en" className="scrollbar-thin scrollbar-track-gradient-end/70 scrollbar-thumb-midnight-purple">
       <body

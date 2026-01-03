@@ -18,7 +18,7 @@ export const verifySession = cache(async () => {
     return { token: session.token }
 });
 
-export const getUser = cache(async () => {
+export const getUser = (async () => {
     const session = await verifySession();
 
     if (!session) return null;
