@@ -21,7 +21,7 @@ export default function ProfileDetail({
     children?: ReactNode
     }) {
     const [content, setContent] = useState<string | number>(value);
-    const isChangeable = attribute !== 'Credit Score' && attribute !== 'Role';
+    const isChangeable = attribute !== 'Credit Score' && attribute !== 'Role' && attribute !== 'Validated';
     const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (isChangeable) setContent(e.target.value);
     }

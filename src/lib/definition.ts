@@ -2,7 +2,7 @@ import { z } from "zod"
 
 export const SignUpFormSchema = z.object({
     nim_nip: z.string().min(8, "NIM / NIP must filled at least 8 characters long").trim(),
-    name: z.string().min(3, "Name must filled").trim(),
+    name: z.string().min(3, "Name at least 3 characters long").trim(),
     email: z.string().email({ message: "please enter valid email" }).trim(),
     phone_number: z.string().min(1, { message: "Phone Number cannot empty" }).trim(),
     address: z.string().min(1, { message: "Address cannot empty" }).trim(),
